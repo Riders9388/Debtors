@@ -1,5 +1,6 @@
 ﻿using Debtors.Core.Models;
 using MvvmCross.Commands;
+using MvvmCross.Logging;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using System;
@@ -11,10 +12,13 @@ namespace Debtors.Core.ViewModels
 {
     public class DebtorsViewModel : BaseViewModel
     {
+        public DebtorsViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService)
+            : base(logProvider, navigationService) { }
+
         public override void Start()
         {
             base.Start();
-            Debtors = new MvxObservableCollection<Debtor>(DatabaseService.GetDebtors());
+            LoadData();
         }
 
         private MvxObservableCollection<Debtor> debtors;
@@ -68,21 +72,27 @@ namespace Debtors.Core.ViewModels
             }
         }
 
+        private void LoadData()
+        {
+            Debtors = new MvxObservableCollection<Debtor>(DatabaseService.GetDebtors());
+        }
+
         private async Task NavigateToDebtorAsync()
         {
-            bool a = await NavigationService.Navigate<DebtorViewModel>();
+            await NavigationService.Navigate<DebtorViewModel, Debtor, bool>(null);
+            LoadData();
         }
 
         private async Task OnItemListClick(Debtor debtor)
         {
-            bool a = await NavigationService.Navigate<DebtorViewModel>();
+            await NavigationService.Navigate<DebtorViewModel, Debtor, bool>(debtor);
+            LoadData();
         }
 
         private void OnItemLongListClick(Debtor debtor)
         {
             DatabaseService.RemoveDebtor(debtor);
-            Debtors.Remove(debtor);
-            RaisePropertyChanged(() => Debtors);
+            LoadData();
         }
     }
 }

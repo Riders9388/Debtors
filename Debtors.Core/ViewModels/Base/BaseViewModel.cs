@@ -1,5 +1,6 @@
 ﻿using Debtors.Core.Interfaces;
 using MvvmCross;
+using MvvmCross.Logging;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using System;
@@ -8,14 +9,12 @@ using System.Text;
 
 namespace Debtors.Core.ViewModels
 {
-    public class BaseViewModel : MvxViewModel
+    public abstract class BaseViewModel : MvxNavigationViewModel
     {
-        protected readonly IMvxNavigationService NavigationService;
         protected readonly IDatabaseService DatabaseService;
-
-        public BaseViewModel()
+        public BaseViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService)
+            : base(logProvider, navigationService)
         {
-            NavigationService = Mvx.IoCProvider.Resolve<IMvxNavigationService>();
             DatabaseService = Mvx.IoCProvider.Resolve<IDatabaseService>();
         }
     }
