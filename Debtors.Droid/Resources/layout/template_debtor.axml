@@ -8,5 +8,6 @@
 	<TextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:textSize="@dimen/textDebtorView"
 		local:MvxBind="Text FullName"/>
 </LinearLayout>

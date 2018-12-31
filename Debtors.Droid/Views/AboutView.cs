@@ -5,6 +5,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V7.Widget;
@@ -14,7 +15,7 @@ using Debtors.Core.ViewModels;
 
 namespace Debtors.Droid.Views
 {
-    [Activity(Label = "")]
+    [Activity(Label = "", ScreenOrientation = ScreenOrientation.Portrait)]
     public class AboutView : BaseView<AboutViewModel>
     {
         protected Toolbar toolbar { get; private set; }

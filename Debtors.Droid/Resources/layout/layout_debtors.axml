@@ -6,25 +6,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 	android:fitsSystemWindows="true">
-	<LinearLayout
+	<RelativeLayout
 		android:orientation="vertical"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 		<include layout="@layout/toolbar" />
-		<mvvmcross.droid.support.v7.recyclerview.MvxRecyclerView
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			local:layout_behavior="@string/appbar_scrolling_view_behavior"
-			local:MvxItemTemplate="@layout/template_debtor"
-			local:MvxBind="ItemsSource Debtors; ItemClick ItemListClickCommand; ItemLongClick ItemListLongClickCommand"/>
-	</LinearLayout>
-	<ProgressBar
+		<ProgressBar
 			android:id="@+id/progressBar"
+			android:layout_below="@+id/appbar"
+			style="?android:attr/progressBarStyleLarge"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_centerHorizontal="true"
 			android:layout_centerVertical="true"
-			style="?android:attr/progress" />
+			android:indeterminate="true" 
+			local:MvxBind="Visibility Visibility(IsVisible)" />
+		<mvvmcross.droid.support.v7.recyclerview.MvxRecyclerView
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_below="@+id/appbar"
+			local:layout_behavior="@string/appbar_scrolling_view_behavior"
+			local:MvxItemTemplate="@layout/template_debtor"
+			local:MvxBind="ItemsSource Debtors; ItemClick ItemListClickCommand; ItemLongClick ItemListLongClickCommand"/>
+	</RelativeLayout>
 	<android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_height="match_parent"

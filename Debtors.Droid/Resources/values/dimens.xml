@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+  <!--general-->
+  <dimen name="thesmallestDimen">1dp</dimen>
+  <dimen name="smallestDimen">2dp</dimen>
+  <dimen name="smallerDimen">3dp</dimen>
+  <dimen name="smallDimen">5dp</dimen>
+  <dimen name="sevenDimen">7dp</dimen>
+  <dimen name="editTextPadding">10dp</dimen>
+  <dimen name="tenDimen">10dp</dimen>
+  <dimen name="buttonYesNoMinWidth">100dp</dimen>
+
+  <!--text sizes-->
+  <dimen name="textDebtorView">25sp</dimen>
+</resources>

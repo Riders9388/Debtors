@@ -19,10 +19,11 @@ using Android.Content.Res;
 using Android.Support.Design.Widget;
 using Android.Widget;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
+using Android.Content.PM;
 
 namespace Debtors.Droid.Views
 {
-    [Activity(Label = "")]
+    [Activity(Label = "", ScreenOrientation = ScreenOrientation.Portrait)]
     public class DebtorsView : BaseView<DebtorsViewModel>
     {
         protected Toolbar toolbar { get; private set; }

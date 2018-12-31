@@ -8,9 +8,11 @@
 	<EditText
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:hint="@string/firstname"
 		local:MvxBind="Text Debtor.FirstName"/>
 	<EditText
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:hint="@string/surname"
 		local:MvxBind="Text Debtor.SurName"/>
 </LinearLayout>

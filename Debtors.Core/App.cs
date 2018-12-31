@@ -1,4 +1,5 @@
-﻿using Debtors.Core.Interfaces;
+﻿using Acr.UserDialogs;
+using Debtors.Core.Interfaces;
 using Debtors.Core.Services;
 using Debtors.Core.ViewModels;
 using MvvmCross;
@@ -18,6 +19,8 @@ namespace Debtors.Core
                 .EndingWith("Service")
                 .AsInterfaces()
                 .RegisterAsLazySingleton();
+
+            Mvx.IoCProvider.RegisterSingleton<IUserDialogs>(() => UserDialogs.Instance);
 
             RegisterAppStart<DebtorsViewModel>();
         }

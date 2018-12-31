@@ -1,11 +1,14 @@
-﻿using Debtors.Core.Models;
+﻿using Acr.UserDialogs;
+using Debtors.Core.Models;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
+using MvvmCross.UI;
 using MvvmCross.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Debtors.Core.ViewModels
@@ -15,10 +18,21 @@ namespace Debtors.Core.ViewModels
         public DebtorsViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService)
             : base(logProvider, navigationService) { }
 
-        public override void Start()
+        public override async void Start()
         {
             base.Start();
-            LoadData();
+            await LoadDataAsync();
+        }
+
+        private bool isVisible;
+        public bool IsVisible
+        {
+            get { return isVisible; }
+            set
+            {
+                isVisible = value;
+                RaisePropertyChanged(() => IsVisible);
+            }
         }
 
         private MvxObservableCollection<Debtor> debtors;
@@ -52,12 +66,12 @@ namespace Debtors.Core.ViewModels
             }
         }
 
-        private IMvxAsyncCommand<Debtor> itemListClickCommand;
-        public IMvxAsyncCommand<Debtor> ItemListClickCommand
+        private IMvxCommand<Debtor> itemListClickCommand;
+        public IMvxCommand<Debtor> ItemListClickCommand
         {
             get
             {
-                itemListClickCommand = itemListClickCommand ?? new MvxAsyncCommand<Debtor>(OnItemListClick);
+                itemListClickCommand = itemListClickCommand ?? new MvxCommand<Debtor>(OnItemListClick);
                 return itemListClickCommand;
             }
         }
@@ -67,32 +81,47 @@ namespace Debtors.Core.ViewModels
         {
             get
             {
-                itemListLongClickCommand = itemListLongClickCommand ?? new MvxCommand<Debtor>(OnItemLongListClick);
+                itemListLongClickCommand = itemListLongClickCommand ?? new MvxCommand<Debtor>(OnItemLongListClickAsync);
                 return itemListLongClickCommand;
             }
         }
 
-        private void LoadData()
+        private async Task LoadDataAsync()
         {
-            Debtors = new MvxObservableCollection<Debtor>(DatabaseService.GetDebtors());
+            IsVisible = true;
+            await Task.Run(() =>
+            {
+                Debtors = new MvxObservableCollection<Debtor>(DatabaseService.GetDebtors());
+            });
+            IsVisible = false;
         }
 
         private async Task NavigateToDebtorAsync()
         {
             await NavigationService.Navigate<DebtorViewModel, Debtor, bool>(null);
-            LoadData();
+            await LoadDataAsync();
         }
 
-        private async Task OnItemListClick(Debtor debtor)
+        private void OnItemListClick(Debtor debtor)
         {
-            await NavigationService.Navigate<DebtorViewModel, Debtor, bool>(debtor);
-            LoadData();
+            ActionSheetConfig config = new ActionSheetConfig();
+            config.Add("Edit", async () =>
+            {
+                await NavigationService.Navigate<DebtorViewModel, Debtor, bool>(debtor);
+                await LoadDataAsync();
+            });
+            config.Add("Delete", async () =>
+            {
+                DatabaseService.RemoveDebtor(debtor);
+                await LoadDataAsync();
+            });
+            config.Add("Cancel");
+            UserDialogs.Instance.ActionSheet(config);
         }
 
-        private void OnItemLongListClick(Debtor debtor)
+        private void OnItemLongListClickAsync(Debtor debtor)
         {
-            DatabaseService.RemoveDebtor(debtor);
-            LoadData();
+            OnItemListClick(debtor);
         }
     }
 }
