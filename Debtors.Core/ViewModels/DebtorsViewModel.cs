@@ -1,4 +1,5 @@
 ﻿using Acr.UserDialogs;
+using Debtors.Core.Interfaces;
 using Debtors.Core.Models;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
@@ -13,17 +14,20 @@ using System.Threading.Tasks;
 
 namespace Debtors.Core.ViewModels
 {
-    public class DebtorsViewModel : BaseViewModel
+    public class DebtorsViewModel : BaseViewModel, IProgressBar
     {
         public DebtorsViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService)
             : base(logProvider, navigationService) { }
 
+        #region Overwritten
         public override async void Start()
         {
             base.Start();
             await LoadDataAsync();
-        }
+        } 
+        #endregion
 
+        #region Properties
         private bool isVisible;
         public bool IsVisible
         {
@@ -44,8 +48,10 @@ namespace Debtors.Core.ViewModels
                 debtors = value;
                 RaisePropertyChanged(() => Debtors);
             }
-        }
+        } 
+        #endregion
 
+        #region Commands
         private IMvxAsyncCommand addClickCommand;
         public IMvxAsyncCommand AddClickCommand
         {
@@ -85,7 +91,9 @@ namespace Debtors.Core.ViewModels
                 return itemListLongClickCommand;
             }
         }
+        #endregion
 
+        #region Methods
         private async Task LoadDataAsync()
         {
             IsVisible = true;
@@ -122,6 +130,7 @@ namespace Debtors.Core.ViewModels
         private void OnItemLongListClickAsync(Debtor debtor)
         {
             OnItemListClick(debtor);
-        }
+        } 
+        #endregion
     }
 }

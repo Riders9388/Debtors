@@ -11,16 +11,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 		<include layout="@layout/toolbar" />
-		<ProgressBar
-			android:id="@+id/progressBar"
-			android:layout_below="@+id/appbar"
-			style="?android:attr/progressBarStyleLarge"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_centerHorizontal="true"
-			android:layout_centerVertical="true"
-			android:indeterminate="true" 
-			local:MvxBind="Visibility Visibility(IsVisible)" />
+		<include layout="@layout/progressbar" />
 		<mvvmcross.droid.support.v7.recyclerview.MvxRecyclerView
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"

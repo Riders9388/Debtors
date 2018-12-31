@@ -1,4 +1,5 @@
-﻿using Debtors.Core.Models;
+﻿using Acr.UserDialogs;
+using Debtors.Core.Models;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
@@ -13,6 +14,7 @@ namespace Debtors.Core.ViewModels
         public DebtorViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService)
             : base(logProvider, navigationService) { }
 
+        #region Overwritten
         public override void Start()
         {
             base.Start();
@@ -34,7 +36,9 @@ namespace Debtors.Core.ViewModels
             base.ViewDestroy(viewFinishing);
             NavigationService.Close(this, true);
         }
+        #endregion
 
+        #region Properties
         private Debtor debtor;
         public Debtor Debtor
         {
@@ -45,7 +49,9 @@ namespace Debtors.Core.ViewModels
                 RaisePropertyChanged(() => Debtor);
             }
         }
+        #endregion
 
+        #region Commands
         private IMvxCommand deleteClickCommand;
         public IMvxCommand DeleteClickCommand
         {
@@ -65,21 +71,38 @@ namespace Debtors.Core.ViewModels
                 return saveClickCommand;
             }
         }
+        #endregion
 
+        #region Methods
         private void DeleteDebtor()
         {
-            if (Debtor == null)
-                return;
+            ConfirmConfig config = new ConfirmConfig();
+            config.Message = "Do you really want to delete?";
+            config.OnAction = (accepted) =>
+            {
+                if (!accepted || Debtor == null)
+                    return;
 
-            DatabaseService.RemoveDebtor(Debtor);
+                DatabaseService.RemoveDebtor(Debtor);
+                NavigationService.Close(this, true);
+            };
+            UserDialogs.Instance.Confirm(config);
         }
 
         private void SaveDebtor()
         {
-            if (Debtor == null)
-                return;
+            ConfirmConfig config = new ConfirmConfig();
+            config.Message = "Do you really want to save?";
+            config.OnAction = (accepted) =>
+            {
+                if (!accepted || Debtor == null)
+                    return;
 
-            DatabaseService.InsertOrUpdateDebtor(Debtor);
-        }
+                DatabaseService.InsertOrUpdateDebtor(Debtor);
+                UserDialogs.Instance.Toast("Saved");
+            };
+            UserDialogs.Instance.Confirm(config);
+        } 
+        #endregion
     }
 }

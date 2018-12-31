@@ -7,5 +7,5 @@
   
   <!--Debtor-->
   <string name="firstname">First name</string>
-  <string name="surname">Surname</string>
+  <string name="lastname">Last name</string>
 </resources>

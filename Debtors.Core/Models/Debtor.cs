@@ -9,7 +9,7 @@ namespace Debtors.Core.Models
     public class Debtor : BaseModel
     {
         public string FirstName { get; set; }
-        public string SurName { get; set; }
+        public string LastName { get; set; }
         public string Description { get; set; }
 
         [Ignore]
@@ -18,7 +18,5 @@ namespace Debtors.Core.Models
         public List<Mail> Mails { get; set; }
         [Ignore]
         public List<Debt> Debts { get; set; }
-        [Ignore]
-        public string FullName => $"{FirstName} {SurName}";
     }
 }

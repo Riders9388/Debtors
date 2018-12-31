@@ -1,5 +1,9 @@
 <resources>
-    <string name="app_name">Dłużnicy</string>
-    <string name="action_settings">Ustawienia</string>
-    <string name="action_info">O aplikacji</string>
+  <string name="app_name">Dłużnicy</string>
+  <string name="action_settings">Ustawienia</string>
+  <string name="action_info">O aplikacji</string>
+
+  <!--Debtor-->
+  <string name="firstname">Imię</string>
+  <string name="lastname">Nazwisko</string>
 </resources>

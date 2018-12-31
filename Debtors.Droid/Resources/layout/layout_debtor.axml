@@ -13,6 +13,6 @@
 	<EditText
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:hint="@string/surname"
-		local:MvxBind="Text Debtor.SurName"/>
+		android:hint="@string/lastname"
+		local:MvxBind="Text Debtor.LastName"/>
 </LinearLayout>
