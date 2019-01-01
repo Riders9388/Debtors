@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using MvvmCross.ViewModels;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,14 +9,31 @@ namespace Debtors.Core.Models
 {
     public class Debtor : BaseModel
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Description { get; set; }
+        private string firstName;
+        public string FirstName
+        {
+            get { return firstName; }
+            set { firstName = value == null ? value : value.Trim(); }
+        }
+
+        private string lastName;
+        public string LastName
+        {
+            get { return lastName; }
+            set { lastName = value == null ? value : value.Trim(); }
+        }
+
+        private string description;
+        public string Description
+        {
+            get { return description; }
+            set { description = value == null ? value : value.Trim(); }
+        }
 
         [Ignore]
-        public List<Phone> Phones { get; set; }
+        public MvxObservableCollection<Phone> Phones { get; set; }
         [Ignore]
-        public List<Mail> Mails { get; set; }
+        public MvxObservableCollection<Mail> Mails { get; set; }
         [Ignore]
         public List<Debt> Debts { get; set; }
     }

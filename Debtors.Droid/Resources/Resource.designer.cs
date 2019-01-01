@@ -7446,10 +7446,16 @@ namespace Debtors.Droid
 			public const int template_debtor = 2130903108;
 			
 			// aapt resource value: 0x7f030045
-			public const int toolbar = 2130903109;
+			public const int template_mail = 2130903109;
 			
 			// aapt resource value: 0x7f030046
-			public const int tooltip = 2130903110;
+			public const int template_phone = 2130903110;
+			
+			// aapt resource value: 0x7f030047
+			public const int toolbar = 2130903111;
+			
+			// aapt resource value: 0x7f030048
+			public const int tooltip = 2130903112;
 			
 			static Layout()
 			{
@@ -7590,6 +7596,9 @@ namespace Debtors.Droid
 			
 			// aapt resource value: 0x7f090020
 			public const int character_counter_pattern = 2131296288;
+			
+			// aapt resource value: 0x7f090031
+			public const int description = 2131296305;
 			
 			// aapt resource value: 0x7f09002e
 			public const int drawer_close = 2131296302;

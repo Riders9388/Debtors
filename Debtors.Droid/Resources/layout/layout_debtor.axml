@@ -15,4 +15,32 @@
 		android:layout_height="wrap_content"
 		android:hint="@string/lastname"
 		local:MvxBind="Text Debtor.LastName"/>
+	<EditText
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:hint="@string/description"
+		android:maxLines="3"
+		local:MvxBind="Text Debtor.Description"/>
+	<mvvmcross.droid.support.v7.recyclerview.MvxRecyclerView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		local:layout_behavior="@string/appbar_scrolling_view_behavior"
+		local:MvxItemTemplate="@layout/template_phone"
+		local:MvxBind="ItemsSource Debtor.Phones; ItemClick PhoneClickCommand"/>
+	<Button
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Add phone"
+		local:MvxBind="Click AddPhoneClickCommand"/>
+	<mvvmcross.droid.support.v7.recyclerview.MvxRecyclerView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		local:layout_behavior="@string/appbar_scrolling_view_behavior"
+		local:MvxItemTemplate="@layout/template_mail"
+		local:MvxBind="ItemsSource Debtor.Mails; ItemClick MailClickCommand"/>
+	<Button
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Add mail"
+		local:MvxBind="Click AddMailClickCommand"/>
 </LinearLayout>

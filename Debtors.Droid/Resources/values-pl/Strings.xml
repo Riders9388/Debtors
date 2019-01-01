@@ -6,4 +6,5 @@
   <!--Debtor-->
   <string name="firstname">Imię</string>
   <string name="lastname">Nazwisko</string>
+  <string name="description">Opis</string>
 </resources>

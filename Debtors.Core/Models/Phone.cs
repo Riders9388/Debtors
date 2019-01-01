@@ -9,6 +9,17 @@ namespace Debtors.Core.Models
     {
         public int DebtorId { get; set; }
         public PhoneNumberType Type { get; set; }
-        public string Number { get; set; }
+
+        private string number;
+        public string Number
+        {
+            get { return number; }
+            set
+            {
+                number = value == null ? value : value.Trim();
+                RaisePropertyChanged(() => Number);
+            }
+        }
+
     }
 }
