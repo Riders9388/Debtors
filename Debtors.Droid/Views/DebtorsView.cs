@@ -41,7 +41,7 @@ namespace Debtors.Droid.Views
             navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
 
             SetSupportActionBar(toolbar);
-            SupportActionBar?.SetDisplayHomeAsUpEnabled(true);
+            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
             drawerToggle = new MvxActionBarDrawerToggle(
                 this,                                   // host Activity

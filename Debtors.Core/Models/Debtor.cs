@@ -35,6 +35,6 @@ namespace Debtors.Core.Models
         [Ignore]
         public MvxObservableCollection<Mail> Mails { get; set; }
         [Ignore]
-        public List<Debt> Debts { get; set; }
+        public MvxObservableCollection<Debt> Debts { get; set; }
     }
 }

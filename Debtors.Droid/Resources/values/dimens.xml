@@ -12,4 +12,5 @@
 
   <!--text sizes-->
   <dimen name="textDebtorView">25sp</dimen>
+  <dimen name="textPhoneMail">20sp</dimen>
 </resources>

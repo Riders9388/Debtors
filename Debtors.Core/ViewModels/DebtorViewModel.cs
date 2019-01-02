@@ -6,6 +6,7 @@ using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
+using Plugin.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -114,7 +115,6 @@ namespace Debtors.Core.ViewModels
                 return mailClickCommand;
             }
         }
-
         #endregion
 
         #region Methods
@@ -145,7 +145,6 @@ namespace Debtors.Core.ViewModels
                 DatabaseService.InsertOrUpdateDebtor(Debtor);
 
                 ToastConfig toastConfig = new ToastConfig("Saved");
-                //toastConfig.SetIcon("abc_btn_check_to_on_mtrl_000");
                 UserDialogs.Instance.Toast(toastConfig);
             };
             UserDialogs.Instance.Confirm(config);
@@ -202,11 +201,23 @@ namespace Debtors.Core.ViewModels
             ActionSheetConfig config = new ActionSheetConfig();
             config.Add("Call", () =>
             {
-                UserDialogs.Instance.Alert("Not implemented");
+                IPhoneCallTask phoneDialer = CrossMessaging.Current.PhoneDialer;
+                if (!phoneDialer.CanMakePhoneCall)
+                {
+                    UserDialogs.Instance.Alert("Cannot call");
+                    return;
+                }
+                phoneDialer.MakePhoneCall(phone.Number);
             });
             config.Add("Send", () =>
             {
-                UserDialogs.Instance.Alert("Not implemented");
+                ISmsTask smsMessenger = CrossMessaging.Current.SmsMessenger;
+                if (!smsMessenger.CanSendSms)
+                {
+                    UserDialogs.Instance.Alert("Cannot send sms");
+                    return;
+                }
+                smsMessenger.SendSms(phone.Number);
             });
             config.Add("Edit", () => 
             {
@@ -217,7 +228,14 @@ namespace Debtors.Core.ViewModels
                 if (Debtor == null || Debtor.Phones.IsNullOrEmpty())
                     return;
 
-                Debtor.Phones.Remove(phone);
+                ConfirmConfig configPhone = new ConfirmConfig();
+                configPhone.Message = "Do you really want to delete?";
+                configPhone.OnAction = (accepted) =>
+                {
+                    if (accepted)
+                        Debtor.Phones.Remove(phone);
+                };
+                UserDialogs.Instance.Confirm(configPhone);
             });
             config.Add("Cancel");
             UserDialogs.Instance.ActionSheet(config);
@@ -253,7 +271,13 @@ namespace Debtors.Core.ViewModels
             ActionSheetConfig config = new ActionSheetConfig();
             config.Add("Send", () =>
             {
-                UserDialogs.Instance.Alert("Not implemented");
+                IEmailTask emailMessenger = CrossMessaging.Current.EmailMessenger;
+                if (!emailMessenger.CanSendEmail)
+                {
+                    UserDialogs.Instance.Alert("Cannot send email");
+                    return;
+                }
+                emailMessenger.SendEmail(mail.Address);
             });
             config.Add("Edit", () =>
             {
@@ -264,7 +288,14 @@ namespace Debtors.Core.ViewModels
                 if (Debtor == null || Debtor.Mails.IsNullOrEmpty())
                     return;
 
-                Debtor.Mails.Remove(mail);
+                ConfirmConfig configMail = new ConfirmConfig();
+                configMail.Message = "Do you really want to delete?";
+                configMail.OnAction = (accepted) =>
+                {
+                    if (accepted)
+                        Debtor.Mails.Remove(mail);
+                };
+                UserDialogs.Instance.Confirm(configMail);
             });
             config.Add("Cancel");
             UserDialogs.Instance.ActionSheet(config);
