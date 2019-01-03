@@ -5,6 +5,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -13,7 +14,7 @@ using MvvmCross.Platforms.Android.Views;
 
 namespace Debtors.Droid
 {
-    [Activity(MainLauncher = true, NoHistory = true)]
+    [Activity(MainLauncher = true, NoHistory = true, ScreenOrientation = ScreenOrientation.Portrait)]
     public class SplashScreenActivity : MvxSplashScreenActivity
     {
         public SplashScreenActivity() : base(Resource.Layout.SplashScreen)

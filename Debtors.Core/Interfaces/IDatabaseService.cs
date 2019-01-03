@@ -10,25 +10,29 @@ namespace Debtors.Core.Interfaces
         #region Debtor
         List<Debtor> GetDebtors();
         Debtor GetDebtor(int id);
-        int InsertOrUpdateDebtor(Debtor debtor, bool newTransaction = true);
-        int RemoveDebtor(Debtor debtor, bool newTransaction = true);
-        int RemoveDebtor(int debtorId, bool newTransaction = true);
+        bool InsertOrUpdateDebtor(Debtor debtor, bool newTransaction = true);
+        bool RemoveDebtor(int debtorId, bool newTransaction = true);
         #endregion
 
         #region Phone
         List<Phone> GetPhones(int debtorId);
         Phone GetPhone(int id);
-        int InsertOrUpdatePhone(Phone phone, bool newTransaction = true);
-        int RemovePhone(Phone phone, bool newTransaction = true);
-        int RemovePhone(int id, bool newTransaction = true);
+        bool InsertOrUpdatePhone(Phone phone, bool newTransaction = true);
+        bool RemovePhone(int id, bool newTransaction = true);
         #endregion
 
         #region Mail
         List<Mail> GetMails(int debtorId);
         Mail GetMail(int id);
-        int InsertOrUpdateMail(Mail mail, bool newTransaction = true);
-        int RemoveMail(Mail mail, bool newTransaction = true);
-        int RemoveMail(int id, bool newTransaction = true); 
+        bool InsertOrUpdateMail(Mail mail, bool newTransaction = true);
+        bool RemoveMail(int id, bool newTransaction = true);
+        #endregion
+
+        #region Debts
+        List<Debt> GetDebts(int debtorId);
+        Debt GetDebt(int id);
+        bool InsertOrUpdateDebt(Debt debt, bool newTransaction = true);
+        bool RemoveDebt(int id, bool newTransaction = true);
         #endregion
     }
 }

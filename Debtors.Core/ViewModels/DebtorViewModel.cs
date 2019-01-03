@@ -127,7 +127,7 @@ namespace Debtors.Core.ViewModels
                 if (!accepted || Debtor == null)
                     return;
 
-                DatabaseService.RemoveDebtor(Debtor);
+                DatabaseService.RemoveDebtor(Debtor.Id);
                 NavigationService.Close(this, true);
             };
             UserDialogs.Instance.Confirm(config);

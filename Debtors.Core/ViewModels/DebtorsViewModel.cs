@@ -120,7 +120,7 @@ namespace Debtors.Core.ViewModels
             });
             config.Add("Delete", async () =>
             {
-                DatabaseService.RemoveDebtor(debtor);
+                DatabaseService.RemoveDebtor(debtor.Id);
                 await LoadDataAsync();
             });
             config.Add("Cancel");
