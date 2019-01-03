@@ -79,9 +79,16 @@ namespace Debtors.Core.Services
 
                 int succeed = 0;
                 if (debtor.Id > 0)
+                {
+                    debtor.ModifiedAt = DateTime.Now;
                     succeed = Connection.Update(debtor);
+                }
                 else
+                {
+                    debtor.CreatedAt = DateTime.Now;
+                    debtor.ModifiedAt = DateTime.Now;
                     succeed = Connection.Insert(debtor);
+                }
 
                 InserOrUpdateAllDebtorPhones(debtor);
                 InserOrUpdateAllDebtorMails(debtor);
@@ -478,9 +485,16 @@ namespace Debtors.Core.Services
 
                 int succeed = 0;
                 if (debt.Id > 0)
+                {
+                    debt.ModifiedAt = DateTime.Now;
                     succeed = Connection.Update(debt);
+                }
                 else
+                {
+                    debt.CreatedAt = DateTime.Now;
+                    debt.ModifiedAt = DateTime.Now;
                     succeed = Connection.Insert(debt);
+                }
 
                 if (succeed > 0)
                     toReturn = true;

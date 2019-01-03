@@ -30,6 +30,9 @@ namespace Debtors.Core.Models
             set { description = value == null ? value : value.Trim(); }
         }
 
+        public DateTime CreatedAt { get; set; }
+        public DateTime ModifiedAt { get; set; }
+
         [Ignore]
         public MvxObservableCollection<Phone> Phones { get; set; }
         [Ignore]
