@@ -7612,6 +7612,9 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f090020
 			public const int character_counter_pattern = 2131296288;
 			
+			// aapt resource value: 0x7f090033
+			public const int debt = 2131296307;
+			
 			// aapt resource value: 0x7f09002f
 			public const int description = 2131296303;
 			
@@ -7629,6 +7632,9 @@ namespace Debtors.Droid
 			
 			// aapt resource value: 0x7f090031
 			public const int lastname = 2131296305;
+			
+			// aapt resource value: 0x7f090034
+			public const int leftToReturn = 2131296308;
 			
 			// aapt resource value: 0x7f090029
 			public const int library_name = 2131296297;

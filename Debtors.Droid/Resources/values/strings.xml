@@ -14,4 +14,6 @@
   
   <!--Debt-->
   <string name="amount">Amount</string>
+  <string name="debt">Debt:\u0020</string>
+  <string name="leftToReturn">Left:\u0020</string>
 </resources>

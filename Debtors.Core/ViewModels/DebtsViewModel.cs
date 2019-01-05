@@ -1,4 +1,6 @@
-﻿using Debtors.Core.Interfaces;
+﻿using Acr.UserDialogs;
+using Debtors.Core.Extensions;
+using Debtors.Core.Interfaces;
 using Debtors.Core.Models;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
@@ -80,6 +82,26 @@ namespace Debtors.Core.ViewModels
                 return addClickCommand;
             }
         }
+
+        private IMvxCommand<Debt> itemListClickCommand;
+        public IMvxCommand<Debt> ItemListClickCommand
+        {
+            get
+            {
+                itemListClickCommand = itemListClickCommand ?? new MvxCommand<Debt>(OnItemListClick);
+                return itemListClickCommand;
+            }
+        }
+
+        private IMvxCommand<Debt> itemListLongClickCommand;
+        public IMvxCommand<Debt> ItemListLongClickCommand
+        {
+            get
+            {
+                itemListLongClickCommand = itemListLongClickCommand ?? new MvxCommand<Debt>(OnItemLongListClickAsync);
+                return itemListLongClickCommand;
+            }
+        }
         #endregion
 
         #region Methods
@@ -95,10 +117,44 @@ namespace Debtors.Core.ViewModels
             });
             IsVisible = false;
         }
+
         private async Task NavigateToDebtAsync()
         {
             await NavigationService.Navigate<DebtViewModel, Debt, bool>(null);
             await LoadDataAsync();
+        }
+
+        private void OnItemListClick(Debt debt)
+        {
+            if (IsVisible)
+                return;
+
+            ActionSheetConfig config = new ActionSheetConfig();
+            config.Add("Edit", async () =>
+            {
+                await NavigationService.Navigate<DebtViewModel, Debt, bool>(debt);
+                await LoadDataAsync();
+            });
+            config.Add("Delete", () =>
+            {
+                UserDialogs.Instance.ConfirmDelete(async (accepted) =>
+                {
+                    if (!accepted || debt == null)
+                        return;
+
+                    if (DatabaseService.RemoveDebt(debt.Id))
+                        await LoadDataAsync();
+                    else
+                        UserDialogs.Instance.ToastFailure();
+                });
+            });
+            config.Add("Cancel");
+            UserDialogs.Instance.ActionSheet(config);
+        }
+
+        private void OnItemLongListClickAsync(Debt debt)
+        {
+            OnItemListClick(debt);
         }
         #endregion
     }

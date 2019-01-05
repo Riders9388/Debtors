@@ -90,8 +90,8 @@ namespace Debtors.Core.Services
                     succeed = Connection.Insert(debtor);
                 }
 
-                InserOrUpdateAllDebtorPhones(debtor);
-                InserOrUpdateAllDebtorMails(debtor);
+                InsertOrUpdateAllDebtorPhones(debtor);
+                InsertOrUpdateAllDebtorMails(debtor);
 
                 if (succeed > 0)
                     toReturn = true;
@@ -211,7 +211,7 @@ namespace Debtors.Core.Services
             return toReturn;
         }
 
-        private void InserOrUpdateAllDebtorPhones(Debtor debtor)
+        private void InsertOrUpdateAllDebtorPhones(Debtor debtor)
         {
             if (debtor == null || debtor.Id <= 0)
                 return;
@@ -361,7 +361,7 @@ namespace Debtors.Core.Services
             return toReturn;
         }
 
-        private void InserOrUpdateAllDebtorMails(Debtor debtor)
+        private void InsertOrUpdateAllDebtorMails(Debtor debtor)
         {
             if (debtor == null || debtor.Id <= 0)
                 return;
@@ -454,7 +454,9 @@ namespace Debtors.Core.Services
             List<Debt> toReturn = new List<Debt>();
             try
             {
-                toReturn = Connection.Table<Debt>().Where(x => x.DebtorId == debtorId).ToList();
+                List<int> debts = Connection.Table<Debt>().Where(x => x.DebtorId == debtorId).Select(x => x.Id).ToList();
+                foreach (var id in debts)
+                    toReturn.Add(GetDebt(id));
             }
             catch (Exception ex)
             {
@@ -469,6 +471,7 @@ namespace Debtors.Core.Services
             try
             {
                 toReturn = Connection.Get<Debt>(id);
+                toReturn.ValuesBack = GetDebtsBack(toReturn.Id);
             }
             catch (Exception ex)
             {
@@ -485,6 +488,14 @@ namespace Debtors.Core.Services
                 if (newTransaction && !Connection.IsInTransaction)
                     Connection.BeginTransaction();
 
+                decimal sum = decimal.Zero;
+                if (!debt.ValuesBack.IsNullOrEmpty())
+                    sum = debt.ValuesBack.Sum(x => x.Value);
+
+                decimal missing = (debt.Value ?? 0) - sum;
+                debt.PaidBackValue = sum;
+                debt.MissingBackValue = missing < decimal.Zero ? decimal.Zero : missing;
+
                 int succeed = 0;
                 if (debt.Id > 0)
                 {
@@ -500,6 +511,8 @@ namespace Debtors.Core.Services
 
                 if (succeed > 0)
                     toReturn = true;
+
+                toReturn = toReturn && InsertOrUpdateAllDebtBackValues(debt);
 
                 if (newTransaction && Connection.IsInTransaction)
                 {
@@ -648,6 +661,35 @@ namespace Debtors.Core.Services
                 if (newTransaction && Connection.IsInTransaction)
                     Connection.Rollback();
             }
+            return toReturn;
+        }
+
+        private bool InsertOrUpdateAllDebtBackValues(Debt debt)
+        {
+            bool toReturn = true;
+            if (debt == null || debt.Id <= 0)
+                return toReturn;
+
+            List<DebtBack> list = GetDebtsBack(debt.Id);
+            if (!debt.ValuesBack.IsNullOrEmpty())
+            {
+                foreach (var item in debt.ValuesBack)
+                {
+                    item.DebtId = debt.Id;
+                    toReturn = toReturn && InsertOrUpdateDebtBack(item, false);
+                }
+            }
+
+            if (!list.IsNullOrEmpty())
+            {
+                List<DebtBack> tempList = list;
+                if (!debt.ValuesBack.IsNullOrEmpty())
+                    tempList = list.Where(x => !debt.ValuesBack.Any(y => y.Id == x.Id)).ToList();
+
+                foreach (var item in tempList)
+                    toReturn = toReturn && RemoveDebtBack(item.Id, false);
+            }
+
             return toReturn;
         }
 

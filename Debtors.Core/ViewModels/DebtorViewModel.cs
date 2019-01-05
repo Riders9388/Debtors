@@ -138,8 +138,10 @@ namespace Debtors.Core.ViewModels
                 if (!accepted || Debtor == null)
                     return;
 
-                DatabaseService.RemoveDebtor(Debtor.Id);
-                NavigationService.Close(this, true);
+                if(DatabaseService.RemoveDebtor(Debtor.Id))
+                    NavigationService.Close(this, true);
+                else
+                    UserDialogs.Instance.ToastFailure();
             };
             UserDialogs.Instance.Confirm(config);
         }
@@ -159,10 +161,10 @@ namespace Debtors.Core.ViewModels
                 if (!accepted || Debtor == null)
                     return;
 
-                DatabaseService.InsertOrUpdateDebtor(Debtor);
-
-                ToastConfig toastConfig = new ToastConfig("Saved");
-                UserDialogs.Instance.Toast(toastConfig);
+                if(DatabaseService.InsertOrUpdateDebtor(Debtor))
+                    UserDialogs.Instance.ToastSucceed();
+                else
+                    UserDialogs.Instance.ToastFailure();
             };
             UserDialogs.Instance.Confirm(config);
         }

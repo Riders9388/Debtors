@@ -1,4 +1,5 @@
 ﻿using Acr.UserDialogs;
+using Debtors.Core.Extensions;
 using Debtors.Core.Interfaces;
 using Debtors.Core.Models;
 using MvvmCross.Commands;
@@ -126,10 +127,18 @@ namespace Debtors.Core.ViewModels
                 await NavigationService.Navigate<DebtorViewModel, Debtor, bool>(debtor);
                 await LoadDataAsync();
             });
-            config.Add("Delete", async () =>
+            config.Add("Delete", () =>
             {
-                DatabaseService.RemoveDebtor(debtor.Id);
-                await LoadDataAsync();
+                UserDialogs.Instance.ConfirmDelete(async (accepted) =>
+                {
+                    if (!accepted || debtor == null)
+                        return;
+
+                    if (DatabaseService.RemoveDebtor(debtor.Id))
+                        await LoadDataAsync();
+                    else
+                        UserDialogs.Instance.ToastFailure();
+                });
             });
             config.Add("Cancel");
             UserDialogs.Instance.ActionSheet(config);

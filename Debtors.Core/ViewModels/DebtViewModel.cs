@@ -1,4 +1,5 @@
 ﻿using Acr.UserDialogs;
+using Debtors.Core.Extensions;
 using Debtors.Core.Models;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
@@ -87,8 +88,10 @@ namespace Debtors.Core.ViewModels
                 UserDialogs.Instance.Alert("Not implemented");
                 return;
 
-                DatabaseService.RemoveDebt(Debt.Id);
-                NavigationService.Close(this, true);
+                if(DatabaseService.RemoveDebt(Debt.Id))
+                    NavigationService.Close(this, true);
+                else
+                    UserDialogs.Instance.ToastFailure();
             };
             UserDialogs.Instance.Confirm(config);
         }
@@ -111,10 +114,10 @@ namespace Debtors.Core.ViewModels
                 UserDialogs.Instance.Alert("Not implemented");
                 return;
 
-                DatabaseService.InsertOrUpdateDebt(Debt);
-
-                ToastConfig toastConfig = new ToastConfig("Saved");
-                UserDialogs.Instance.Toast(toastConfig);
+                if (DatabaseService.InsertOrUpdateDebt(Debt))
+                    UserDialogs.Instance.ToastSucceed();
+                else
+                    UserDialogs.Instance.ToastFailure();
             };
             UserDialogs.Instance.Confirm(config);
         }

@@ -1,6 +1,8 @@
-﻿using SQLite;
+﻿using Debtors.Core.Extensions;
+using SQLite;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Debtors.Core.Models
@@ -12,6 +14,8 @@ namespace Debtors.Core.Models
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
+        public decimal PaidBackValue { get; set; }
+        public decimal MissingBackValue { get; set; }
         [Ignore]
         public List<DebtBack> ValuesBack { get; set; }
     }
