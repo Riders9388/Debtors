@@ -16,14 +16,14 @@ using Toolbar = Android.Support.V7.Widget.Toolbar;
 namespace Debtors.Droid.Views
 {
     [Activity(Label = "", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class DebtsView : BaseView<DebtsViewModel>
+    public class DebtView : BaseView<DebtViewModel>
     {
         protected Toolbar toolbar { get; private set; }
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            SetContentView(Resource.Layout.layout_debts);
+            SetContentView(Resource.Layout.layout_debt);
 
             toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
@@ -33,7 +33,7 @@ namespace Debtors.Droid.Views
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            MenuInflater.Inflate(Resource.Menu.top_menu, menu);
+            MenuInflater.Inflate(Resource.Menu.save_delete_menu, menu);
             return base.OnCreateOptionsMenu(menu);
         }
 
@@ -44,8 +44,11 @@ namespace Debtors.Droid.Views
                 case Android.Resource.Id.Home:
                     OnBackPressed();
                     break;
-                case Resource.Id.menu_add:
-                    ViewModel.AddClickCommand.ExecuteAsync();
+                case Resource.Id.menu_save:
+                    ViewModel.SaveClickCommand.Execute();
+                    break;
+                case Resource.Id.menu_delete:
+                    ViewModel.DeleteClickCommand.Execute();
                     break;
                 default:
                     break;

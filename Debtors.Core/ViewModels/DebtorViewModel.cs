@@ -115,11 +115,27 @@ namespace Debtors.Core.ViewModels
                 return mailClickCommand;
             }
         }
+
+        private IMvxCommand showDebtsClickCommand;
+        public IMvxCommand ShowDebtsClickCommand
+        {
+            get
+            {
+                showDebtsClickCommand = showDebtsClickCommand ?? new MvxCommand(ShowDebts);
+                return showDebtsClickCommand;
+            }
+        }
         #endregion
 
         #region Methods
         private void DeleteDebtor()
         {
+            if (Debtor == null || Debtor.Id <= 0)
+            {
+                UserDialogs.Instance.Alert("Need save debtor at first");
+                return;
+            }
+
             ConfirmConfig config = new ConfirmConfig();
             config.Message = "Do you really want to delete?";
             config.OnAction = (accepted) =>
@@ -135,6 +151,12 @@ namespace Debtors.Core.ViewModels
 
         private void SaveDebtor()
         {
+            if (string.IsNullOrWhiteSpace(Debtor.FirstName))
+            {
+                UserDialogs.Instance.Alert("Need set debtor first name");
+                return;
+            }
+
             ConfirmConfig config = new ConfirmConfig();
             config.Message = "Do you really want to save?";
             config.OnAction = (accepted) =>
@@ -319,6 +341,16 @@ namespace Debtors.Core.ViewModels
             config.SetMessage("Set mail address");
             config.SetText(mail.Address);
             UserDialogs.Instance.Prompt(config);
+        }
+
+        private void ShowDebts()
+        {
+            if (Debtor.Id <= 0)
+            {
+                UserDialogs.Instance.Alert("Need save debtor at first");
+                return;
+            }
+            NavigationService.Navigate<DebtsViewModel, Debtor, bool>(Debtor);
         }
         #endregion
     }

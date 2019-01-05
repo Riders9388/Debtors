@@ -68,6 +68,7 @@
     <Compile Include="Views\DebtorsView.cs" />
     <Compile Include="Views\DebtorView.cs" />
     <Compile Include="Views\DebtsView.cs" />
+    <Compile Include="Views\DebtView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -272,6 +273,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\template_debt.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\layout_debt.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

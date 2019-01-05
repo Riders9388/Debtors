@@ -1,10 +1,12 @@
 ﻿using Debtors.Core.Interfaces;
 using Debtors.Core.Models;
+using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Debtors.Core.ViewModels
 {
@@ -56,11 +58,23 @@ namespace Debtors.Core.ViewModels
         #endregion
 
         #region Commands
-
+        private IMvxAsyncCommand addClickCommand;
+        public IMvxAsyncCommand AddClickCommand
+        {
+            get
+            {
+                addClickCommand = addClickCommand ?? new MvxAsyncCommand(NavigateToDebtAsync);
+                return addClickCommand;
+            }
+        }
         #endregion
 
         #region Methods
-
+        private async Task NavigateToDebtAsync()
+        {
+            await NavigationService.Navigate<DebtViewModel>();
+            //await LoadDataAsync();
+        }
         #endregion
     }
 }

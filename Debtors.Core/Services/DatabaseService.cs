@@ -122,11 +122,13 @@ namespace Debtors.Core.Services
                     Connection.BeginTransaction();
 
                 int succeed = Connection.Delete<Debtor>(id);
-                RemovePhonesByDebtorId(id, false);
-                RemoveMailsByDebtorId(id, false);
-
+                
                 if (succeed > 0)
                     toReturn = true;
+
+                toReturn = toReturn && RemovePhonesByDebtorId(id, false);
+                toReturn = toReturn && RemoveMailsByDebtorId(id, false);
+                toReturn = toReturn && RemoveDebtsByDebtorId(id, false);
 
                 if (newTransaction && Connection.IsInTransaction)
                 {
@@ -267,16 +269,16 @@ namespace Debtors.Core.Services
 
         private bool RemovePhonesByDebtorId(int id, bool newTransaction = true)
         {
-            bool toReturn = false;
+            bool toReturn = true;
             try
             {
                 if (newTransaction && !Connection.IsInTransaction)
                     Connection.BeginTransaction();
 
-                int succeed = Connection.Table<Phone>().Delete(x => x.DebtorId == id);
-
-                if (succeed > 0)
-                    toReturn = true;
+                var phones = GetPhones(id);
+                if (!phones.IsNullOrEmpty())
+                    foreach (var phone in phones)
+                        toReturn = toReturn && RemovePhone(phone.Id, false);
 
                 if (newTransaction && Connection.IsInTransaction)
                 {
@@ -417,16 +419,16 @@ namespace Debtors.Core.Services
 
         private bool RemoveMailsByDebtorId(int id, bool newTransaction = true)
         {
-            bool toReturn = false;
+            bool toReturn = true;
             try
             {
                 if (newTransaction && !Connection.IsInTransaction)
                     Connection.BeginTransaction();
 
-                int succeed = Connection.Table<Mail>().Delete(x => x.DebtorId == id);
-
-                if (succeed > 0)
-                    toReturn = true;
+                var mails = GetMails(id);
+                if (!mails.IsNullOrEmpty())
+                    foreach (var mail in mails)
+                        toReturn = toReturn && RemoveMail(mail.Id, false);
 
                 if (newTransaction && Connection.IsInTransaction)
                 {
@@ -529,6 +531,8 @@ namespace Debtors.Core.Services
                 if (succeed > 0)
                     toReturn = true;
 
+                toReturn = toReturn && RemoveDebtsBackByDebtId(id, false);
+
                 if (newTransaction && Connection.IsInTransaction)
                 {
                     if (toReturn)
@@ -546,7 +550,67 @@ namespace Debtors.Core.Services
             return toReturn;
         }
 
-        private bool RemoveDebtssByDebtorId(int id, bool newTransaction = true)
+        private bool RemoveDebtsByDebtorId(int id, bool newTransaction = true)
+        {
+            bool toReturn = true;
+            try
+            {
+                if (newTransaction && !Connection.IsInTransaction)
+                    Connection.BeginTransaction();
+
+                var debts = GetDebts(id);
+                if (!debts.IsNullOrEmpty())
+                    foreach (var debt in debts)
+                        toReturn = toReturn && RemoveDebt(debt.Id, false);
+
+                if (newTransaction && Connection.IsInTransaction)
+                {
+                    if (toReturn)
+                        Connection.Commit();
+                    else
+                        Connection.Rollback();
+                }
+            }
+            catch (Exception ex)
+            {
+                toReturn = false;
+                if (newTransaction && Connection.IsInTransaction)
+                    Connection.Rollback();
+            }
+            return toReturn;
+        }
+        #endregion
+
+        #region DebtsBack
+        public List<DebtBack> GetDebtsBack(int debtId)
+        {
+            List<DebtBack> toReturn = new List<DebtBack>();
+            try
+            {
+                toReturn = Connection.Table<DebtBack>().Where(x => x.DebtId == debtId).ToList();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return toReturn;
+        }
+
+        public DebtBack GetDebtBack(int id)
+        {
+            DebtBack toReturn = new DebtBack();
+            try
+            {
+                toReturn = Connection.Get<DebtBack>(id);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return toReturn;
+        }
+
+        public bool InsertOrUpdateDebtBack(DebtBack debtBack, bool newTransaction = true)
         {
             bool toReturn = false;
             try
@@ -554,10 +618,81 @@ namespace Debtors.Core.Services
                 if (newTransaction && !Connection.IsInTransaction)
                     Connection.BeginTransaction();
 
-                int succeed = Connection.Table<Debt>().Delete(x => x.DebtorId == id);
+                int succeed = 0;
+                if (debtBack.Id > 0)
+                {
+                    debtBack.ModifiedAt = DateTime.Now;
+                    succeed = Connection.Update(debtBack);
+                }
+                else
+                {
+                    debtBack.CreatedAt = DateTime.Now;
+                    debtBack.ModifiedAt = DateTime.Now;
+                    succeed = Connection.Insert(debtBack);
+                }
 
                 if (succeed > 0)
                     toReturn = true;
+
+                if (newTransaction && Connection.IsInTransaction)
+                {
+                    if (toReturn)
+                        Connection.Commit();
+                    else
+                        Connection.Rollback();
+                }
+            }
+            catch (Exception ex)
+            {
+                toReturn = false;
+                if (newTransaction && Connection.IsInTransaction)
+                    Connection.Rollback();
+            }
+            return toReturn;
+        }
+
+        public bool RemoveDebtBack(int id, bool newTransaction = true)
+        {
+            bool toReturn = false;
+            try
+            {
+                if (newTransaction && !Connection.IsInTransaction)
+                    Connection.BeginTransaction();
+
+                int succeed = Connection.Delete<DebtBack>(id);
+
+                if (succeed > 0)
+                    toReturn = true;
+
+                if (newTransaction && Connection.IsInTransaction)
+                {
+                    if (toReturn)
+                        Connection.Commit();
+                    else
+                        Connection.Rollback();
+                }
+            }
+            catch (Exception ex)
+            {
+                toReturn = false;
+                if (newTransaction && Connection.IsInTransaction)
+                    Connection.Rollback();
+            }
+            return toReturn;
+        }
+
+        private bool RemoveDebtsBackByDebtId(int id, bool newTransaction = true)
+        {
+            bool toReturn = true;
+            try
+            {
+                if (newTransaction && !Connection.IsInTransaction)
+                    Connection.BeginTransaction();
+
+                var debtsBack = GetDebtsBack(id);
+                if (!debtsBack.IsNullOrEmpty())
+                    foreach (var debtBack in debtsBack)
+                        toReturn = toReturn && RemoveDebtBack(debtBack.Id, false);
 
                 if (newTransaction && Connection.IsInTransaction)
                 {
