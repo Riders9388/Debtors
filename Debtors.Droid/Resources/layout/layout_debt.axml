@@ -5,4 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 	<include layout="@layout/toolbar" />
+	<EditText
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:hint="@string/amount"
+		local:MvxBind="Text Debt.Value"/>
+	<EditText
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:hint="@string/description"
+		android:maxLines="3"
+		local:MvxBind="Text Debt.Description"/>
 </LinearLayout>

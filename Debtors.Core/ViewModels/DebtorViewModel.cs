@@ -19,11 +19,6 @@ namespace Debtors.Core.ViewModels
             : base(logProvider, navigationService) { }
 
         #region Overwritten
-        public override void Start()
-        {
-            base.Start();
-        }
-
         public override void Prepare(Debtor parameter)
         {
             if (parameter == null)

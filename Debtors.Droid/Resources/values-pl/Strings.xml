@@ -3,8 +3,13 @@
   <string name="action_settings">Ustawienia</string>
   <string name="action_info">O aplikacji</string>
 
+  <!--Global-->
+  <string name="description">Description</string>
+  
   <!--Debtor-->
   <string name="firstname">Imię</string>
   <string name="lastname">Nazwisko</string>
-  <string name="description">Opis</string>
+
+  <!--Debt-->
+  <string name="amount">Kwota</string>
 </resources>

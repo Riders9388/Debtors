@@ -3,6 +3,7 @@ using Debtors.Core.Models;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
+using MvvmCross.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,7 +22,7 @@ namespace Debtors.Core.ViewModels
             base.Start();
         }
 
-        public override void Prepare(Debtor parameter)
+        public override async void Prepare(Debtor parameter)
         {
             if (parameter == null)
             {
@@ -30,6 +31,7 @@ namespace Debtors.Core.ViewModels
             }
 
             Debtor = parameter;
+            await LoadDataAsync();
         }
         #endregion
 
@@ -55,6 +57,17 @@ namespace Debtors.Core.ViewModels
                 RaisePropertyChanged(() => Debtor);
             }
         }
+
+        private MvxObservableCollection<Debt> debts;
+        public MvxObservableCollection<Debt> Debts
+        {
+            get { return debts; }
+            set
+            {
+                debts = value;
+                RaisePropertyChanged(() => Debts);
+            }
+        }
         #endregion
 
         #region Commands
@@ -70,10 +83,22 @@ namespace Debtors.Core.ViewModels
         #endregion
 
         #region Methods
+        private async Task LoadDataAsync()
+        {
+            if (Debtor == null || Debtor.Id <= 0)
+                return;
+
+            IsVisible = true;
+            await Task.Run(() =>
+            {
+                Debts = new MvxObservableCollection<Debt>(DatabaseService.GetDebts(Debtor.Id));
+            });
+            IsVisible = false;
+        }
         private async Task NavigateToDebtAsync()
         {
-            await NavigationService.Navigate<DebtViewModel>();
-            //await LoadDataAsync();
+            await NavigationService.Navigate<DebtViewModel, Debt, bool>(null);
+            await LoadDataAsync();
         }
         #endregion
     }

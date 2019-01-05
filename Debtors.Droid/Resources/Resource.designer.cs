@@ -7597,6 +7597,9 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f09002b
 			public const int action_settings = 2131296299;
 			
+			// aapt resource value: 0x7f090032
+			public const int amount = 2131296306;
+			
 			// aapt resource value: 0x7f09002a
 			public const int app_name = 2131296298;
 			
@@ -7609,8 +7612,8 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f090020
 			public const int character_counter_pattern = 2131296288;
 			
-			// aapt resource value: 0x7f090031
-			public const int description = 2131296305;
+			// aapt resource value: 0x7f09002f
+			public const int description = 2131296303;
 			
 			// aapt resource value: 0x7f09002e
 			public const int drawer_close = 2131296302;
@@ -7621,11 +7624,11 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f090027
 			public const int fab_scroll_shrink_grow_autohide_behavior = 2131296295;
 			
-			// aapt resource value: 0x7f09002f
-			public const int firstname = 2131296303;
-			
 			// aapt resource value: 0x7f090030
-			public const int lastname = 2131296304;
+			public const int firstname = 2131296304;
+			
+			// aapt resource value: 0x7f090031
+			public const int lastname = 2131296305;
 			
 			// aapt resource value: 0x7f090029
 			public const int library_name = 2131296297;

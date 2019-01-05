@@ -18,7 +18,7 @@
 			android:layout_below="@+id/appbar"
 			local:layout_behavior="@string/appbar_scrolling_view_behavior"
 			local:MvxItemTemplate="@layout/template_debtor"
-			local:MvxBind="ItemsSource Debtors; ItemClick ItemListClickCommand; ItemLongClick ItemListLongClickCommand"/>
+			local:MvxBind="ItemsSource Debtors; ItemClick ItemListClickCommand; ItemLongClick ItemListLongClickCommand;"/>
 	</RelativeLayout>
 	<android.support.design.widget.NavigationView
         android:id="@+id/nav_view"

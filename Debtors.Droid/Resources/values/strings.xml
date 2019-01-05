@@ -5,8 +5,13 @@
   <string name="drawer_open">Open navigation drawer</string>
   <string name="drawer_close">Close navigation drawer</string>
   
+  <!--Global-->
+  <string name="description">Description</string>
+  
   <!--Debtor-->
   <string name="firstname">First name</string>
   <string name="lastname">Last name</string>
-  <string name="description">Description</string>
+  
+  <!--Debt-->
+  <string name="amount">Amount</string>
 </resources>

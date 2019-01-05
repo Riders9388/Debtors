@@ -106,37 +106,15 @@ namespace Debtors.Core.ViewModels
 
         private async Task NavigateToDebtorAsync()
         {
-            for (int i = 0; i < 100; i++)
-            {
-                Debtor debtor = new Debtor()
-                {
-                    FirstName = "Name " + i,
-                    LastName = "Last name " + i,
-                    Description = "Description " + i
-                };
-                debtor.Phones = new MvxObservableCollection<Phone>();
-                debtor.Mails = new MvxObservableCollection<Mail>();
-                for (int j = 0; j < 10; j++)
-                {
-                    debtor.Phones.Add(new Phone()
-                    {
-                        Number = "500 2" + i
-                    });
-                    debtor.Mails.Add(new Mail()
-                    {
-                        Address = "asd" + i + "@example.com"
-                    });
-                }
-                DatabaseService.InsertOrUpdateDebtor(debtor);
-            }
-            return;
-
             await NavigationService.Navigate<DebtorViewModel, Debtor, bool>(null);
             await LoadDataAsync();
         }
 
         private void OnItemListClick(Debtor debtor)
         {
+            if (IsVisible)
+                return;
+
             ActionSheetConfig config = new ActionSheetConfig();
             config.Add("Debts", async () =>
             {
