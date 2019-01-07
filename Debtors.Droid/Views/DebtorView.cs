@@ -13,6 +13,8 @@ using Android.Views;
 using Android.Widget;
 using Debtors.Core.ViewModels;
 using MvvmCross.Droid.Support.V7.AppCompat;
+using Plugin.CurrentActivity;
+using Plugin.Permissions;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace Debtors.Droid.Views
@@ -27,10 +29,17 @@ namespace Debtors.Droid.Views
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.layout_debtor);
 
+            CrossCurrentActivity.Current.Init(this, bundle);
+
             toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
             SupportActionBar.SetHomeButtonEnabled(true);
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        {
+            PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)

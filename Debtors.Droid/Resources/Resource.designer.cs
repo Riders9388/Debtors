@@ -6636,8 +6636,8 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f080039
 			public const int SYM = 2131230777;
 			
-			// aapt resource value: 0x7f0800bb
-			public const int about = 2131230907;
+			// aapt resource value: 0x7f0800bd
+			public const int about = 2131230909;
 			
 			// aapt resource value: 0x7f0800a5
 			public const int action0 = 2131230885;
@@ -6768,6 +6768,9 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f080090
 			public const int coordinator = 2131230864;
 			
+			// aapt resource value: 0x7f0800bb
+			public const int currency = 2131230907;
+			
 			// aapt resource value: 0x7f08006f
 			public const int custom = 2131230831;
 			
@@ -6888,6 +6891,9 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f080063
 			public const int list_item = 2131230819;
 			
+			// aapt resource value: 0x7f0800b6
+			public const int ll_Color = 2131230902;
+			
 			// aapt resource value: 0x7f0800a0
 			public const int loadingImage = 2131230880;
 			
@@ -6897,23 +6903,23 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f0800a1
 			public const int loadingProgressWheel = 2131230881;
 			
-			// aapt resource value: 0x7f0800b9
-			public const int masked = 2131230905;
+			// aapt resource value: 0x7f0800ba
+			public const int masked = 2131230906;
 			
 			// aapt resource value: 0x7f0800a8
 			public const int media_actions = 2131230888;
 			
+			// aapt resource value: 0x7f0800c0
+			public const int menu_add = 2131230912;
+			
+			// aapt resource value: 0x7f0800bf
+			public const int menu_delete = 2131230911;
+			
 			// aapt resource value: 0x7f0800be
-			public const int menu_add = 2131230910;
+			public const int menu_save = 2131230910;
 			
-			// aapt resource value: 0x7f0800bd
-			public const int menu_delete = 2131230909;
-			
-			// aapt resource value: 0x7f0800bc
-			public const int menu_save = 2131230908;
-			
-			// aapt resource value: 0x7f0800b7
-			public const int message = 2131230903;
+			// aapt resource value: 0x7f0800b8
+			public const int message = 2131230904;
 			
 			// aapt resource value: 0x7f080033
 			public const int middle = 2131230771;
@@ -7041,8 +7047,8 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f08008c
 			public const int select_dialog_listview = 2131230860;
 			
-			// aapt resource value: 0x7f0800ba
-			public const int settings = 2131230906;
+			// aapt resource value: 0x7f0800bc
+			public const int settings = 2131230908;
 			
 			// aapt resource value: 0x7f080076
 			public const int shortcut = 2131230838;
@@ -7137,8 +7143,8 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f080071
 			public const int title_template = 2131230833;
 			
-			// aapt resource value: 0x7f0800b6
-			public const int toolbar = 2131230902;
+			// aapt resource value: 0x7f0800b7
+			public const int toolbar = 2131230903;
 			
 			// aapt resource value: 0x7f080040
 			public const int top = 2131230784;
@@ -7176,8 +7182,8 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f080016
 			public const int view_offset_helper = 2131230742;
 			
-			// aapt resource value: 0x7f0800b8
-			public const int visible = 2131230904;
+			// aapt resource value: 0x7f0800b9
+			public const int visible = 2131230905;
 			
 			// aapt resource value: 0x7f08003e
 			public const int withText = 2131230782;
@@ -7455,19 +7461,22 @@ namespace Debtors.Droid
 			public const int template_debt = 2130903110;
 			
 			// aapt resource value: 0x7f030047
-			public const int template_debtor = 2130903111;
+			public const int template_debtback = 2130903111;
 			
 			// aapt resource value: 0x7f030048
-			public const int template_mail = 2130903112;
+			public const int template_debtor = 2130903112;
 			
 			// aapt resource value: 0x7f030049
-			public const int template_phone = 2130903113;
+			public const int template_mail = 2130903113;
 			
 			// aapt resource value: 0x7f03004a
-			public const int toolbar = 2130903114;
+			public const int template_phone = 2130903114;
 			
 			// aapt resource value: 0x7f03004b
-			public const int tooltip = 2130903115;
+			public const int toolbar = 2130903115;
+			
+			// aapt resource value: 0x7f03004c
+			public const int tooltip = 2130903116;
 			
 			static Layout()
 			{
@@ -7597,8 +7606,8 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f09002b
 			public const int action_settings = 2131296299;
 			
-			// aapt resource value: 0x7f090032
-			public const int amount = 2131296306;
+			// aapt resource value: 0x7f090033
+			public const int amount = 2131296307;
 			
 			// aapt resource value: 0x7f09002a
 			public const int app_name = 2131296298;
@@ -7612,8 +7621,14 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f090020
 			public const int character_counter_pattern = 2131296288;
 			
-			// aapt resource value: 0x7f090033
-			public const int debt = 2131296307;
+			// aapt resource value: 0x7f090030
+			public const int currecny = 2131296304;
+			
+			// aapt resource value: 0x7f090034
+			public const int currency = 2131296308;
+			
+			// aapt resource value: 0x7f090035
+			public const int debt = 2131296309;
 			
 			// aapt resource value: 0x7f09002f
 			public const int description = 2131296303;
@@ -7627,14 +7642,14 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f090027
 			public const int fab_scroll_shrink_grow_autohide_behavior = 2131296295;
 			
-			// aapt resource value: 0x7f090030
-			public const int firstname = 2131296304;
-			
 			// aapt resource value: 0x7f090031
-			public const int lastname = 2131296305;
+			public const int firstname = 2131296305;
 			
-			// aapt resource value: 0x7f090034
-			public const int leftToReturn = 2131296308;
+			// aapt resource value: 0x7f090032
+			public const int lastname = 2131296306;
+			
+			// aapt resource value: 0x7f090036
+			public const int leftToReturn = 2131296310;
 			
 			// aapt resource value: 0x7f090029
 			public const int library_name = 2131296297;
@@ -8846,6 +8861,9 @@ namespace Debtors.Droid
 			
 			// aapt resource value: 0x7f060000
 			public const int Empty = 2131099648;
+			
+			// aapt resource value: 0x7f060001
+			public const int file_paths = 2131099649;
 			
 			static Xml()
 			{

@@ -1,4 +1,5 @@
 ﻿using Debtors.Core.Extensions;
+using MvvmCross.ViewModels;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace Debtors.Core.Models
     {
         public int DebtorId { get; set; }
         public decimal? Value { get; set; }
+        public string Currency { get; set; }
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }

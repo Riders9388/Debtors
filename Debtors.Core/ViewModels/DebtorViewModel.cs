@@ -6,9 +6,12 @@ using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
+using Plugin.Media;
+using Plugin.Media.Abstractions;
 using Plugin.Messaging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Debtors.Core.ViewModels
@@ -118,6 +121,16 @@ namespace Debtors.Core.ViewModels
             {
                 showDebtsClickCommand = showDebtsClickCommand ?? new MvxCommand(ShowDebts);
                 return showDebtsClickCommand;
+            }
+        }
+
+        private IMvxCommand setPictureClickCommand;
+        public IMvxCommand SetPictureClickCommand
+        {
+            get
+            {
+                setPictureClickCommand = setPictureClickCommand ?? new MvxCommand(GetImage);
+                return setPictureClickCommand;
             }
         }
         #endregion
@@ -348,6 +361,23 @@ namespace Debtors.Core.ViewModels
                 return;
             }
             NavigationService.Navigate<DebtsViewModel, Debtor, bool>(Debtor);
+        }
+
+        private async void GetImage()
+        {
+            if (!CrossMedia.IsSupported || !CrossMedia.Current.IsPickPhotoSupported)
+                return;
+
+            MediaFile photo = await CrossMedia.Current.PickPhotoAsync();
+            if (photo == null)
+                return;
+
+            Stream stream = photo.GetStreamWithImageRotatedForExternalStorage();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                stream.CopyTo(ms);
+                Debtor.Image = ms.ToArray();
+            }
         }
         #endregion
     }

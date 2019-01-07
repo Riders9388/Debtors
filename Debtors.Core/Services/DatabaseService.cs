@@ -24,6 +24,7 @@ namespace Debtors.Core.Services
         {
             Connection.CreateTable<Phone>();
             Connection.CreateTable<Mail>();
+            Connection.CreateTable<DebtBack>();
             Connection.CreateTable<Debt>();
             Connection.CreateTable<Debtor>();
         }
@@ -51,22 +52,23 @@ namespace Debtors.Core.Services
             try
             {
                 debtor = Connection.Get<Debtor>(id);
-                GetAdditionalDebtorElements(ref debtor);
+                debtor.Phones = new MvxObservableCollection<Phone>(GetPhones(debtor.Id));
+                debtor.Mails = new MvxObservableCollection<Mail>(GetMails(debtor.Id));
+
+                List<Debt> debts = Connection.Table<Debt>().Where(x => x.DebtorId == debtor.Id && x.MissingBackValue > decimal.Zero).ToList();
+                if (!debts.IsNullOrEmpty())
+                {
+                    debtor.DebtsValuses = new Dictionary<string, decimal>();
+                    var currencies = debts.Select(x => x.Currency).Distinct();
+                    foreach (var currency in currencies)
+                        debtor.DebtsValuses.Add(currency, debts.Where(x => x.Currency == currency).Sum(x => x.MissingBackValue));
+                }
             }
             catch (Exception ex)
             {
 
             }
             return debtor;
-        }
-
-        private void GetAdditionalDebtorElements(ref Debtor debtor)
-        {
-            if (debtor == null)
-                return;
-
-            debtor.Phones = new MvxObservableCollection<Phone>(GetPhones(debtor.Id));
-            debtor.Mails = new MvxObservableCollection<Mail>(GetMails(debtor.Id));
         }
 
         public bool InsertOrUpdateDebtor(Debtor debtor, bool newTransaction = true)

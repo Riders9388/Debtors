@@ -35,6 +35,12 @@ namespace Debtors.Core.ViewModels
             Debtor = parameter;
             await LoadDataAsync();
         }
+
+        public override void ViewDestroy(bool viewFinishing = true)
+        {
+            base.ViewDestroy(viewFinishing);
+            NavigationService.Close(this, true);
+        }
         #endregion
 
         #region Properties
@@ -120,7 +126,7 @@ namespace Debtors.Core.ViewModels
 
         private async Task NavigateToDebtAsync()
         {
-            await NavigationService.Navigate<DebtViewModel, Debt, bool>(null);
+            await NavigationService.Navigate<DebtViewModel, Debt, bool>(new Debt() { DebtorId = Debtor.Id });
             await LoadDataAsync();
         }
 

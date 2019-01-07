@@ -4,6 +4,7 @@ using Debtors.Core.Models;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
+using MvvmCross.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -67,6 +68,16 @@ namespace Debtors.Core.ViewModels
                 return saveClickCommand;
             }
         }
+
+        private IMvxCommand addDebtBackClickCommand;
+        public IMvxCommand AddDebtBackClickCommand
+        {
+            get
+            {
+                addDebtBackClickCommand = addDebtBackClickCommand ?? new MvxCommand(AddDebtBack);
+                return addDebtBackClickCommand;
+            }
+        }
         #endregion
 
         #region Methods
@@ -85,9 +96,6 @@ namespace Debtors.Core.ViewModels
                 if (!accepted || Debt == null)
                     return;
 
-                UserDialogs.Instance.Alert("Not implemented");
-                return;
-
                 if(DatabaseService.RemoveDebt(Debt.Id))
                     NavigationService.Close(this, true);
                 else
@@ -103,6 +111,11 @@ namespace Debtors.Core.ViewModels
                 UserDialogs.Instance.Alert("Need set debt value at first");
                 return;
             }
+            else if (string.IsNullOrWhiteSpace(Debt.Currency))
+            {
+                UserDialogs.Instance.Alert("Need set debt value currency at first");
+                return;
+            }
 
             ConfirmConfig config = new ConfirmConfig();
             config.Message = "Do you really want to save?";
@@ -111,15 +124,35 @@ namespace Debtors.Core.ViewModels
                 if (!accepted || Debt == null)
                     return;
 
-                UserDialogs.Instance.Alert("Not implemented");
-                return;
-
                 if (DatabaseService.InsertOrUpdateDebt(Debt))
                     UserDialogs.Instance.ToastSucceed();
                 else
                     UserDialogs.Instance.ToastFailure();
             };
             UserDialogs.Instance.Confirm(config);
+        }
+
+        private void AddDebtBack()
+        {
+            PromptConfig config = new PromptConfig();
+            config.SetAction((result) =>
+            {
+                if (!result.Ok || Debt == null || string.IsNullOrWhiteSpace(result.Value))
+                    return;
+
+                if (Debt.ValuesBack == null)
+                    Debt.ValuesBack = new List<DebtBack>();
+
+                Debt.ValuesBack.Add(new DebtBack()
+                {
+                    DebtId = Debt.Id,
+                    Value = Convert.ToDecimal(result.Value)
+                });
+                RaisePropertyChanged(() => Debt);
+            });
+            config.SetInputMode(InputType.Phone);
+            config.SetMessage("Set return value");
+            UserDialogs.Instance.Prompt(config);
         }
         #endregion
     }

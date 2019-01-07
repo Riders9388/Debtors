@@ -13,6 +13,7 @@ using Android.Views.InputMethods;
 using Android.Widget;
 using MvvmCross.Droid.Support.V7.AppCompat;
 using MvvmCross.ViewModels;
+using Plugin.CurrentActivity;
 
 namespace Debtors.Droid.Views
 {
@@ -23,6 +24,7 @@ namespace Debtors.Droid.Views
         {
             base.OnCreate(bundle);
             UserDialogs.Init(this);
+            CrossCurrentActivity.Current.Init(this, bundle);
         }
 
         public new TViewModel ViewModel

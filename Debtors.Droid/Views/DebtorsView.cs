@@ -64,6 +64,9 @@ namespace Debtors.Droid.Views
             e.MenuItem.SetChecked(false);
             switch (e.MenuItem.ItemId)
             {
+                case Resource.Id.currency:
+                    Toast.MakeText(this, "Currency clicked!", ToastLength.Short).Show();
+                    break;
                 case Resource.Id.settings:
                     Toast.MakeText(this, "Settings clicked!", ToastLength.Short).Show();
                     break;

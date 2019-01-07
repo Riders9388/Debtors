@@ -5,6 +5,7 @@
 
   <!--Global-->
   <string name="description">Description</string>
+  <string name="currecny">Waluty</string>
   
   <!--Debtor-->
   <string name="firstname">Imię</string>
@@ -12,6 +13,7 @@
 
   <!--Debt-->
   <string name="amount">Kwota</string>
+  <string name="currency">Waluta</string>
   <string name="debt">Dług:\u0020</string>
   <string name="leftToReturn">Pozostało:\u0020</string>
 </resources>
