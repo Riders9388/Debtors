@@ -11,28 +11,28 @@ namespace Debtors.Core.Extensions
         public static void ToastSucceed<T>(this T toast) where T : IUserDialogs
         {
             ToastConfig toastConfig = new ToastConfig("Saved");
-            //toastConfig.MessageTextColor = Color.Green;
+            toastConfig.MessageTextColor = Color.Green;
             UserDialogs.Instance.Toast(toastConfig);
         }
 
         public static void ToastSucceed<T>(this T toast, string message) where T : IUserDialogs
         {
             ToastConfig toastConfig = new ToastConfig(message ?? "");
-            //toastConfig.MessageTextColor = Color.Green;
+            toastConfig.MessageTextColor = Color.Green;
             UserDialogs.Instance.Toast(toastConfig);
         }
 
         public static void ToastFailure<T>(this T toast) where T : IUserDialogs
         {
             ToastConfig toastConfig = new ToastConfig("Error occured");
-            //toastConfig.MessageTextColor = Color.Red;
+            toastConfig.MessageTextColor = Color.Red;
             UserDialogs.Instance.Toast(toastConfig);
         }
 
         public static void ToastFailure<T>(this T toast, string message) where T : IUserDialogs
         {
             ToastConfig toastConfig = new ToastConfig(message ?? "");
-            //toastConfig.MessageTextColor = Color.Red;
+            toastConfig.MessageTextColor = Color.Red;
             UserDialogs.Instance.Toast(toastConfig);
         }
 

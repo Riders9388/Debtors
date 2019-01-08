@@ -65,7 +65,7 @@ namespace Debtors.Droid.Views
             switch (e.MenuItem.ItemId)
             {
                 case Resource.Id.currency:
-                    Toast.MakeText(this, "Currency clicked!", ToastLength.Short).Show();
+                    ViewModel.CurrencyClickCommand.Execute();
                     break;
                 case Resource.Id.settings:
                     Toast.MakeText(this, "Settings clicked!", ToastLength.Short).Show();

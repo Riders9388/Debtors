@@ -16,8 +16,8 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent">
 			<ImageView
-				android:layout_width="100dp"
-				android:layout_height="100dp"
+				android:layout_width="150dp"
+				android:layout_height="150dp"
 				android:layout_gravity="center_horizontal"
 				android:layout_marginTop="3dp"
 				local:MvxBind="Click SetPictureClickCommand; Bitmap BytesToBitmap(Debtor.Image);"/>

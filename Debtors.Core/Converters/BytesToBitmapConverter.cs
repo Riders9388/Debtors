@@ -1,4 +1,6 @@
-﻿using Android.Graphics;
+﻿extern alias MonoAndroidAlias;
+
+using MonoAndroidAlias::Android.Graphics;
 using MvvmCross.Converters;
 using System;
 using System.Collections.Generic;

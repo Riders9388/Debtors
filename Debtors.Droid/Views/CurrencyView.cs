@@ -1,33 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using Debtors.Core.ViewModels;
-using MvvmCross.Droid.Support.V7.AppCompat;
-using Plugin.CurrentActivity;
-using Plugin.Permissions;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace Debtors.Droid.Views
 {
     [Activity(Label = "", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class DebtorView : BaseView<DebtorViewModel>
+    public class CurrencyView : BaseView<CurrencyViewModel>
     {
         protected Toolbar toolbar { get; private set; }
 
-        protected override void OnCreate(Bundle bundle)
+        protected override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(bundle);
-            SetContentView(Resource.Layout.layout_debtor);
+            base.OnCreate(savedInstanceState);
+            SetContentView(Resource.Layout.layout_currencies);
 
             toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
@@ -35,14 +26,9 @@ namespace Debtors.Droid.Views
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
         }
 
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
-        {
-            PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            MenuInflater.Inflate(Resource.Menu.save_delete_menu, menu);
+            MenuInflater.Inflate(Resource.Menu.top_menu, menu);
             return base.OnCreateOptionsMenu(menu);
         }
 
@@ -53,11 +39,7 @@ namespace Debtors.Droid.Views
                 case Android.Resource.Id.Home:
                     OnBackPressed();
                     break;
-                case Resource.Id.menu_save:
-                    ViewModel.SaveClickCommand.Execute();
-                    break;
-                case Resource.Id.menu_delete:
-                    ViewModel.DeleteClickCommand.Execute();
+                case Resource.Id.menu_add:
                     break;
                 default:
                     break;

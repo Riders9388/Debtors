@@ -65,6 +65,7 @@
     <Compile Include="SplashScreenActivity.cs" />
     <Compile Include="Views\AboutView.cs" />
     <Compile Include="Views\BaseView.cs" />
+    <Compile Include="Views\CurrencyView.cs" />
     <Compile Include="Views\DebtorsView.cs" />
     <Compile Include="Views\DebtorView.cs" />
     <Compile Include="Views\DebtsView.cs" />
@@ -291,6 +292,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\xml\file_paths.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\layout_currencies.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
