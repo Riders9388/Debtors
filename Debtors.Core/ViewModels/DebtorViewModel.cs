@@ -1,7 +1,9 @@
 ﻿using Acr.UserDialogs;
 using Debtors.Core.Enums;
 using Debtors.Core.Extensions;
+using Debtors.Core.Interfaces;
 using Debtors.Core.Models;
+using MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
@@ -140,52 +142,52 @@ namespace Debtors.Core.ViewModels
         {
             if (Debtor == null || Debtor.Id <= 0)
             {
-                UserDialogs.Instance.Alert("Need save debtor at first");
+                UserDialogs.Instance.Alert(ResourceService.GetText("debtorIsNotSave"));
                 return;
             }
 
-            ConfirmConfig config = new ConfirmConfig();
-            config.Message = "Do you really want to delete?";
-            config.OnAction = (accepted) =>
-            {
-                if (!accepted || Debtor == null)
-                    return;
+            UserDialogs.Instance.Confirm(ResourceService.GetText("reallyDelete"),
+                ResourceService.GetText("yes"),
+                ResourceService.GetText("no"),
+                (accepted) =>
+                {
+                    if (!accepted || Debtor == null)
+                        return;
 
-                if(DatabaseService.RemoveDebtor(Debtor.Id))
-                    NavigationService.Close(this, true);
-                else
-                    UserDialogs.Instance.ToastFailure();
-            };
-            UserDialogs.Instance.Confirm(config);
+                    if (DatabaseService.RemoveDebtor(Debtor.Id))
+                        NavigationService.Close(this, true);
+                    else
+                        UserDialogs.Instance.ToastFailure(ResourceService.GetText("error"));
+                });
         }
 
         private void SaveDebtor()
         {
             if (string.IsNullOrWhiteSpace(Debtor.FirstName))
             {
-                UserDialogs.Instance.Alert("Need set debtor first name");
+                UserDialogs.Instance.Alert(ResourceService.GetText("noDebtorName"));
                 return;
             }
 
-            ConfirmConfig config = new ConfirmConfig();
-            config.Message = "Do you really want to save?";
-            config.OnAction = (accepted) =>
-            {
-                if (!accepted || Debtor == null)
-                    return;
+            UserDialogs.Instance.Confirm(ResourceService.GetText("reallySave"),
+                ResourceService.GetText("yes"),
+                ResourceService.GetText("no"),
+                (accepted) =>
+                {
+                    if (!accepted || Debtor == null)
+                        return;
 
-                if(DatabaseService.InsertOrUpdateDebtor(Debtor))
-                    UserDialogs.Instance.ToastSucceed();
-                else
-                    UserDialogs.Instance.ToastFailure();
-            };
-            UserDialogs.Instance.Confirm(config);
+                    if (DatabaseService.InsertOrUpdateDebtor(Debtor))
+                        UserDialogs.Instance.ToastSucceed(ResourceService.GetText("saved"));
+                    else
+                        UserDialogs.Instance.ToastFailure(ResourceService.GetText("error"));
+                });
         }
 
         private void AddPhone()
         {
             PromptConfig config = new PromptConfig();
-            config.SetAction((result) => 
+            config.SetAction((result) =>
             {
                 if (!result.Ok || Debtor == null || string.IsNullOrWhiteSpace(result.Value))
                     return;
@@ -201,7 +203,9 @@ namespace Debtors.Core.ViewModels
                 RaisePropertyChanged(() => Debtor);
             });
             config.SetInputMode(InputType.Phone);
-            config.SetMessage("Set phone number");
+            config.SetMessage(ResourceService.GetText("setPhoneNumber"));
+            config.OkText = ResourceService.GetText("ok");
+            config.CancelText = ResourceService.GetText("cancel");
             UserDialogs.Instance.Prompt(config);
         }
 
@@ -220,8 +224,10 @@ namespace Debtors.Core.ViewModels
                 RaisePropertyChanged(() => Debtor);
             });
             config.SetInputMode(InputType.Phone);
-            config.SetMessage("Set phone number");
+            config.SetMessage(ResourceService.GetText("setPhoneNumber"));
             config.SetText(phone.Number);
+            config.OkText = ResourceService.GetText("ok");
+            config.CancelText = ResourceService.GetText("cancel");
             UserDialogs.Instance.Prompt(config);
         }
 
@@ -231,45 +237,45 @@ namespace Debtors.Core.ViewModels
                 return;
 
             ActionSheetConfig config = new ActionSheetConfig();
-            config.Add("Call", () =>
+            config.Add(ResourceService.GetText("callAction"), () =>
             {
                 IPhoneCallTask phoneDialer = CrossMessaging.Current.PhoneDialer;
                 if (!phoneDialer.CanMakePhoneCall)
                 {
-                    UserDialogs.Instance.Alert("Cannot call");
+                    UserDialogs.Instance.Alert(ResourceService.GetText("cannotCall"));
                     return;
                 }
                 phoneDialer.MakePhoneCall(phone.Number);
             });
-            config.Add("Send", () =>
+            config.Add(ResourceService.GetText("messageAction"), () =>
             {
                 ISmsTask smsMessenger = CrossMessaging.Current.SmsMessenger;
                 if (!smsMessenger.CanSendSms)
                 {
-                    UserDialogs.Instance.Alert("Cannot send sms");
+                    UserDialogs.Instance.Alert(ResourceService.GetText("cannotSms"));
                     return;
                 }
                 smsMessenger.SendSms(phone.Number);
             });
-            config.Add("Edit", () => 
+            config.Add(ResourceService.GetText("editAction"), () =>
             {
                 EditPhone(phone);
             });
-            config.Add("Delete", () =>
+            config.Add(ResourceService.GetText("deleteAction"), () =>
             {
                 if (Debtor == null || Debtor.Phones.IsNullOrEmpty())
                     return;
 
-                ConfirmConfig configPhone = new ConfirmConfig();
-                configPhone.Message = "Do you really want to delete?";
-                configPhone.OnAction = (accepted) =>
-                {
-                    if (accepted)
-                        Debtor.Phones.Remove(phone);
-                };
-                UserDialogs.Instance.Confirm(configPhone);
+                UserDialogs.Instance.Confirm(ResourceService.GetText("reallyDelete"),
+                    ResourceService.GetText("yes"),
+                    ResourceService.GetText("no"),
+                    (accepted) =>
+                    {
+                        if (accepted)
+                            Debtor.Phones.Remove(phone);
+                    });
             });
-            config.Add("Cancel");
+            config.Add(ResourceService.GetText("cancelAction"));
             UserDialogs.Instance.ActionSheet(config);
         }
 
@@ -291,7 +297,7 @@ namespace Debtors.Core.ViewModels
                 RaisePropertyChanged(() => Debtor);
             });
             config.SetInputMode(InputType.Email);
-            config.SetMessage("Set mail address");
+            config.SetMessage(ResourceService.GetText("setMailAddress"));
             UserDialogs.Instance.Prompt(config);
         }
 
@@ -301,35 +307,35 @@ namespace Debtors.Core.ViewModels
                 return;
 
             ActionSheetConfig config = new ActionSheetConfig();
-            config.Add("Send", () =>
+            config.Add(ResourceService.GetText("messageAction"), () =>
             {
                 IEmailTask emailMessenger = CrossMessaging.Current.EmailMessenger;
                 if (!emailMessenger.CanSendEmail)
                 {
-                    UserDialogs.Instance.Alert("Cannot send email");
+                    UserDialogs.Instance.Alert(ResourceService.GetText("cannotMail"));
                     return;
                 }
                 emailMessenger.SendEmail(mail.Address);
             });
-            config.Add("Edit", () =>
+            config.Add(ResourceService.GetText("editAction"), () =>
             {
                 EditMail(mail);
             });
-            config.Add("Delete", () =>
+            config.Add(ResourceService.GetText("deleteAction"), () =>
             {
                 if (Debtor == null || Debtor.Mails.IsNullOrEmpty())
                     return;
 
-                ConfirmConfig configMail = new ConfirmConfig();
-                configMail.Message = "Do you really want to delete?";
-                configMail.OnAction = (accepted) =>
-                {
-                    if (accepted)
-                        Debtor.Mails.Remove(mail);
-                };
-                UserDialogs.Instance.Confirm(configMail);
+                UserDialogs.Instance.Confirm(ResourceService.GetText("reallyDelete"),
+                    ResourceService.GetText("yes"),
+                    ResourceService.GetText("no"),
+                    (accepted) =>
+                    {
+                        if (accepted)
+                            Debtor.Mails.Remove(mail);
+                    });
             });
-            config.Add("Cancel");
+            config.Add(ResourceService.GetText("cancelAction"));
             UserDialogs.Instance.ActionSheet(config);
         }
 
@@ -348,8 +354,10 @@ namespace Debtors.Core.ViewModels
                 RaisePropertyChanged(() => Debtor);
             });
             config.SetInputMode(InputType.Email);
-            config.SetMessage("Set mail address");
+            config.SetMessage(ResourceService.GetText("setMailAddress"));
             config.SetText(mail.Address);
+            config.OkText = ResourceService.GetText("ok");
+            config.CancelText = ResourceService.GetText("cancel");
             UserDialogs.Instance.Prompt(config);
         }
 
@@ -357,7 +365,7 @@ namespace Debtors.Core.ViewModels
         {
             if (Debtor.Id <= 0)
             {
-                UserDialogs.Instance.Alert("Need save debtor at first");
+                UserDialogs.Instance.Alert(ResourceService.GetText("debtorIsNotSave"));
                 return;
             }
             NavigationService.Navigate<DebtsViewModel, Debtor, bool>(Debtor);

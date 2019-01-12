@@ -85,51 +85,51 @@ namespace Debtors.Core.ViewModels
         {
             if (Debt == null || Debt.Id <= 0)
             {
-                UserDialogs.Instance.Alert("Need save debt at first");
+                UserDialogs.Instance.Alert(ResourceService.GetText("debtIsNotSave"));
                 return;
             }
 
-            ConfirmConfig config = new ConfirmConfig();
-            config.Message = "Do you really want to delete?";
-            config.OnAction = (accepted) =>
-            {
-                if (!accepted || Debt == null)
-                    return;
+            UserDialogs.Instance.Confirm(ResourceService.GetText("reallyDelete"),
+                ResourceService.GetText("yes"),
+                ResourceService.GetText("no"),
+                (accepted) =>
+                {
+                    if (!accepted || Debt == null)
+                        return;
 
-                if(DatabaseService.RemoveDebt(Debt.Id))
-                    NavigationService.Close(this, true);
-                else
-                    UserDialogs.Instance.ToastFailure();
-            };
-            UserDialogs.Instance.Confirm(config);
+                    if (DatabaseService.RemoveDebt(Debt.Id))
+                        NavigationService.Close(this, true);
+                    else
+                        UserDialogs.Instance.ToastFailure(ResourceService.GetText("error"));
+                });
         }
 
         private void SaveDebt()
         {
             if (Debt.Value == null || Debt.Value <= decimal.Zero)
             {
-                UserDialogs.Instance.Alert("Need set debt value at first");
+                UserDialogs.Instance.Alert(ResourceService.GetText("valueIsNotSet"));
                 return;
             }
             else if (string.IsNullOrWhiteSpace(Debt.Currency))
             {
-                UserDialogs.Instance.Alert("Need set debt value currency at first");
+                UserDialogs.Instance.Alert(ResourceService.GetText("setCurrency"));
                 return;
             }
 
-            ConfirmConfig config = new ConfirmConfig();
-            config.Message = "Do you really want to save?";
-            config.OnAction = (accepted) =>
-            {
-                if (!accepted || Debt == null)
-                    return;
+            UserDialogs.Instance.Confirm(ResourceService.GetText("reallySave"),
+                ResourceService.GetText("yes"),
+                ResourceService.GetText("no"),
+                (accepted) =>
+                {
+                    if (!accepted || Debt == null)
+                        return;
 
-                if (DatabaseService.InsertOrUpdateDebt(Debt))
-                    UserDialogs.Instance.ToastSucceed();
-                else
-                    UserDialogs.Instance.ToastFailure();
-            };
-            UserDialogs.Instance.Confirm(config);
+                    if (DatabaseService.InsertOrUpdateDebt(Debt))
+                        UserDialogs.Instance.ToastSucceed(ResourceService.GetText("saved"));
+                    else
+                        UserDialogs.Instance.ToastFailure(ResourceService.GetText("error"));
+                });
         }
 
         private void AddDebtBack()
@@ -151,7 +151,9 @@ namespace Debtors.Core.ViewModels
                 RaisePropertyChanged(() => Debt);
             });
             config.SetInputMode(InputType.Phone);
-            config.SetMessage("Set return value");
+            config.SetMessage(ResourceService.GetText("setValue"));
+            config.OkText = ResourceService.GetText("ok");
+            config.CancelText = ResourceService.GetText("cancel");
             UserDialogs.Instance.Prompt(config);
         }
         #endregion

@@ -2,10 +2,18 @@
   <string name="app_name">Dłużnicy</string>
   <string name="action_settings">Ustawienia</string>
   <string name="action_info">O aplikacji</string>
+  <string name="drawer_open">Otwórz panel nawigacyjny</string>
+  <string name="drawer_close">Zamknij panel nawigacyjny</string>
 
   <!--Global-->
-  <string name="description">Description</string>
+  <string name="description">Opis</string>
   <string name="currecny">Waluty</string>
+  <string name="yes">Tak</string>
+  <string name="no">Nie</string>
+  <string name="ok">Ok</string>
+  <string name="cancel">Anuluj</string>
+  <string name="saved">Zapisano</string>
+  <string name="error">Wystąpił błąd</string>
   
   <!--Debtor-->
   <string name="firstname">Imię</string>
@@ -16,4 +24,31 @@
   <string name="currency">Waluta</string>
   <string name="debt">Dług:\u0020</string>
   <string name="leftToReturn">Pozostało:\u0020</string>
+  
+  <!--Actions-->
+  <string name="addAction">Dodaj</string>
+  <string name="editAction">Edytuj</string>
+  <string name="deleteAction">Usuń</string>
+  <string name="cancelAction">Anuluj</string>
+  <string name="debtsAction">Długi</string>
+  <string name="callAction">Zadzwoń</string>
+  <string name="messageAction">Wiadomość</string>
+
+  <!--Messages-->
+  <string name="debtorIsNotSave">Dłużnik nie jest zapisany</string>
+  <string name="debtIsNotSave">Dług nie jest zapisany</string>
+  <string name="noDebtorName">Brak nazwy dłużnika</string>
+  <string name="setPhoneNumber">Podaj numer telefonu</string>
+  <string name="cannotCall">Urządzenie nie wspiera rozmów telefonicznych</string>
+  <string name="cannotSms">Urządzenie nie wspiera wysyłania wiadomości</string>
+  <string name="cannotMail">Urządzenie nie wspiera wysyłania mail</string>
+  <string name="setMailAddress">Podaj adres mailowy</string>
+  <string name="valueIsNotSet">Brak wprowadzonej kwoty</string>
+  <string name="setValue">Podaj kwotę</string>
+  <string name="setCurrency">Podaj walutę</string>
+  <string name="noDebts">Brak długów</string>
+  
+  <!--Questions-->
+  <string name="reallyDelete">Na pewno chcesz usunąć?</string>
+  <string name="reallySave">Na pewno chcesz zapisać?</string>
 </resources>

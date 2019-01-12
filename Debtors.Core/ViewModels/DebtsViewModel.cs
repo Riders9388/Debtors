@@ -136,25 +136,28 @@ namespace Debtors.Core.ViewModels
                 return;
 
             ActionSheetConfig config = new ActionSheetConfig();
-            config.Add("Edit", async () =>
+            config.Add(ResourceService.GetText("editAction"), async () =>
             {
                 await NavigationService.Navigate<DebtViewModel, Debt, bool>(debt);
                 await LoadDataAsync();
             });
-            config.Add("Delete", () =>
+            config.Add(ResourceService.GetText("deleteAction"), () =>
             {
-                UserDialogs.Instance.ConfirmDelete(async (accepted) =>
-                {
-                    if (!accepted || debt == null)
-                        return;
-
-                    if (DatabaseService.RemoveDebt(debt.Id))
-                        await LoadDataAsync();
-                    else
-                        UserDialogs.Instance.ToastFailure();
-                });
+                UserDialogs.Instance.Confirm(ResourceService.GetText("reallyDelete"),
+                    ResourceService.GetText("yes"),
+                    ResourceService.GetText("no"),
+                    async (accepted) =>
+                    {
+                        if (!accepted || debt == null)
+                            return;
+                            
+                        if (DatabaseService.RemoveDebt(debt.Id))
+                            await LoadDataAsync();
+                        else
+                            UserDialogs.Instance.ToastFailure(ResourceService.GetText("error"));
+                    });
             });
-            config.Add("Cancel");
+            config.Add(ResourceService.GetText("cancelAction"));
             UserDialogs.Instance.ActionSheet(config);
         }
 

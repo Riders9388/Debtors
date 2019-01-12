@@ -8,6 +8,12 @@
   <!--Global-->
   <string name="description">Description</string>
   <string name="currecny">Currency</string>
+  <string name="yes">Yes</string>
+  <string name="no">No</string>
+  <string name="ok">Ok</string>
+  <string name="cancel">Cancel</string>
+  <string name="saved">Saved</string>
+  <string name="error">Error occured</string>
   
   <!--Debtor-->
   <string name="firstname">First name</string>
@@ -18,4 +24,31 @@
   <string name="currency">Currency</string>
   <string name="debt">Debt:\u0020</string>
   <string name="leftToReturn">Left:\u0020</string>
+
+  <!--Actions-->
+  <string name="addAction">Add</string>
+  <string name="editAction">Edit</string>
+  <string name="deleteAction">Delete</string>
+  <string name="cancelAction">Cancel</string>
+  <string name="debtsAction">Debts</string>
+  <string name="callAction">Call</string>
+  <string name="messageAction">Message</string>
+  
+  <!--Messages-->
+  <string name="debtorIsNotSave">Debtor is not saved</string>
+  <string name="debtIsNotSave">Debt is not saved</string>
+  <string name="noDebtorName">Set debtor name</string>
+  <string name="setPhoneNumber">Set phone number</string>
+  <string name="cannotCall">Device does not support phone calls</string>
+  <string name="cannotSms">Device does not support phone messages</string>
+  <string name="cannotMail">Device does not support mail messages</string>
+  <string name="setMailAddress">Set mail address</string>
+  <string name="valueIsNotSet">Value is not set</string>
+  <string name="setValue">Set value</string>
+  <string name="setCurrency">Set currency</string>
+  <string name="noDebts">No debts</string>
+  
+  <!--Questions-->
+  <string name="reallyDelete">Do you really want to delete?</string>
+  <string name="reallySave">Do you really want to save?</string>
 </resources>

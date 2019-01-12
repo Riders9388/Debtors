@@ -16,7 +16,7 @@ using MvvmCross.Platforms.Android.Views;
 namespace Debtors.Droid
 {
     [Application]
-    public class MainApplication : MvxAndroidApplication<MvxAndroidSetup<App>, App>
+    public class MainApplication : MvxAndroidApplication
     {
         public MainApplication(IntPtr javaReference, JniHandleOwnership transfer)
             : base(javaReference, transfer)

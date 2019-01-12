@@ -7609,8 +7609,11 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f09002b
 			public const int action_settings = 2131296299;
 			
-			// aapt resource value: 0x7f090033
-			public const int amount = 2131296307;
+			// aapt resource value: 0x7f09003d
+			public const int addAction = 2131296317;
+			
+			// aapt resource value: 0x7f090039
+			public const int amount = 2131296313;
 			
 			// aapt resource value: 0x7f09002a
 			public const int app_name = 2131296298;
@@ -7621,17 +7624,47 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f09001f
 			public const int bottom_sheet_behavior = 2131296287;
 			
+			// aapt resource value: 0x7f090042
+			public const int callAction = 2131296322;
+			
+			// aapt resource value: 0x7f090034
+			public const int cancel = 2131296308;
+			
+			// aapt resource value: 0x7f090040
+			public const int cancelAction = 2131296320;
+			
+			// aapt resource value: 0x7f090048
+			public const int cannotCall = 2131296328;
+			
+			// aapt resource value: 0x7f09004a
+			public const int cannotMail = 2131296330;
+			
+			// aapt resource value: 0x7f090049
+			public const int cannotSms = 2131296329;
+			
 			// aapt resource value: 0x7f090020
 			public const int character_counter_pattern = 2131296288;
 			
 			// aapt resource value: 0x7f090030
 			public const int currecny = 2131296304;
 			
-			// aapt resource value: 0x7f090034
-			public const int currency = 2131296308;
+			// aapt resource value: 0x7f09003a
+			public const int currency = 2131296314;
 			
-			// aapt resource value: 0x7f090035
-			public const int debt = 2131296309;
+			// aapt resource value: 0x7f09003b
+			public const int debt = 2131296315;
+			
+			// aapt resource value: 0x7f090045
+			public const int debtIsNotSave = 2131296325;
+			
+			// aapt resource value: 0x7f090044
+			public const int debtorIsNotSave = 2131296324;
+			
+			// aapt resource value: 0x7f090041
+			public const int debtsAction = 2131296321;
+			
+			// aapt resource value: 0x7f09003f
+			public const int deleteAction = 2131296319;
 			
 			// aapt resource value: 0x7f09002f
 			public const int description = 2131296303;
@@ -7642,20 +7675,41 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f09002d
 			public const int drawer_open = 2131296301;
 			
+			// aapt resource value: 0x7f09003e
+			public const int editAction = 2131296318;
+			
+			// aapt resource value: 0x7f090036
+			public const int error = 2131296310;
+			
 			// aapt resource value: 0x7f090027
 			public const int fab_scroll_shrink_grow_autohide_behavior = 2131296295;
 			
-			// aapt resource value: 0x7f090031
-			public const int firstname = 2131296305;
+			// aapt resource value: 0x7f090037
+			public const int firstname = 2131296311;
 			
-			// aapt resource value: 0x7f090032
-			public const int lastname = 2131296306;
+			// aapt resource value: 0x7f090038
+			public const int lastname = 2131296312;
 			
-			// aapt resource value: 0x7f090036
-			public const int leftToReturn = 2131296310;
+			// aapt resource value: 0x7f09003c
+			public const int leftToReturn = 2131296316;
 			
 			// aapt resource value: 0x7f090029
 			public const int library_name = 2131296297;
+			
+			// aapt resource value: 0x7f090043
+			public const int messageAction = 2131296323;
+			
+			// aapt resource value: 0x7f090032
+			public const int no = 2131296306;
+			
+			// aapt resource value: 0x7f090046
+			public const int noDebtorName = 2131296326;
+			
+			// aapt resource value: 0x7f09004f
+			public const int noDebts = 2131296335;
+			
+			// aapt resource value: 0x7f090033
+			public const int ok = 2131296307;
 			
 			// aapt resource value: 0x7f090021
 			public const int password_toggle_content_description = 2131296289;
@@ -7672,14 +7726,41 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f090025
 			public const int path_password_strike_through = 2131296293;
 			
+			// aapt resource value: 0x7f090050
+			public const int reallyDelete = 2131296336;
+			
+			// aapt resource value: 0x7f090051
+			public const int reallySave = 2131296337;
+			
+			// aapt resource value: 0x7f090035
+			public const int saved = 2131296309;
+			
 			// aapt resource value: 0x7f090011
 			public const int search_menu_title = 2131296273;
+			
+			// aapt resource value: 0x7f09004e
+			public const int setCurrency = 2131296334;
+			
+			// aapt resource value: 0x7f09004b
+			public const int setMailAddress = 2131296331;
+			
+			// aapt resource value: 0x7f090047
+			public const int setPhoneNumber = 2131296327;
+			
+			// aapt resource value: 0x7f09004d
+			public const int setValue = 2131296333;
 			
 			// aapt resource value: 0x7f090026
 			public const int status_bar_notification_info_overflow = 2131296294;
 			
+			// aapt resource value: 0x7f09004c
+			public const int valueIsNotSet = 2131296332;
+			
 			// aapt resource value: 0x7f090028
 			public const int view_scroll_translation_autohide_behavior = 2131296296;
+			
+			// aapt resource value: 0x7f090031
+			public const int yes = 2131296305;
 			
 			static String()
 			{

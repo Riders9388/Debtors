@@ -127,30 +127,33 @@ namespace Debtors.Core.ViewModels
                 return;
 
             ActionSheetConfig config = new ActionSheetConfig();
-            config.Add("Debts", async () =>
+            config.Add(ResourceService.GetText("debtsAction"), async () => 
             {
                 await NavigationService.Navigate<DebtsViewModel, Debtor, bool>(debtor);
                 await LoadDataAsync();
             });
-            config.Add("Edit", async () =>
+            config.Add(ResourceService.GetText("editAction"), async () =>
             {
                 await NavigationService.Navigate<DebtorViewModel, Debtor, bool>(debtor);
                 await LoadDataAsync();
             });
-            config.Add("Delete", () =>
+            config.Add(ResourceService.GetText("deleteAction"), () =>
             {
-                UserDialogs.Instance.ConfirmDelete(async (accepted) =>
-                {
-                    if (!accepted || debtor == null)
-                        return;
+                UserDialogs.Instance.Confirm(ResourceService.GetText("reallyDelete"),
+                    ResourceService.GetText("yes"),
+                    ResourceService.GetText("no"),
+                    async (accepted) =>
+                    {
+                        if (!accepted || debtor == null)
+                            return;
 
-                    if (DatabaseService.RemoveDebtor(debtor.Id))
-                        await LoadDataAsync();
-                    else
-                        UserDialogs.Instance.ToastFailure();
-                });
+                        if (DatabaseService.RemoveDebtor(debtor.Id))
+                            await LoadDataAsync();
+                        else
+                            UserDialogs.Instance.ToastFailure(ResourceService.GetText("error"));
+                    });
             });
-            config.Add("Cancel");
+            config.Add(ResourceService.GetText("cancelAction"));
             UserDialogs.Instance.ActionSheet(config);
         }
 

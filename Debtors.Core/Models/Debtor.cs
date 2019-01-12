@@ -1,4 +1,6 @@
 ﻿using Debtors.Core.Extensions;
+using Debtors.Core.Interfaces;
+using MvvmCross;
 using MvvmCross.ViewModels;
 using SQLite;
 using System;
@@ -61,9 +63,12 @@ namespace Debtors.Core.Models
             get
             {
                 if (DebtsValuses.IsNullOrEmpty())
-                    return "No debts";
+                {
+                    IResourceService resourceService = Mvx.IoCProvider.Resolve<IResourceService>();
+                    return resourceService.GetText("noDebts");
+                }
 
-                return string.Join("\n", DebtsValuses.Select(x => x.Key + x.Value));
+                return string.Join(Environment.NewLine, DebtsValuses.Select(x => x.Key + x.Value));
             }
         }
     }

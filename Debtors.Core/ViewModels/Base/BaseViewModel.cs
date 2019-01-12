@@ -12,10 +12,12 @@ namespace Debtors.Core.ViewModels
     public abstract class BaseViewModel : MvxNavigationViewModel
     {
         protected readonly IDatabaseService DatabaseService;
+        protected readonly IResourceService ResourceService;
         public BaseViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService)
             : base(logProvider, navigationService)
         {
             DatabaseService = Mvx.IoCProvider.Resolve<IDatabaseService>();
+            ResourceService = Mvx.IoCProvider.Resolve<IResourceService>();
         }
     }
 }

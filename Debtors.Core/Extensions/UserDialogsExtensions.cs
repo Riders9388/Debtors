@@ -1,4 +1,6 @@
 ﻿using Acr.UserDialogs;
+using Debtors.Core.Interfaces;
+using MvvmCross;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -38,17 +40,20 @@ namespace Debtors.Core.Extensions
 
         public static void ConfirmDelete<T>(this T confirm, Action<bool> action) where T : IUserDialogs
         {
+            IResourceService ResourceService = Mvx.IoCProvider.Resolve<IResourceService>();
             ConfirmConfig confirmConfig = new ConfirmConfig();
-            confirmConfig.Message = "Do you really want to delete?";
+            confirmConfig.Message = ResourceService.GetText("reallyDelete");
             confirmConfig.OnAction = action;
             UserDialogs.Instance.Confirm(confirmConfig);
         }
 
-        public static void ConfirmDelete<T>(this T confirm, string message, Action<bool> action) where T : IUserDialogs
+        public static void Confirm<T>(this T confirm, string message, string confirmText, string cancelText, Action<bool> action) where T : IUserDialogs
         {
             ConfirmConfig confirmConfig = new ConfirmConfig();
             confirmConfig.Message = message;
             confirmConfig.OnAction = action;
+            confirmConfig.OkText = confirmText;
+            confirmConfig.CancelText = cancelText;
             UserDialogs.Instance.Confirm(confirmConfig);
         }
     }
