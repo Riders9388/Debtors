@@ -7,6 +7,8 @@
   
   <!--Global-->
   <string name="description">Description</string>
+  <string name="name">Name</string>
+  <string name="symbol">Symbol</string>
   <string name="currecny">Currency</string>
   <string name="yes">Yes</string>
   <string name="no">No</string>
@@ -47,6 +49,8 @@
   <string name="setValue">Set value</string>
   <string name="setCurrency">Set currency</string>
   <string name="noDebts">No debts</string>
+  <string name="currencyInUse">Can not be deleted. The currency is in use</string>
+  <string name="setSymbol">Set symbol</string>
   
   <!--Questions-->
   <string name="reallyDelete">Do you really want to delete?</string>

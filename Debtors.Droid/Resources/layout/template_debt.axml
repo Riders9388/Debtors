@@ -30,7 +30,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textSize="@dimen/textDebtorView"
-				local:MvxBind="Text Format('{0}{1}', Currency, Value)"/>
+				local:MvxBind="Text Format('{0}{1}', Currency.Symbol, Value)"/>
 		</LinearLayout>
 		<LinearLayout
 			android:orientation="horizontal"
@@ -45,7 +45,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textSize="@dimen/textDebtorView"
-				local:MvxBind="Text Format('{0}{1}', Currency, MissingBackValue)"/>
+				local:MvxBind="Text Format('{0}{1}', Currency.Symbol, MissingBackValue)"/>
 		</LinearLayout>
 	</LinearLayout>
 </LinearLayout>

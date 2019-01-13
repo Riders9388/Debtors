@@ -15,20 +15,23 @@ namespace Debtors.Droid.Views
     {
         protected Toolbar toolbar { get; private set; }
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override void OnCreate(Bundle bundle)
         {
-            base.OnCreate(savedInstanceState);
+            base.OnCreate(bundle);
             SetContentView(Resource.Layout.layout_currency);
 
             toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
-            SetSupportActionBar(toolbar);
-            SupportActionBar.SetHomeButtonEnabled(true);
-            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+            if (toolbar != null)
+            {
+                SetSupportActionBar(toolbar);
+                SupportActionBar.SetHomeButtonEnabled(true);
+                SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+            }
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            MenuInflater.Inflate(Resource.Menu.top_menu, menu);
+            MenuInflater.Inflate(Resource.Menu.save_delete_menu, menu);
             return base.OnCreateOptionsMenu(menu);
         }
 
@@ -39,7 +42,11 @@ namespace Debtors.Droid.Views
                 case Android.Resource.Id.Home:
                     OnBackPressed();
                     break;
-                case Resource.Id.menu_add:
+                case Resource.Id.menu_save:
+                    ViewModel.SaveClickCommand.Execute();
+                    break;
+                case Resource.Id.menu_delete:
+                    ViewModel.DeleteClickCommand.Execute();
                     break;
                 default:
                     break;

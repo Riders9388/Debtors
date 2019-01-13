@@ -26,9 +26,12 @@ namespace Debtors.Droid.Views
             SetContentView(Resource.Layout.layout_debts);
 
             toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
-            SetSupportActionBar(toolbar);
-            SupportActionBar.SetHomeButtonEnabled(true);
-            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+            if (toolbar != null)
+            {
+                SetSupportActionBar(toolbar);
+                SupportActionBar.SetHomeButtonEnabled(true);
+                SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+            }
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)

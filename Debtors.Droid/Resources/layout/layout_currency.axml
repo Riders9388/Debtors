@@ -5,4 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 	<include layout="@layout/toolbar" />
+	<android.support.v4.widget.NestedScrollView
+		android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+			<EditText
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/symbol"
+				local:MvxBind="Text Currency.Symbol"/>
+			<EditText
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/name"
+				local:MvxBind="Text Currency.Name"/>
+			<EditText
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/description"
+				local:MvxBind="Text Currency.Description"/>
+		</LinearLayout>
+	</android.support.v4.widget.NestedScrollView>
 </LinearLayout>

@@ -73,6 +73,16 @@ namespace Debtors.Core.ViewModels
             }
         }
 
+        private IMvxAsyncCommand settingsClickCommand;
+        public IMvxAsyncCommand SettingsClickCommand
+        {
+            get
+            {
+                settingsClickCommand = settingsClickCommand ?? new MvxAsyncCommand(() => NavigationService.Navigate<SettingsViewModel>());
+                return settingsClickCommand;
+            }
+        }
+
         private IMvxAsyncCommand currencyClickCommand;
         public IMvxAsyncCommand CurrencyClickCommand
         {

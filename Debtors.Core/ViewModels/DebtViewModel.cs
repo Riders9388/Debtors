@@ -7,6 +7,7 @@ using MvvmCross.Navigation;
 using MvvmCross.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Debtors.Core.ViewModels
@@ -17,6 +18,11 @@ namespace Debtors.Core.ViewModels
             : base(logProvider, navigationService) { }
 
         #region Overwritten
+        public override void Start()
+        {
+            base.Start();
+            Currencies = new MvxObservableCollection<Currency>(DatabaseService.GetCurrencies());
+        }
         public override void Prepare(Debt parameter)
         {
             if (parameter == null)
@@ -44,6 +50,17 @@ namespace Debtors.Core.ViewModels
             {
                 debt = value;
                 RaisePropertyChanged(() => Debt);
+            }
+        }
+
+        private MvxObservableCollection<Currency> currencies;
+        public MvxObservableCollection<Currency> Currencies
+        {
+            get { return currencies; }
+            set
+            {
+                currencies = value;
+                RaisePropertyChanged(() => Currencies);
             }
         }
         #endregion
@@ -76,6 +93,16 @@ namespace Debtors.Core.ViewModels
             {
                 addDebtBackClickCommand = addDebtBackClickCommand ?? new MvxCommand(AddDebtBack);
                 return addDebtBackClickCommand;
+            }
+        }
+
+        private IMvxCommand<Currency> itemSelectedCommand;
+        public IMvxCommand<Currency> ItemSelectedCommand
+        {
+            get
+            {
+                itemSelectedCommand = itemSelectedCommand ?? new MvxCommand<Currency>(ItemSelected);
+                return itemSelectedCommand;
             }
         }
         #endregion
@@ -111,7 +138,7 @@ namespace Debtors.Core.ViewModels
                 UserDialogs.Instance.Alert(ResourceService.GetText("valueIsNotSet"));
                 return;
             }
-            else if (string.IsNullOrWhiteSpace(Debt.Currency))
+            else if (Debt.Currency == null)
             {
                 UserDialogs.Instance.Alert(ResourceService.GetText("setCurrency"));
                 return;
@@ -146,6 +173,15 @@ namespace Debtors.Core.ViewModels
             config.OkText = ResourceService.GetText("ok");
             config.CancelText = ResourceService.GetText("cancel");
             UserDialogs.Instance.Prompt(config);
+        }
+
+        private void ItemSelected(Currency currency)
+        {
+            if (debt.ValuesBack.IsNullOrEmpty())
+                return;
+
+            UserDialogs.Instance.Alert("Cannot change currency. There are return values");
+            Debt.Currency = Currencies.FirstOrDefault(x => x.Id == Debt.CurrencyId);
         }
         #endregion
     }

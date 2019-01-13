@@ -11,7 +11,7 @@ namespace Debtors.Core.Models
     {
         public int DebtorId { get; set; }
         public decimal? Value { get; set; }
-        public string Currency { get; set; }
+        public int CurrencyId { get; set; }
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
@@ -19,6 +19,18 @@ namespace Debtors.Core.Models
         public decimal MissingBackValue { get; set; }
         [Ignore]
         public List<DebtBack> ValuesBack { get; set; }
+
+        private Currency currency;
+        [Ignore]
+        public Currency Currency
+        {
+            get { return currency; }
+            set
+            {
+                currency = value;
+                RaisePropertyChanged(() => Currency);
+            }
+        }
 
         [Ignore]
         public MvxColor Color

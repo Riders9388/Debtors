@@ -7,6 +7,8 @@
 
   <!--Global-->
   <string name="description">Opis</string>
+  <string name="name">Nazwa</string>
+  <string name="symbol">Symbol</string>
   <string name="currecny">Waluty</string>
   <string name="yes">Tak</string>
   <string name="no">Nie</string>
@@ -47,6 +49,8 @@
   <string name="setValue">Podaj kwotę</string>
   <string name="setCurrency">Podaj walutę</string>
   <string name="noDebts">Brak długów</string>
+  <string name="currencyInUse">Nie można usunąć. Waluta jest w użyciu</string>
+  <string name="setSymbol">Ustaw symbol</string>
   
   <!--Questions-->
   <string name="reallyDelete">Na pewno chcesz usunąć?</string>

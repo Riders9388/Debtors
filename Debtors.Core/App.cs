@@ -21,6 +21,7 @@ namespace Debtors.Core
                 .RegisterAsSingleton();
 
             Mvx.IoCProvider.RegisterSingleton<IUserDialogs>(() => UserDialogs.Instance);
+            Mvx.IoCProvider.RegisterSingleton<ISettingsService>(() => new SettingsService());
 
             RegisterAppStart<DebtorsViewModel>();
         }

@@ -7371,121 +7371,133 @@ namespace Debtors.Droid
 			public const int design_text_input_password_icon = 2130903079;
 			
 			// aapt resource value: 0x7f030028
-			public const int layout_about = 2130903080;
+			public const int drop_down_item_template_currency = 2130903080;
 			
 			// aapt resource value: 0x7f030029
-			public const int layout_currencies = 2130903081;
+			public const int item_template_currency = 2130903081;
 			
 			// aapt resource value: 0x7f03002a
-			public const int layout_currency = 2130903082;
+			public const int layout_about = 2130903082;
 			
 			// aapt resource value: 0x7f03002b
-			public const int layout_debt = 2130903083;
+			public const int layout_currencies = 2130903083;
 			
 			// aapt resource value: 0x7f03002c
-			public const int layout_debtor = 2130903084;
+			public const int layout_currency = 2130903084;
 			
 			// aapt resource value: 0x7f03002d
-			public const int layout_debtors = 2130903085;
+			public const int layout_debt = 2130903085;
 			
 			// aapt resource value: 0x7f03002e
-			public const int layout_debts = 2130903086;
+			public const int layout_debtor = 2130903086;
 			
 			// aapt resource value: 0x7f03002f
-			public const int loading = 2130903087;
+			public const int layout_debtors = 2130903087;
 			
 			// aapt resource value: 0x7f030030
-			public const int loadingimage = 2130903088;
+			public const int layout_debts = 2130903088;
 			
 			// aapt resource value: 0x7f030031
-			public const int loadingprogress = 2130903089;
+			public const int layout_settings = 2130903089;
 			
 			// aapt resource value: 0x7f030032
-			public const int nav_header = 2130903090;
+			public const int loading = 2130903090;
 			
 			// aapt resource value: 0x7f030033
-			public const int notification_action = 2130903091;
+			public const int loadingimage = 2130903091;
 			
 			// aapt resource value: 0x7f030034
-			public const int notification_action_tombstone = 2130903092;
+			public const int loadingprogress = 2130903092;
 			
 			// aapt resource value: 0x7f030035
-			public const int notification_media_action = 2130903093;
+			public const int nav_header = 2130903093;
 			
 			// aapt resource value: 0x7f030036
-			public const int notification_media_cancel_action = 2130903094;
+			public const int notification_action = 2130903094;
 			
 			// aapt resource value: 0x7f030037
-			public const int notification_template_big_media = 2130903095;
+			public const int notification_action_tombstone = 2130903095;
 			
 			// aapt resource value: 0x7f030038
-			public const int notification_template_big_media_custom = 2130903096;
+			public const int notification_media_action = 2130903096;
 			
 			// aapt resource value: 0x7f030039
-			public const int notification_template_big_media_narrow = 2130903097;
+			public const int notification_media_cancel_action = 2130903097;
 			
 			// aapt resource value: 0x7f03003a
-			public const int notification_template_big_media_narrow_custom = 2130903098;
+			public const int notification_template_big_media = 2130903098;
 			
 			// aapt resource value: 0x7f03003b
-			public const int notification_template_custom_big = 2130903099;
+			public const int notification_template_big_media_custom = 2130903099;
 			
 			// aapt resource value: 0x7f03003c
-			public const int notification_template_icon_group = 2130903100;
+			public const int notification_template_big_media_narrow = 2130903100;
 			
 			// aapt resource value: 0x7f03003d
-			public const int notification_template_lines_media = 2130903101;
+			public const int notification_template_big_media_narrow_custom = 2130903101;
 			
 			// aapt resource value: 0x7f03003e
-			public const int notification_template_media = 2130903102;
+			public const int notification_template_custom_big = 2130903102;
 			
 			// aapt resource value: 0x7f03003f
-			public const int notification_template_media_custom = 2130903103;
+			public const int notification_template_icon_group = 2130903103;
 			
 			// aapt resource value: 0x7f030040
-			public const int notification_template_part_chronometer = 2130903104;
+			public const int notification_template_lines_media = 2130903104;
 			
 			// aapt resource value: 0x7f030041
-			public const int notification_template_part_time = 2130903105;
+			public const int notification_template_media = 2130903105;
 			
 			// aapt resource value: 0x7f030042
-			public const int progressBar = 2130903106;
+			public const int notification_template_media_custom = 2130903106;
 			
 			// aapt resource value: 0x7f030043
-			public const int select_dialog_item_material = 2130903107;
+			public const int notification_template_part_chronometer = 2130903107;
 			
 			// aapt resource value: 0x7f030044
-			public const int select_dialog_multichoice_material = 2130903108;
+			public const int notification_template_part_time = 2130903108;
 			
 			// aapt resource value: 0x7f030045
-			public const int select_dialog_singlechoice_material = 2130903109;
+			public const int progressBar = 2130903109;
 			
 			// aapt resource value: 0x7f030046
-			public const int SplashScreen = 2130903110;
+			public const int select_dialog_item_material = 2130903110;
 			
 			// aapt resource value: 0x7f030047
-			public const int support_simple_spinner_dropdown_item = 2130903111;
+			public const int select_dialog_multichoice_material = 2130903111;
 			
 			// aapt resource value: 0x7f030048
-			public const int template_debt = 2130903112;
+			public const int select_dialog_singlechoice_material = 2130903112;
 			
 			// aapt resource value: 0x7f030049
-			public const int template_debtback = 2130903113;
+			public const int SplashScreen = 2130903113;
 			
 			// aapt resource value: 0x7f03004a
-			public const int template_debtor = 2130903114;
+			public const int support_simple_spinner_dropdown_item = 2130903114;
 			
 			// aapt resource value: 0x7f03004b
-			public const int template_mail = 2130903115;
+			public const int template_currency = 2130903115;
 			
 			// aapt resource value: 0x7f03004c
-			public const int template_phone = 2130903116;
+			public const int template_debt = 2130903116;
 			
 			// aapt resource value: 0x7f03004d
-			public const int toolbar = 2130903117;
+			public const int template_debtback = 2130903117;
 			
 			// aapt resource value: 0x7f03004e
-			public const int tooltip = 2130903118;
+			public const int template_debtor = 2130903118;
+			
+			// aapt resource value: 0x7f03004f
+			public const int template_mail = 2130903119;
+			
+			// aapt resource value: 0x7f030050
+			public const int template_phone = 2130903120;
+			
+			// aapt resource value: 0x7f030051
+			public const int toolbar = 2130903121;
+			
+			// aapt resource value: 0x7f030052
+			public const int tooltip = 2130903122;
 			
 			static Layout()
 			{
@@ -7615,11 +7627,11 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f09002b
 			public const int action_settings = 2131296299;
 			
-			// aapt resource value: 0x7f09003d
-			public const int addAction = 2131296317;
+			// aapt resource value: 0x7f09003f
+			public const int addAction = 2131296319;
 			
-			// aapt resource value: 0x7f090039
-			public const int amount = 2131296313;
+			// aapt resource value: 0x7f09003b
+			public const int amount = 2131296315;
 			
 			// aapt resource value: 0x7f09002a
 			public const int app_name = 2131296298;
@@ -7630,47 +7642,50 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f09001f
 			public const int bottom_sheet_behavior = 2131296287;
 			
+			// aapt resource value: 0x7f090044
+			public const int callAction = 2131296324;
+			
+			// aapt resource value: 0x7f090036
+			public const int cancel = 2131296310;
+			
 			// aapt resource value: 0x7f090042
-			public const int callAction = 2131296322;
-			
-			// aapt resource value: 0x7f090034
-			public const int cancel = 2131296308;
-			
-			// aapt resource value: 0x7f090040
-			public const int cancelAction = 2131296320;
-			
-			// aapt resource value: 0x7f090048
-			public const int cannotCall = 2131296328;
+			public const int cancelAction = 2131296322;
 			
 			// aapt resource value: 0x7f09004a
-			public const int cannotMail = 2131296330;
+			public const int cannotCall = 2131296330;
 			
-			// aapt resource value: 0x7f090049
-			public const int cannotSms = 2131296329;
+			// aapt resource value: 0x7f09004c
+			public const int cannotMail = 2131296332;
+			
+			// aapt resource value: 0x7f09004b
+			public const int cannotSms = 2131296331;
 			
 			// aapt resource value: 0x7f090020
 			public const int character_counter_pattern = 2131296288;
 			
-			// aapt resource value: 0x7f090030
-			public const int currecny = 2131296304;
+			// aapt resource value: 0x7f090032
+			public const int currecny = 2131296306;
 			
-			// aapt resource value: 0x7f09003a
-			public const int currency = 2131296314;
+			// aapt resource value: 0x7f09003c
+			public const int currency = 2131296316;
 			
-			// aapt resource value: 0x7f09003b
-			public const int debt = 2131296315;
+			// aapt resource value: 0x7f090052
+			public const int currencyInUse = 2131296338;
 			
-			// aapt resource value: 0x7f090045
-			public const int debtIsNotSave = 2131296325;
+			// aapt resource value: 0x7f09003d
+			public const int debt = 2131296317;
 			
-			// aapt resource value: 0x7f090044
-			public const int debtorIsNotSave = 2131296324;
+			// aapt resource value: 0x7f090047
+			public const int debtIsNotSave = 2131296327;
+			
+			// aapt resource value: 0x7f090046
+			public const int debtorIsNotSave = 2131296326;
+			
+			// aapt resource value: 0x7f090043
+			public const int debtsAction = 2131296323;
 			
 			// aapt resource value: 0x7f090041
-			public const int debtsAction = 2131296321;
-			
-			// aapt resource value: 0x7f09003f
-			public const int deleteAction = 2131296319;
+			public const int deleteAction = 2131296321;
 			
 			// aapt resource value: 0x7f09002f
 			public const int description = 2131296303;
@@ -7681,41 +7696,44 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f09002d
 			public const int drawer_open = 2131296301;
 			
-			// aapt resource value: 0x7f09003e
-			public const int editAction = 2131296318;
+			// aapt resource value: 0x7f090040
+			public const int editAction = 2131296320;
 			
-			// aapt resource value: 0x7f090036
-			public const int error = 2131296310;
+			// aapt resource value: 0x7f090038
+			public const int error = 2131296312;
 			
 			// aapt resource value: 0x7f090027
 			public const int fab_scroll_shrink_grow_autohide_behavior = 2131296295;
 			
-			// aapt resource value: 0x7f090037
-			public const int firstname = 2131296311;
+			// aapt resource value: 0x7f090039
+			public const int firstname = 2131296313;
 			
-			// aapt resource value: 0x7f090038
-			public const int lastname = 2131296312;
+			// aapt resource value: 0x7f09003a
+			public const int lastname = 2131296314;
 			
-			// aapt resource value: 0x7f09003c
-			public const int leftToReturn = 2131296316;
+			// aapt resource value: 0x7f09003e
+			public const int leftToReturn = 2131296318;
 			
 			// aapt resource value: 0x7f090029
 			public const int library_name = 2131296297;
 			
-			// aapt resource value: 0x7f090043
-			public const int messageAction = 2131296323;
+			// aapt resource value: 0x7f090045
+			public const int messageAction = 2131296325;
 			
-			// aapt resource value: 0x7f090032
-			public const int no = 2131296306;
+			// aapt resource value: 0x7f090030
+			public const int name = 2131296304;
 			
-			// aapt resource value: 0x7f090046
-			public const int noDebtorName = 2131296326;
+			// aapt resource value: 0x7f090034
+			public const int no = 2131296308;
 			
-			// aapt resource value: 0x7f09004f
-			public const int noDebts = 2131296335;
+			// aapt resource value: 0x7f090048
+			public const int noDebtorName = 2131296328;
 			
-			// aapt resource value: 0x7f090033
-			public const int ok = 2131296307;
+			// aapt resource value: 0x7f090051
+			public const int noDebts = 2131296337;
+			
+			// aapt resource value: 0x7f090035
+			public const int ok = 2131296309;
 			
 			// aapt resource value: 0x7f090021
 			public const int password_toggle_content_description = 2131296289;
@@ -7732,41 +7750,47 @@ namespace Debtors.Droid
 			// aapt resource value: 0x7f090025
 			public const int path_password_strike_through = 2131296293;
 			
-			// aapt resource value: 0x7f090050
-			public const int reallyDelete = 2131296336;
+			// aapt resource value: 0x7f090054
+			public const int reallyDelete = 2131296340;
 			
-			// aapt resource value: 0x7f090051
-			public const int reallySave = 2131296337;
+			// aapt resource value: 0x7f090055
+			public const int reallySave = 2131296341;
 			
-			// aapt resource value: 0x7f090035
-			public const int saved = 2131296309;
+			// aapt resource value: 0x7f090037
+			public const int saved = 2131296311;
 			
 			// aapt resource value: 0x7f090011
 			public const int search_menu_title = 2131296273;
 			
-			// aapt resource value: 0x7f09004e
-			public const int setCurrency = 2131296334;
-			
-			// aapt resource value: 0x7f09004b
-			public const int setMailAddress = 2131296331;
-			
-			// aapt resource value: 0x7f090047
-			public const int setPhoneNumber = 2131296327;
+			// aapt resource value: 0x7f090050
+			public const int setCurrency = 2131296336;
 			
 			// aapt resource value: 0x7f09004d
-			public const int setValue = 2131296333;
+			public const int setMailAddress = 2131296333;
+			
+			// aapt resource value: 0x7f090049
+			public const int setPhoneNumber = 2131296329;
+			
+			// aapt resource value: 0x7f090053
+			public const int setSymbol = 2131296339;
+			
+			// aapt resource value: 0x7f09004f
+			public const int setValue = 2131296335;
 			
 			// aapt resource value: 0x7f090026
 			public const int status_bar_notification_info_overflow = 2131296294;
 			
-			// aapt resource value: 0x7f09004c
-			public const int valueIsNotSet = 2131296332;
+			// aapt resource value: 0x7f090031
+			public const int symbol = 2131296305;
+			
+			// aapt resource value: 0x7f09004e
+			public const int valueIsNotSet = 2131296334;
 			
 			// aapt resource value: 0x7f090028
 			public const int view_scroll_translation_autohide_behavior = 2131296296;
 			
-			// aapt resource value: 0x7f090031
-			public const int yes = 2131296305;
+			// aapt resource value: 0x7f090033
+			public const int yes = 2131296307;
 			
 			static String()
 			{

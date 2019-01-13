@@ -1,4 +1,6 @@
-﻿using Debtors.Core.Interfaces;
+﻿using Acr.UserDialogs;
+using Debtors.Core.Extensions;
+using Debtors.Core.Interfaces;
 using Debtors.Core.Models;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
@@ -97,10 +99,41 @@ namespace Debtors.Core.ViewModels
             await LoadDataAsync();
         }
 
-        private void OnItemListClick(Currency debtor)
+        private void OnItemListClick(Currency currency)
         {
             if (IsVisible)
                 return;
+
+            ActionSheetConfig config = new ActionSheetConfig();
+            config.Add(ResourceService.GetText("editAction"), async () =>
+            {
+                await NavigationService.Navigate<CurrencyViewModel, Currency, bool>(currency);
+                await LoadDataAsync();
+            });
+            config.Add(ResourceService.GetText("deleteAction"), () =>
+            {
+                if (DatabaseService.IsCurrencyInUse(currency.Id))
+                {
+                    UserDialogs.Instance.Alert(ResourceService.GetText("currencyInUse"));
+                    return;
+                }
+
+                UserDialogs.Instance.Confirm(ResourceService.GetText("reallyDelete"),
+                    ResourceService.GetText("yes"),
+                    ResourceService.GetText("no"),
+                    async (accepted) =>
+                    {
+                        if (!accepted || currency == null)
+                            return;
+
+                        if (DatabaseService.RemoveCurrency(currency.Id))
+                            await LoadDataAsync();
+                        else
+                            UserDialogs.Instance.ToastFailure(ResourceService.GetText("error"));
+                    });
+            });
+            config.Add(ResourceService.GetText("cancelAction"));
+            UserDialogs.Instance.ActionSheet(config);
         }
 
         private void OnItemLongListClickAsync(Currency debtor)

@@ -40,8 +40,11 @@ namespace Debtors.Droid.Views
             drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
             navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
 
-            SetSupportActionBar(toolbar);
-            SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+            if (toolbar != null)
+            {
+                SetSupportActionBar(toolbar);
+                SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+            }
 
             drawerToggle = new MvxActionBarDrawerToggle(
                 this,                                   // host Activity
@@ -68,7 +71,7 @@ namespace Debtors.Droid.Views
                     ViewModel.CurrencyClickCommand.Execute();
                     break;
                 case Resource.Id.settings:
-                    Toast.MakeText(this, "Settings clicked!", ToastLength.Short).Show();
+                    ViewModel.SettingsClickCommand.Execute();
                     break;
                 case Resource.Id.about:
                     ViewModel.AboutClickCommand.Execute();

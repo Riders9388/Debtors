@@ -62,7 +62,7 @@ namespace Debtors.Core.Services
                     debtor.DebtsValuses = new Dictionary<string, decimal>();
                     var currencies = debts.Select(x => x.Currency).Distinct();
                     foreach (var currency in currencies)
-                        debtor.DebtsValuses.Add(currency, debts.Where(x => x.Currency == currency).Sum(x => x.MissingBackValue));
+                        debtor.DebtsValuses.Add(currency.Symbol, debts.Where(x => x.Currency == currency).Sum(x => x.MissingBackValue));
                 }
             }
             catch (Exception ex)
@@ -474,6 +474,7 @@ namespace Debtors.Core.Services
             try
             {
                 toReturn = Connection.Get<Debt>(id);
+                toReturn.Currency = GetCurrency(toReturn.CurrencyId);
                 toReturn.ValuesBack = GetDebtsBack(toReturn.Id);
             }
             catch (Exception ex)
@@ -490,6 +491,8 @@ namespace Debtors.Core.Services
             {
                 if (newTransaction && !Connection.IsInTransaction)
                     Connection.BeginTransaction();
+
+                debt.CurrencyId = debt.Currency?.Id ?? debt.CurrencyId;
 
                 decimal sum = decimal.Zero;
                 if (!debt.ValuesBack.IsNullOrEmpty())
@@ -786,6 +789,40 @@ namespace Debtors.Core.Services
             return toReturn;
         }
 
+        public bool InsertOrUpdateCurrency(Currency currency, bool newTransaction = true)
+        {
+            bool toReturn = false;
+            try
+            {
+                if (newTransaction && !Connection.IsInTransaction)
+                    Connection.BeginTransaction();
+
+                int succeed = 0;
+                if (currency.Id > 0)
+                    succeed = Connection.Update(currency);
+                else
+                    succeed = Connection.Insert(currency);
+
+                if (succeed > 0)
+                    toReturn = true;
+
+                if (newTransaction && Connection.IsInTransaction)
+                {
+                    if (toReturn)
+                        Connection.Commit();
+                    else
+                        Connection.Rollback();
+                }
+            }
+            catch (Exception ex)
+            {
+                toReturn = false;
+                if (newTransaction && Connection.IsInTransaction)
+                    Connection.Rollback();
+            }
+            return toReturn;
+        }
+
         public bool RemoveCurrency(int id, bool newTransaction = true)
         {
             bool toReturn = false;
@@ -812,6 +849,20 @@ namespace Debtors.Core.Services
                 toReturn = false;
                 if (newTransaction && Connection.IsInTransaction)
                     Connection.Rollback();
+            }
+            return toReturn;
+        }
+
+        public bool IsCurrencyInUse(int currencyId)
+        {
+            bool toReturn = true;
+            try
+            {
+                toReturn = Connection.Table<Debt>().Any(x => x.CurrencyId == currencyId);
+            }
+            catch (Exception ex)
+            {
+
             }
             return toReturn;
         }

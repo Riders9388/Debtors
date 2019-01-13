@@ -45,7 +45,9 @@ namespace Debtors.Core.Interfaces
         #region Currency
         List<Currency> GetCurrencies();
         Currency GetCurrency(int id);
+        bool InsertOrUpdateCurrency(Currency currency, bool newTransaction = true);
         bool RemoveCurrency(int id, bool newTransaction = true);
+        bool IsCurrencyInUse(int currencyId);
         #endregion
     }
 }

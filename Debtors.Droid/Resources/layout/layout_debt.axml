@@ -18,11 +18,12 @@
 				android:layout_height="wrap_content"
 				android:hint="@string/amount"
 				local:MvxBind="Text Debt.Value"/>
-			<EditText
+			<mvvmcross.platforms.android.binding.views.MvxSpinner
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:hint="@string/currency"
-				local:MvxBind="Text Debt.Currency"/>
+				local:MvxItemTemplate="@layout/item_template_currency"
+				local:MvxDropDownItemTemplate="@layout/drop_down_item_template_currency"
+				local:MvxBind="ItemsSource Currencies; SelectedItem Debt.Currency; HandleItemSelected ItemSelectedCommand"/>
 			<EditText
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
