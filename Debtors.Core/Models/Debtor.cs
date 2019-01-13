@@ -40,7 +40,15 @@ namespace Debtors.Core.Models
         private byte[] image;
         public byte[] Image
         {
-            get { return image; }
+            get
+            {
+                if (image == null || image.Length == 0)
+                {
+                    IResourceService resourceService = Mvx.IoCProvider.Resolve<IResourceService>();
+                    image = resourceService.GetBytesFromDrawable("avatar");
+                }
+                return image;
+            }
             set
             {
                 image = value;

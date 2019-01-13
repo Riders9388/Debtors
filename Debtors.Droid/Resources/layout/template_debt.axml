@@ -7,45 +7,45 @@
 	android:layout_marginTop="2dp"
 	android:paddingRight="5dp"
 	android:paddingLeft="2dp">
-	<LinearLayout
+	<View
 		android:id="@+id/ll_Color"
 		android:layout_width="8dp"
 		android:layout_height="match_parent"
 		android:layout_marginRight="2dp"
-		android:background="@color/red"/>
+		local:MvxBind="BackgroundColor NativeColor(Color)"/>
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
 		<LinearLayout
-			android:orientation="vertical"
+			android:orientation="horizontal"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content">
-			<LinearLayout
-				android:orientation="horizontal"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content">
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:textSize="@dimen/textDebtorView"
-					android:text="@string/debt"/>
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:textSize="@dimen/textDebtorView"
-					local:MvxBind="Text Format('{0}{1}', Currency, Value)"/>
-			</LinearLayout>
-			<LinearLayout
-				android:orientation="horizontal"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content">
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:textSize="@dimen/textDebtorView"
-					android:text="@string/leftToReturn"/>
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:textSize="@dimen/textDebtorView"
-					local:MvxBind="Text Format('{0}{1}', Currency, MissingBackValue)"/>
-			</LinearLayout>
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="@dimen/textDebtorView"
+				android:text="@string/debt"/>
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="@dimen/textDebtorView"
+				local:MvxBind="Text Format('{0}{1}', Currency, Value)"/>
 		</LinearLayout>
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="@dimen/textDebtorView"
+				android:text="@string/leftToReturn"/>
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="@dimen/textDebtorView"
+				local:MvxBind="Text Format('{0}{1}', Currency, MissingBackValue)"/>
+		</LinearLayout>
+	</LinearLayout>
 </LinearLayout>

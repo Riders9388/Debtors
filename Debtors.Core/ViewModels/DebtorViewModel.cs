@@ -169,19 +169,10 @@ namespace Debtors.Core.ViewModels
                 return;
             }
 
-            UserDialogs.Instance.Confirm(ResourceService.GetText("reallySave"),
-                ResourceService.GetText("yes"),
-                ResourceService.GetText("no"),
-                (accepted) =>
-                {
-                    if (!accepted || Debtor == null)
-                        return;
-
-                    if (DatabaseService.InsertOrUpdateDebtor(Debtor))
-                        UserDialogs.Instance.ToastSucceed(ResourceService.GetText("saved"));
-                    else
-                        UserDialogs.Instance.ToastFailure(ResourceService.GetText("error"));
-                });
+            if (DatabaseService.InsertOrUpdateDebtor(Debtor))
+                UserDialogs.Instance.ToastSucceed(ResourceService.GetText("saved"));
+            else
+                UserDialogs.Instance.ToastFailure(ResourceService.GetText("error"));
         }
 
         private void AddPhone()

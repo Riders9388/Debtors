@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Debtors.Core.Interfaces;
+using Java.IO;
 using MvvmCross;
 
 namespace Debtors.Droid.Services
@@ -49,6 +53,24 @@ namespace Debtors.Droid.Services
 
             }
             return resourceId;
+        }
+
+        public byte[] GetBytesFromDrawable(string name)
+        {
+            try
+            {
+                int resourceId = (int)typeof(Resource.Drawable).GetField(name).GetValue(null);
+                Drawable drawable = context.GetDrawable(resourceId);
+                Bitmap bitmap = ((BitmapDrawable)drawable).Bitmap;
+                MemoryStream ms = new MemoryStream();
+                bitmap.Compress(Bitmap.CompressFormat.Png, 0, ms);
+                return ms.ToArray();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return null;
         }
     }
 }

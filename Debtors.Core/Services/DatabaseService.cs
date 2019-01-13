@@ -27,6 +27,7 @@ namespace Debtors.Core.Services
             Connection.CreateTable<DebtBack>();
             Connection.CreateTable<Debt>();
             Connection.CreateTable<Debtor>();
+            Connection.CreateTable<Currency>();
         }
 
         #region Debtor
@@ -737,6 +738,66 @@ namespace Debtors.Core.Services
                 if (!debtsBack.IsNullOrEmpty())
                     foreach (var debtBack in debtsBack)
                         toReturn = toReturn && RemoveDebtBack(debtBack.Id, false);
+
+                if (newTransaction && Connection.IsInTransaction)
+                {
+                    if (toReturn)
+                        Connection.Commit();
+                    else
+                        Connection.Rollback();
+                }
+            }
+            catch (Exception ex)
+            {
+                toReturn = false;
+                if (newTransaction && Connection.IsInTransaction)
+                    Connection.Rollback();
+            }
+            return toReturn;
+        }
+        #endregion
+
+        #region Currency
+        public List<Currency> GetCurrencies()
+        {
+            List<Currency> toReturn = new List<Currency>();
+            try
+            {
+                toReturn = Connection.Table<Currency>().ToList();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return toReturn;
+        }
+
+        public Currency GetCurrency(int id)
+        {
+            Currency toReturn = new Currency();
+            try
+            {
+                toReturn = Connection.Get<Currency>(id);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return toReturn;
+        }
+
+        public bool RemoveCurrency(int id, bool newTransaction = true)
+        {
+            bool toReturn = false;
+            try
+            {
+                if (newTransaction && !Connection.IsInTransaction)
+                    Connection.BeginTransaction();
+
+                int succeed = Connection.Delete<Currency>(id);
+
+                if (succeed > 0)
+                    toReturn = true;
 
                 if (newTransaction && Connection.IsInTransaction)
                 {

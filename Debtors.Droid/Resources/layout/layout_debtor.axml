@@ -35,7 +35,6 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:hint="@string/description"
-				android:maxLines="3"
 				local:MvxBind="Text Debtor.Description"/>
 			<mvvmcross.droid.support.v7.recyclerview.MvxRecyclerView
 				android:layout_width="match_parent"

@@ -1,4 +1,9 @@
-﻿using Android.App;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
@@ -11,14 +16,14 @@ using Toolbar = Android.Support.V7.Widget.Toolbar;
 namespace Debtors.Droid.Views
 {
     [Activity(Label = "", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class CurrencyView : BaseView<CurrencyViewModel>
+    public class CurrenciesView : BaseView<CurrenciesViewModel>
     {
         protected Toolbar toolbar { get; private set; }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.layout_currency);
+            SetContentView(Resource.Layout.layout_currencies);
 
             toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
@@ -40,6 +45,7 @@ namespace Debtors.Droid.Views
                     OnBackPressed();
                     break;
                 case Resource.Id.menu_add:
+                    ViewModel.AddClickCommand.Execute();
                     break;
                 default:
                     break;

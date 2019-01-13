@@ -41,5 +41,11 @@ namespace Debtors.Core.Interfaces
         bool InsertOrUpdateDebtBack(DebtBack debtBack, bool newTransaction = true);
         bool RemoveDebtBack(int id, bool newTransaction = true);
         #endregion
+
+        #region Currency
+        List<Currency> GetCurrencies();
+        Currency GetCurrency(int id);
+        bool RemoveCurrency(int id, bool newTransaction = true);
+        #endregion
     }
 }

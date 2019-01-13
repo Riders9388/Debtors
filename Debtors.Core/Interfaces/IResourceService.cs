@@ -7,5 +7,7 @@ namespace Debtors.Core.Interfaces
     public interface IResourceService
     {
         string GetText(string name);
+        int GetStyle(string name);
+        byte[] GetBytesFromDrawable(string name);
     }
 }

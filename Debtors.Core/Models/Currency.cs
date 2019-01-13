@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Debtors.Core.Models
 {
-    public class CurrencyModel : BaseModel
+    public class Currency : BaseModel
     {
         public string Symbol { get; set; }
         public string Name { get; set; }

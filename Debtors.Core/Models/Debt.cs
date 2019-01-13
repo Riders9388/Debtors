@@ -1,5 +1,4 @@
-﻿using Debtors.Core.Extensions;
-using MvvmCross.ViewModels;
+﻿using MvvmCross.UI;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -20,5 +19,19 @@ namespace Debtors.Core.Models
         public decimal MissingBackValue { get; set; }
         [Ignore]
         public List<DebtBack> ValuesBack { get; set; }
+
+        [Ignore]
+        public MvxColor Color
+        {
+            get
+            {
+                if (MissingBackValue <= decimal.Zero)
+                    return new MvxColor(50, 205, 50);
+                else if (MissingBackValue < Value)
+                    return new MvxColor(255, 140, 0);
+
+                return new MvxColor(220, 20, 60);
+            }
+        }
     }
 }
