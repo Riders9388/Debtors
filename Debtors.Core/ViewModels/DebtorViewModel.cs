@@ -116,16 +116,6 @@ namespace Debtors.Core.ViewModels
             }
         }
 
-        private IMvxCommand showDebtsClickCommand;
-        public IMvxCommand ShowDebtsClickCommand
-        {
-            get
-            {
-                showDebtsClickCommand = showDebtsClickCommand ?? new MvxCommand(ShowDebts);
-                return showDebtsClickCommand;
-            }
-        }
-
         private IMvxCommand setPictureClickCommand;
         public IMvxCommand SetPictureClickCommand
         {
@@ -352,30 +342,27 @@ namespace Debtors.Core.ViewModels
             UserDialogs.Instance.Prompt(config);
         }
 
-        private void ShowDebts()
-        {
-            if (Debtor.Id <= 0)
-            {
-                UserDialogs.Instance.Alert(ResourceService.GetText("debtorIsNotSave"));
-                return;
-            }
-            NavigationService.Navigate<DebtsViewModel, Debtor, bool>(Debtor);
-        }
-
         private async void GetImage()
         {
-            if (!CrossMedia.IsSupported || !CrossMedia.Current.IsPickPhotoSupported)
-                return;
-
-            MediaFile photo = await CrossMedia.Current.PickPhotoAsync();
-            if (photo == null)
-                return;
-
-            Stream stream = photo.GetStreamWithImageRotatedForExternalStorage();
-            using (MemoryStream ms = new MemoryStream())
+            try
             {
-                stream.CopyTo(ms);
-                Debtor.Image = ms.ToArray();
+                if (!CrossMedia.IsSupported || !CrossMedia.Current.IsPickPhotoSupported)
+                    return;
+
+                MediaFile photo = await CrossMedia.Current.PickPhotoAsync();
+                if (photo == null)
+                    return;
+
+                Stream stream = photo.GetStreamWithImageRotatedForExternalStorage();
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    stream.CopyTo(ms);
+                    Debtor.Image = ms.ToArray();
+                }
+            }
+            catch(Exception ex)
+            {
+
             }
         }
         #endregion

@@ -20,33 +20,49 @@
 				android:layout_height="150dp"
 				android:layout_gravity="center_horizontal"
 				android:layout_marginTop="@dimen/thesmallestDimen"
-				local:MvxBind="Click SetPictureClickCommand; Bitmap BytesToBitmap(Debtor.Image);"/>
-			<EditText
+				local:MvxBind="Bitmap BytesToBitmap(Debtor.Image);"/>
+			<TextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:hint="@string/firstname"
-				local:MvxBind="Text Debtor.FirstName"/>
-			<EditText
+				android:layout_marginLeft="@dimen/smallDimen"
+				android:layout_marginRight="@dimen/smallDimen"
+				android:layout_marginBottom="@dimen/thesmallestDimen"
+				android:gravity="center"
+				local:MvxBind="Text Format('{0} {1}', Debtor.FirstName, Debtor.LastName)"/>
+			<TextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:hint="@string/lastname"
-				local:MvxBind="Text Debtor.LastName"/>
-			<EditText
+				android:layout_marginTop="@dimen/smallestDimen"
+				android:layout_marginBottom="@dimen/thesmallestDimen"
+				android:gravity="center"
+				android:text="@string/description"/>
+			<TextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:hint="@string/description"
+				android:layout_marginLeft="@dimen/smallDimen"
+				android:layout_marginRight="@dimen/smallDimen"
+				android:layout_marginBottom="@dimen/thesmallestDimen"
 				local:MvxBind="Text Debtor.Description"/>
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="@dimen/thesmallestDimen"
+				android:layout_marginBottom="@dimen/thesmallestDimen"
+				android:gravity="center"
+				android:text="@string/phone_numbers"/>
 			<mvvmcross.droid.support.v7.recyclerview.MvxRecyclerView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				local:layout_behavior="@string/appbar_scrolling_view_behavior"
 				local:MvxItemTemplate="@layout/template_phone"
 				local:MvxBind="ItemsSource Debtor.Phones; ItemClick PhoneClickCommand"/>
-			<Button
+			<TextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="Add phone"
-				local:MvxBind="Click AddPhoneClickCommand"/>
+				android:layout_marginTop="@dimen/thesmallestDimen"
+				android:layout_marginBottom="@dimen/thesmallestDimen"
+				android:gravity="center"
+				android:text="@string/mails"/>
 			<mvvmcross.droid.support.v7.recyclerview.MvxRecyclerView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -57,8 +73,8 @@
 			<Button
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="Add mail"
-				local:MvxBind="Click AddMailClickCommand"/>
+				android:text="Debts"
+				local:MvxBind="Click ShowDebtsClickCommand"/>
 		</LinearLayout>
 	</android.support.v4.widget.NestedScrollView>
 </LinearLayout>

@@ -16,6 +16,8 @@
   <string name="cancel">Cancel</string>
   <string name="saved">Saved</string>
   <string name="error">Error occured</string>
+  <string name="phone_numbers">Phone numbers</string>
+  <string name="mails">Mails</string>
   
   <!--Debtor-->
   <string name="firstname">First name</string>
@@ -30,6 +32,7 @@
   <!--Actions-->
   <string name="addAction">Add</string>
   <string name="editAction">Edit</string>
+  <string name="detailsAction">Details</string>
   <string name="deleteAction">Delete</string>
   <string name="cancelAction">Cancel</string>
   <string name="debtsAction">Debts</string>

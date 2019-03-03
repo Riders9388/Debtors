@@ -16,6 +16,8 @@
   <string name="cancel">Anuluj</string>
   <string name="saved">Zapisano</string>
   <string name="error">Wystąpił błąd</string>
+  <string name="phone_numbers">Numery telefonów</string>
+  <string name="mails">Maile</string>
   
   <!--Debtor-->
   <string name="firstname">Imię</string>
@@ -30,6 +32,7 @@
   <!--Actions-->
   <string name="addAction">Dodaj</string>
   <string name="editAction">Edytuj</string>
+  <string name="detailsAction">Szczegóły</string>
   <string name="deleteAction">Usuń</string>
   <string name="cancelAction">Anuluj</string>
   <string name="debtsAction">Długi</string>

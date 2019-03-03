@@ -98,7 +98,7 @@ namespace Debtors.Core.ViewModels
         {
             get
             {
-                itemListClickCommand = itemListClickCommand ?? new MvxCommand<Debtor>(OnItemListClick);
+                itemListClickCommand = itemListClickCommand ?? new MvxAsyncCommand<Debtor>(OnItemListClickAsync);
                 return itemListClickCommand;
             }
         }
@@ -131,15 +131,29 @@ namespace Debtors.Core.ViewModels
             await LoadDataAsync();
         }
 
-        private void OnItemListClick(Debtor debtor)
+        private async Task OnItemListClickAsync(Debtor debtor)
+        {
+            if (IsVisible)
+                return;
+
+            await NavigationService.Navigate<DebtorDetailsViewModel, Debtor, bool>(debtor);
+            await LoadDataAsync();
+        }
+
+        private void OnItemLongListClickAsync(Debtor debtor)
         {
             if (IsVisible)
                 return;
 
             ActionSheetConfig config = new ActionSheetConfig();
-            config.Add(ResourceService.GetText("debtsAction"), async () => 
+            config.Add(ResourceService.GetText("debtsAction"), async () =>
             {
                 await NavigationService.Navigate<DebtsViewModel, Debtor, bool>(debtor);
+                await LoadDataAsync();
+            });
+            config.Add(ResourceService.GetText("detailsAction"), async () =>
+            {
+                await NavigationService.Navigate<DebtorDetailsViewModel, Debtor, bool>(debtor);
                 await LoadDataAsync();
             });
             config.Add(ResourceService.GetText("editAction"), async () =>
@@ -165,11 +179,6 @@ namespace Debtors.Core.ViewModels
             });
             config.Add(ResourceService.GetText("cancelAction"));
             UserDialogs.Instance.ActionSheet(config);
-        }
-
-        private void OnItemLongListClickAsync(Debtor debtor)
-        {
-            OnItemListClick(debtor);
         } 
         #endregion
     }
