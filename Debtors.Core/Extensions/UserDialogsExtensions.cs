@@ -42,7 +42,7 @@ namespace Debtors.Core.Extensions
         {
             IResourceService ResourceService = Mvx.IoCProvider.Resolve<IResourceService>();
             ConfirmConfig confirmConfig = new ConfirmConfig();
-            confirmConfig.Message = ResourceService.GetText("reallyDelete");
+            confirmConfig.Message = ResourceService.GetString("reallyDelete");
             confirmConfig.OnAction = action;
             UserDialogs.Instance.Confirm(confirmConfig);
         }

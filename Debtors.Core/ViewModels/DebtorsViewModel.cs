@@ -15,171 +15,124 @@ using System.Threading.Tasks;
 
 namespace Debtors.Core.ViewModels
 {
-    public class DebtorsViewModel : BaseViewModel, IProgressBar
-    {
-        public DebtorsViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService)
-            : base(logProvider, navigationService) { }
+	public class DebtorsViewModel : BaseViewModel
+	{
+		public DebtorsViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService)
+			: base(logProvider, navigationService) { }
 
-        #region Overwritten
-        public override async void Start()
-        {
-            base.Start();
-            await LoadDataAsync();
-        } 
-        #endregion
+		#region Overwritten
+		public override async Task Initialize()
+		{
+			await base.Initialize();
+			await LoadDataAsync();
+		}
+		#endregion
 
-        #region Properties
-        private bool isVisible;
-        public bool IsVisible
-        {
-            get { return isVisible; }
-            set
-            {
-                isVisible = value;
-                RaisePropertyChanged(() => IsVisible);
-            }
-        }
+		#region Properties
+		private bool isRefreshing;
+		private MvxObservableCollection<Debtor> debtors;
 
-        private MvxObservableCollection<Debtor> debtors;
-        public MvxObservableCollection<Debtor> Debtors
-        {
-            get { return debtors; }
-            set
-            {
-                debtors = value;
-                RaisePropertyChanged(() => Debtors);
-            }
-        } 
-        #endregion
+		public bool IsRefreshing
+		{
+			get { return isRefreshing; }
+			set
+			{
+				isRefreshing = value;
+				RaisePropertyChanged(() => IsRefreshing);
+			}
+		}
+		public MvxObservableCollection<Debtor> Debtors
+		{
+			get { return debtors; }
+			set
+			{
+				debtors = value;
+				RaisePropertyChanged(() => Debtors);
+			}
+		} 
+		#endregion
 
-        #region Commands
-        private IMvxAsyncCommand addClickCommand;
-        public IMvxAsyncCommand AddClickCommand
-        {
-            get
-            {
-                addClickCommand = addClickCommand ?? new MvxAsyncCommand(NavigateToDebtorAsync);
-                return addClickCommand;
-            }
-        }
+		#region Commands
+		private IMvxAsyncCommand addClickCommand;
+		private IMvxAsyncCommand aboutClickCommand;
+		private IMvxAsyncCommand settingsClickCommand;
+		private IMvxAsyncCommand currencyClickCommand;
+		private IMvxAsyncCommand pullRefreshCommand;
+		private IMvxCommand<Debtor> itemListClickCommand;
+		private IMvxCommand<Debtor> itemListLongClickCommand;
 
-        private IMvxAsyncCommand aboutClickCommand;
-        public IMvxAsyncCommand AboutClickCommand
-        {
-            get
-            {
-                aboutClickCommand = aboutClickCommand ?? new MvxAsyncCommand(() => NavigationService.Navigate<AboutViewModel>());
-                return aboutClickCommand;
-            }
-        }
+		public IMvxAsyncCommand AddClickCommand => addClickCommand = addClickCommand ?? new MvxAsyncCommand(NavigateToDebtorAsync);
+		public IMvxAsyncCommand AboutClickCommand => aboutClickCommand = aboutClickCommand ?? new MvxAsyncCommand(() => NavigationService.Navigate<AboutViewModel>());
+		public IMvxAsyncCommand SettingsClickCommand => settingsClickCommand = settingsClickCommand ?? new MvxAsyncCommand(() => NavigationService.Navigate<SettingsViewModel>());
+		public IMvxAsyncCommand CurrencyClickCommand => currencyClickCommand = currencyClickCommand ?? new MvxAsyncCommand(() => NavigationService.Navigate<CurrenciesViewModel>());
+		public IMvxAsyncCommand PullRefreshCommand => pullRefreshCommand = pullRefreshCommand ?? new MvxAsyncCommand(LoadDataAsync);
+		public IMvxCommand<Debtor> ItemListClickCommand => itemListClickCommand = itemListClickCommand ?? new MvxAsyncCommand<Debtor>(OnItemListClickAsync);
+		public IMvxCommand<Debtor> ItemListLongClickCommand => itemListLongClickCommand = itemListLongClickCommand ?? new MvxCommand<Debtor>(OnItemLongListClickAsync);
+		#endregion
 
-        private IMvxAsyncCommand settingsClickCommand;
-        public IMvxAsyncCommand SettingsClickCommand
-        {
-            get
-            {
-                settingsClickCommand = settingsClickCommand ?? new MvxAsyncCommand(() => NavigationService.Navigate<SettingsViewModel>());
-                return settingsClickCommand;
-            }
-        }
+		#region Methods
+		private async Task LoadDataAsync()
+		{
+			IsRefreshing = true;
+			await Task.Run(() =>
+			{
+				Debtors = new MvxObservableCollection<Debtor>(DatabaseService.GetDebtors());
+			});
+			IsRefreshing = false;
+		}
+		private async Task NavigateToDebtorAsync()
+		{
+			await NavigationService.Navigate<DebtorViewModel, Debtor, bool>(null);
+			await LoadDataAsync();
+		}
+		private async Task OnItemListClickAsync(Debtor debtor)
+		{
+			if (IsRefreshing)
+				return;
 
-        private IMvxAsyncCommand currencyClickCommand;
-        public IMvxAsyncCommand CurrencyClickCommand
-        {
-            get
-            {
-                currencyClickCommand = currencyClickCommand ?? new MvxAsyncCommand(() => NavigationService.Navigate<CurrenciesViewModel>());
-                return currencyClickCommand;
-            }
-        }
+			await NavigationService.Navigate<DebtorDetailsViewModel, Debtor, bool>(debtor);
+			await LoadDataAsync();
+		}
+		private void OnItemLongListClickAsync(Debtor debtor)
+		{
+			if (IsRefreshing)
+				return;
 
-        private IMvxCommand<Debtor> itemListClickCommand;
-        public IMvxCommand<Debtor> ItemListClickCommand
-        {
-            get
-            {
-                itemListClickCommand = itemListClickCommand ?? new MvxAsyncCommand<Debtor>(OnItemListClickAsync);
-                return itemListClickCommand;
-            }
-        }
+			ActionSheetConfig config = new ActionSheetConfig();
+			config.Add(ResourceService.GetString("debtsAction"), async () =>
+			{
+				await NavigationService.Navigate<DebtsViewModel, Debtor, bool>(debtor);
+				await LoadDataAsync();
+			});
+			config.Add(ResourceService.GetString("detailsAction"), async () =>
+			{
+				await NavigationService.Navigate<DebtorDetailsViewModel, Debtor, bool>(debtor);
+				await LoadDataAsync();
+			});
+			config.Add(ResourceService.GetString("editAction"), async () =>
+			{
+				await NavigationService.Navigate<DebtorViewModel, Debtor, bool>(debtor);
+				await LoadDataAsync();
+			});
+			config.Add(ResourceService.GetString("deleteAction"), () =>
+			{
+				UserDialogs.Instance.Confirm(ResourceService.GetString("reallyDelete"),
+					ResourceService.GetString("yes"),
+					ResourceService.GetString("no"),
+					async (accepted) =>
+					{
+						if (!accepted || debtor == null)
+							return;
 
-        private IMvxCommand<Debtor> itemListLongClickCommand;
-        public IMvxCommand<Debtor> ItemListLongClickCommand
-        {
-            get
-            {
-                itemListLongClickCommand = itemListLongClickCommand ?? new MvxCommand<Debtor>(OnItemLongListClickAsync);
-                return itemListLongClickCommand;
-            }
-        }
-        #endregion
-
-        #region Methods
-        private async Task LoadDataAsync()
-        {
-            IsVisible = true;
-            await Task.Run(() =>
-            {
-                Debtors = new MvxObservableCollection<Debtor>(DatabaseService.GetDebtors());
-            });
-            IsVisible = false;
-        }
-
-        private async Task NavigateToDebtorAsync()
-        {
-            await NavigationService.Navigate<DebtorViewModel, Debtor, bool>(null);
-            await LoadDataAsync();
-        }
-
-        private async Task OnItemListClickAsync(Debtor debtor)
-        {
-            if (IsVisible)
-                return;
-
-            await NavigationService.Navigate<DebtorDetailsViewModel, Debtor, bool>(debtor);
-            await LoadDataAsync();
-        }
-
-        private void OnItemLongListClickAsync(Debtor debtor)
-        {
-            if (IsVisible)
-                return;
-
-            ActionSheetConfig config = new ActionSheetConfig();
-            config.Add(ResourceService.GetText("debtsAction"), async () =>
-            {
-                await NavigationService.Navigate<DebtsViewModel, Debtor, bool>(debtor);
-                await LoadDataAsync();
-            });
-            config.Add(ResourceService.GetText("detailsAction"), async () =>
-            {
-                await NavigationService.Navigate<DebtorDetailsViewModel, Debtor, bool>(debtor);
-                await LoadDataAsync();
-            });
-            config.Add(ResourceService.GetText("editAction"), async () =>
-            {
-                await NavigationService.Navigate<DebtorViewModel, Debtor, bool>(debtor);
-                await LoadDataAsync();
-            });
-            config.Add(ResourceService.GetText("deleteAction"), () =>
-            {
-                UserDialogs.Instance.Confirm(ResourceService.GetText("reallyDelete"),
-                    ResourceService.GetText("yes"),
-                    ResourceService.GetText("no"),
-                    async (accepted) =>
-                    {
-                        if (!accepted || debtor == null)
-                            return;
-
-                        if (DatabaseService.RemoveDebtor(debtor.Id))
-                            await LoadDataAsync();
-                        else
-                            UserDialogs.Instance.ToastFailure(ResourceService.GetText("error"));
-                    });
-            });
-            config.Add(ResourceService.GetText("cancelAction"));
-            UserDialogs.Instance.ActionSheet(config);
-        } 
-        #endregion
-    }
+						if (DatabaseService.RemoveDebtor(debtor.Id))
+							await LoadDataAsync();
+						else
+							UserDialogs.Instance.ToastFailure(ResourceService.GetString("error"));
+					});
+			});
+			config.Add(ResourceService.GetString("cancelAction"));
+			UserDialogs.Instance.ActionSheet(config);
+		} 
+		#endregion
+	}
 }

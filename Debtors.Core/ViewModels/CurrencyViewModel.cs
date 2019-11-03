@@ -13,107 +13,92 @@ using System.Threading.Tasks;
 
 namespace Debtors.Core.ViewModels
 {
-    public class CurrencyViewModel : BaseViewModel<Currency, bool>
-    {
-        public CurrencyViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService)
-            : base(logProvider, navigationService) { }
+	public class CurrencyViewModel : BaseViewModel<Currency, bool>
+	{
+		public CurrencyViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService)
+			: base(logProvider, navigationService) { }
 
-        #region Overwritten
-        public override void Prepare(Currency parameter)
-        {
-            if (parameter == null)
-            {
-                Currency = new Currency();
-                return;
-            }
-            Currency = parameter;
-        }
+		#region Overwritten
+		public override void Prepare(Currency parameter)
+		{
+			if (parameter == null)
+			{
+				Currency = new Currency();
+				return;
+			}
 
-        public override void ViewDestroy(bool viewFinishing = true)
-        {
-            base.ViewDestroy(viewFinishing);
-            NavigationService.Close(this, true);
-        }
-        #endregion
+			Currency = parameter;
+		}
+		public override void ViewDestroy(bool viewFinishing = true)
+		{
+			base.ViewDestroy(viewFinishing);
+			NavigationService.Close(this, true);
+		}
+		#endregion
 
-        #region Properties
-        private Currency currency;
-        public Currency Currency
-        {
-            get { return currency; }
-            set
-            {
-                currency = value;
-                RaisePropertyChanged(() => Currency);
-            }
-        }
-        #endregion
+		#region Properties
+		private Currency currency;
+		public Currency Currency
+		{
+			get { return currency; }
+			set
+			{
+				currency = value;
+				RaisePropertyChanged(() => Currency);
+			}
+		}
+		#endregion
 
-        #region Commands
-        private IMvxCommand deleteClickCommand;
-        public IMvxCommand DeleteClickCommand
-        {
-            get
-            {
-                deleteClickCommand = deleteClickCommand ?? new MvxCommand(DeleteCurrency);
-                return deleteClickCommand;
-            }
-        }
+		#region Commands
+		private IMvxCommand deleteClickCommand;
+		private IMvxCommand saveClickCommand;
 
-        private IMvxCommand saveClickCommand;
-        public IMvxCommand SaveClickCommand
-        {
-            get
-            {
-                saveClickCommand = saveClickCommand ?? new MvxCommand(SaveDebtor);
-                return saveClickCommand;
-            }
-        }
-        #endregion
+		public IMvxCommand DeleteClickCommand => deleteClickCommand = deleteClickCommand ?? new MvxCommand(DeleteCurrency);
+		public IMvxCommand SaveClickCommand => saveClickCommand = saveClickCommand ?? new MvxCommand(SaveDebtor);
+		#endregion
 
-        #region Methods
-        private void DeleteCurrency()
-        {
-            if (Currency == null || Currency.Id <= 0)
-            {
-                UserDialogs.Instance.Alert(ResourceService.GetText("debtorIsNotSave"));
-                return;
-            }
+		#region Methods
+		private void DeleteCurrency()
+		{
+			if (Currency == null || Currency.Id <= 0)
+			{
+				UserDialogs.Instance.Alert(ResourceService.GetString("debtorIsNotSave"));
+				return;
+			}
 
-            if (DatabaseService.IsCurrencyInUse(Currency.Id))
-            {
-                UserDialogs.Instance.Alert(ResourceService.GetText("currencyInUse"));
-                return;
-            }
+			if (DatabaseService.IsCurrencyInUse(Currency.Id))
+			{
+				UserDialogs.Instance.Alert(ResourceService.GetString("currencyInUse"));
+				return;
+			}
 
-            UserDialogs.Instance.Confirm(ResourceService.GetText("reallyDelete"),
-                ResourceService.GetText("yes"),
-                ResourceService.GetText("no"),
-                (accepted) =>
-                {
-                    if (!accepted || Currency == null)
-                        return;
+			UserDialogs.Instance.Confirm(ResourceService.GetString("reallyDelete"),
+				ResourceService.GetString("yes"),
+				ResourceService.GetString("no"),
+				(accepted) =>
+				{
+					if (!accepted || Currency == null)
+						return;
 
-                    if (DatabaseService.RemoveCurrency(Currency.Id))
-                        NavigationService.Close(this, true);
-                    else
-                        UserDialogs.Instance.ToastFailure(ResourceService.GetText("error"));
-                });
-        }
+					if (DatabaseService.RemoveCurrency(Currency.Id))
+						NavigationService.Close(this, true);
+					else
+						UserDialogs.Instance.ToastFailure(ResourceService.GetString("error"));
+				});
+		}
+		private void SaveDebtor()
+		{
+			if (string.IsNullOrWhiteSpace(Currency.Symbol))
+			{
+				UserDialogs.Instance.Alert(ResourceService.GetString("setSymbol"));
+				return;
+			}
 
-        private void SaveDebtor()
-        {
-            if (string.IsNullOrWhiteSpace(Currency.Symbol))
-            {
-                UserDialogs.Instance.Alert(ResourceService.GetText("setSymbol"));
-                return;
-            }
-
-            if (DatabaseService.InsertOrUpdateCurrency(Currency))
-                UserDialogs.Instance.ToastSucceed(ResourceService.GetText("saved"));
-            else
-                UserDialogs.Instance.ToastFailure(ResourceService.GetText("error"));
-        }
-        #endregion
-    }
+			if (DatabaseService.InsertOrUpdateCurrency(Currency))
+				UserDialogs.Instance.ToastSucceed(ResourceService.GetString("saved"));
+			else
+				UserDialogs.Instance.ToastFailure(ResourceService.GetString("error"));
+		}
+		#endregion
+	}
 }

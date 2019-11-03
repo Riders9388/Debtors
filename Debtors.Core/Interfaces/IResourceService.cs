@@ -4,10 +4,11 @@ using System.Text;
 
 namespace Debtors.Core.Interfaces
 {
-    public interface IResourceService
-    {
-        string GetText(string name);
-        int GetStyle(string name);
-        byte[] GetBytesFromDrawable(string name);
-    }
+	public interface IResourceService
+	{
+		string GetString(string key);
+		int GetStyle(string key);
+		int GetLayout(string key);
+		byte[] GetBytesFromDrawable(string key);
+	}
 }

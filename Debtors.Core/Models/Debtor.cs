@@ -73,7 +73,7 @@ namespace Debtors.Core.Models
                 if (DebtsValuses.IsNullOrEmpty())
                 {
                     IResourceService resourceService = Mvx.IoCProvider.Resolve<IResourceService>();
-                    return resourceService.GetText("noDebts");
+                    return resourceService.GetString("noDebts");
                 }
 
                 return string.Join(Environment.NewLine, DebtsValuses.Select(x => x.Key + x.Value));

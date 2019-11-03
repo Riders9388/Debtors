@@ -17,30 +17,30 @@ using Plugin.CurrentActivity;
 
 namespace Debtors.Droid.Views
 {
-    [Activity(Label = "", ScreenOrientation = ScreenOrientation.Portrait)]
-    public class BaseView<TViewModel> : MvxAppCompatActivity where TViewModel : class, IMvxViewModel
-    {
-        protected override void OnCreate(Bundle bundle)
-        {
-            base.OnCreate(bundle);
-            UserDialogs.Init(this);
-            CrossCurrentActivity.Current.Init(this, bundle);
-        }
+	[Activity(Label = "", ScreenOrientation = ScreenOrientation.Portrait)]
+	public class BaseView<TViewModel> : MvxAppCompatActivity where TViewModel : class, IMvxViewModel
+	{
+		protected override void OnCreate(Bundle bundle)
+		{
+			base.OnCreate(bundle);
+			UserDialogs.Init(this);
+			CrossCurrentActivity.Current.Init(this, bundle);
+		}
 
-        public new TViewModel ViewModel
-        {
-            get { return (TViewModel)base.ViewModel; }
-            set { base.ViewModel = value; }
-        }
+		public new TViewModel ViewModel
+		{
+			get { return (TViewModel)base.ViewModel; }
+			set { base.ViewModel = value; }
+		}
 
-        public void HideSoftKeyboard()
-        {
-            if (CurrentFocus == null) return;
+		public void HideSoftKeyboard()
+		{
+			if (CurrentFocus == null) return;
 
-            InputMethodManager inputMethodManager = (InputMethodManager)GetSystemService(InputMethodService);
-            inputMethodManager.HideSoftInputFromWindow(CurrentFocus.WindowToken, 0);
+			InputMethodManager inputMethodManager = (InputMethodManager)GetSystemService(InputMethodService);
+			inputMethodManager.HideSoftInputFromWindow(CurrentFocus.WindowToken, 0);
 
-            CurrentFocus.ClearFocus();
-        }
-    }
+			CurrentFocus.ClearFocus();
+		}
+	}
 }

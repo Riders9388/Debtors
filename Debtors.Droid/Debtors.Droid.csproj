@@ -57,9 +57,11 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adapters\GridAdapter.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CustomDialogService.cs" />
     <Compile Include="Services\ResourceService.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="SplashScreenActivity.cs" />
@@ -154,7 +156,7 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\drawable\" />
+    <AndroidResource Include="Resources\drawable\border.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\menu\top_menu.axml">
@@ -339,6 +341,16 @@
   <ItemGroup>
     <AndroidResource Include="Resources\menu\edit_menu.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\template_dialog_item.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\CustomGridViewDialog.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

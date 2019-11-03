@@ -13,133 +13,108 @@ using System.Threading.Tasks;
 
 namespace Debtors.Core.ViewModels
 {
-    public class CurrenciesViewModel : BaseViewModel, IProgressBar
-    {
-        public CurrenciesViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService)
-            : base(logProvider, navigationService) { }
+	public class CurrenciesViewModel : BaseViewModel, IProgressBar
+	{
+		public CurrenciesViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService)
+			: base(logProvider, navigationService) { }
 
-        #region Overwritten
-        public override async void Start()
-        {
-            base.Start();
-            await LoadDataAsync();
-        }
-        #endregion
+		#region Overwritten
+		public override async Task Initialize()
+		{
+			await base.Initialize();
+			await LoadDataAsync();
+		}
+		#endregion
 
-        #region Properties
-        private bool isVisible;
-        public bool IsVisible
-        {
-            get { return isVisible; }
-            set
-            {
-                isVisible = value;
-                RaisePropertyChanged(() => IsVisible);
-            }
-        }
+		#region Properties
+		private bool isVisible;
+		private MvxObservableCollection<Currency> currencies;
 
-        private MvxObservableCollection<Currency> currencies;
-        public MvxObservableCollection<Currency> Currencies
-        {
-            get { return currencies; }
-            set
-            {
-                currencies = value;
-                RaisePropertyChanged(() => Currencies);
-            }
-        }
-        #endregion
+		public bool IsVisible
+		{
+			get { return isVisible; }
+			set
+			{
+				isVisible = value;
+				RaisePropertyChanged(() => IsVisible);
+			}
+		}
+		public MvxObservableCollection<Currency> Currencies
+		{
+			get { return currencies; }
+			set
+			{
+				currencies = value;
+				RaisePropertyChanged(() => Currencies);
+			}
+		}
+		#endregion
 
-        #region Commands
-        private IMvxAsyncCommand addClickCommand;
-        public IMvxAsyncCommand AddClickCommand
-        {
-            get
-            {
-                addClickCommand = addClickCommand ?? new MvxAsyncCommand(NavigateToCurienciesAsync);
-                return addClickCommand;
-            }
-        }
+		#region Commands
+		private IMvxAsyncCommand addClickCommand;
+		private IMvxCommand<Currency> itemListClickCommand;
+		private IMvxCommand<Currency> itemListLongClickCommand;
 
-        private IMvxCommand<Currency> itemListClickCommand;
-        public IMvxCommand<Currency> ItemListClickCommand
-        {
-            get
-            {
-                itemListClickCommand = itemListClickCommand ?? new MvxCommand<Currency>(OnItemListClick);
-                return itemListClickCommand;
-            }
-        }
+		public IMvxAsyncCommand AddClickCommand => addClickCommand = addClickCommand ?? new MvxAsyncCommand(NavigateToCurienciesAsync);
+		public IMvxCommand<Currency> ItemListClickCommand => itemListClickCommand = itemListClickCommand ?? new MvxCommand<Currency>(OnItemListClick);
+		public IMvxCommand<Currency> ItemListLongClickCommand => itemListLongClickCommand = itemListLongClickCommand ?? new MvxCommand<Currency>(OnItemLongListClickAsync);
+		#endregion
 
-        private IMvxCommand<Currency> itemListLongClickCommand;
-        public IMvxCommand<Currency> ItemListLongClickCommand
-        {
-            get
-            {
-                itemListLongClickCommand = itemListLongClickCommand ?? new MvxCommand<Currency>(OnItemLongListClickAsync);
-                return itemListLongClickCommand;
-            }
-        }
-        #endregion
+		#region Methods
+		private async Task LoadDataAsync()
+		{
+			IsVisible = true;
+			await Task.Run(() =>
+			{
+				Currencies = new MvxObservableCollection<Currency>(DatabaseService.GetCurrencies());
+			});
+			IsVisible = false;
+		}
+		private async Task NavigateToCurienciesAsync()
+		{
+			await NavigationService.Navigate<CurrencyViewModel, Currency, bool>(null);
+			await LoadDataAsync();
+		}
+		private void OnItemListClick(Currency currency)
+		{
+			if (IsVisible)
+				return;
 
-        #region Methods
-        private async Task LoadDataAsync()
-        {
-            IsVisible = true;
-            await Task.Run(() =>
-            {
-                Currencies = new MvxObservableCollection<Currency>(DatabaseService.GetCurrencies());
-            });
-            IsVisible = false;
-        }
+			ActionSheetConfig config = new ActionSheetConfig();
+			config.Add(ResourceService.GetString("editAction"), async () =>
+			{
+				await NavigationService.Navigate<CurrencyViewModel, Currency, bool>(currency);
+				await LoadDataAsync();
+			});
+			config.Add(ResourceService.GetString("deleteAction"), () =>
+			{
+				if (DatabaseService.IsCurrencyInUse(currency.Id))
+				{
+					UserDialogs.Instance.Alert(ResourceService.GetString("currencyInUse"));
+					return;
+				}
 
-        private async Task NavigateToCurienciesAsync()
-        {
-            await NavigationService.Navigate<CurrencyViewModel, Currency, bool>(null);
-            await LoadDataAsync();
-        }
+				UserDialogs.Instance.Confirm(ResourceService.GetString("reallyDelete"),
+					ResourceService.GetString("yes"),
+					ResourceService.GetString("no"),
+					async (accepted) =>
+					{
+						if (!accepted || currency == null)
+							return;
 
-        private void OnItemListClick(Currency currency)
-        {
-            if (IsVisible)
-                return;
-
-            ActionSheetConfig config = new ActionSheetConfig();
-            config.Add(ResourceService.GetText("editAction"), async () =>
-            {
-                await NavigationService.Navigate<CurrencyViewModel, Currency, bool>(currency);
-                await LoadDataAsync();
-            });
-            config.Add(ResourceService.GetText("deleteAction"), () =>
-            {
-                if (DatabaseService.IsCurrencyInUse(currency.Id))
-                {
-                    UserDialogs.Instance.Alert(ResourceService.GetText("currencyInUse"));
-                    return;
-                }
-
-                UserDialogs.Instance.Confirm(ResourceService.GetText("reallyDelete"),
-                    ResourceService.GetText("yes"),
-                    ResourceService.GetText("no"),
-                    async (accepted) =>
-                    {
-                        if (!accepted || currency == null)
-                            return;
-
-                        if (DatabaseService.RemoveCurrency(currency.Id))
-                            await LoadDataAsync();
-                        else
-                            UserDialogs.Instance.ToastFailure(ResourceService.GetText("error"));
-                    });
-            });
-            config.Add(ResourceService.GetText("cancelAction"));
-            UserDialogs.Instance.ActionSheet(config);
-        }
-
-        private void OnItemLongListClickAsync(Currency debtor)
-        {
-            OnItemListClick(debtor);
-        }
-        #endregion
-    }
+						if (DatabaseService.RemoveCurrency(currency.Id))
+							await LoadDataAsync();
+						else
+							UserDialogs.Instance.ToastFailure(ResourceService.GetString("error"));
+					});
+			});
+			config.Add(ResourceService.GetString("cancelAction"));
+			UserDialogs.Instance.ActionSheet(config);
+		}
+		private void OnItemLongListClickAsync(Currency debtor)
+		{
+			OnItemListClick(debtor);
+		}
+		#endregion
+	}
 }

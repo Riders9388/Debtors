@@ -9,180 +9,147 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Debtors.Core.ViewModels
 {
-    public class DebtViewModel : BaseViewModel<Debt, bool>
-    {
-        public DebtViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService)
-            : base(logProvider, navigationService) { }
+	public class DebtViewModel : BaseViewModel<Debt, bool>
+	{
+		public DebtViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService)
+			: base(logProvider, navigationService) { }
 
-        #region Overwritten
-        public override void Start()
-        {
-            base.Start();
-            Currencies = new MvxObservableCollection<Currency>(DatabaseService.GetCurrencies());
-        }
-        public override void Prepare(Debt parameter)
-        {
-            if (parameter == null)
-            {
-                Debt = new Debt();
-                return;
-            }
+		#region Overwritten
+		public override void Prepare(Debt parameter)
+		{
+			if (parameter == null)
+			{
+				Debt = new Debt();
+				return;
+			}
 
-            Debt = parameter;
-        }
+			Debt = parameter;
+		}
+		public override async Task Initialize()
+		{
+			await base.Initialize();
+			Currencies = new MvxObservableCollection<Currency>(DatabaseService.GetCurrencies());
+		}
+		public override void ViewDestroy(bool viewFinishing = true)
+		{
+			base.ViewDestroy(viewFinishing);
+			NavigationService.Close(this, true);
+		}
+		#endregion
 
-        public override void ViewDestroy(bool viewFinishing = true)
-        {
-            base.ViewDestroy(viewFinishing);
-            NavigationService.Close(this, true);
-        }
-        #endregion
+		#region Properties
+		private Debt debt;
+		private MvxObservableCollection<Currency> currencies;
 
-        #region Properties
-        private Debt debt;
-        public Debt Debt
-        {
-            get { return debt; }
-            set
-            {
-                debt = value;
-                RaisePropertyChanged(() => Debt);
-            }
-        }
+		public Debt Debt
+		{
+			get { return debt; }
+			set
+			{
+				debt = value;
+				RaisePropertyChanged(() => Debt);
+			}
+		}
+		public MvxObservableCollection<Currency> Currencies
+		{
+			get { return currencies; }
+			set
+			{
+				currencies = value;
+				RaisePropertyChanged(() => Currencies);
+			}
+		}
+		#endregion
 
-        private MvxObservableCollection<Currency> currencies;
-        public MvxObservableCollection<Currency> Currencies
-        {
-            get { return currencies; }
-            set
-            {
-                currencies = value;
-                RaisePropertyChanged(() => Currencies);
-            }
-        }
-        #endregion
+		#region Commands
+		private IMvxCommand deleteClickCommand;
+		private IMvxCommand saveClickCommand;
+		private IMvxCommand addDebtBackClickCommand;
+		private IMvxCommand<Currency> itemSelectedCommand;
 
-        #region Commands
-        private IMvxCommand deleteClickCommand;
-        public IMvxCommand DeleteClickCommand
-        {
-            get
-            {
-                deleteClickCommand = deleteClickCommand ?? new MvxCommand(DeleteDebt);
-                return deleteClickCommand;
-            }
-        }
+		public IMvxCommand DeleteClickCommand => deleteClickCommand = deleteClickCommand ?? new MvxCommand(DeleteDebt);
+		public IMvxCommand SaveClickCommand => saveClickCommand = saveClickCommand ?? new MvxCommand(SaveDebt);
+		public IMvxCommand AddDebtBackClickCommand => addDebtBackClickCommand = addDebtBackClickCommand ?? new MvxCommand(AddDebtBack);
+		public IMvxCommand<Currency> ItemSelectedCommand => itemSelectedCommand = itemSelectedCommand ?? new MvxCommand<Currency>(ItemSelected);
+		#endregion
 
-        private IMvxCommand saveClickCommand;
-        public IMvxCommand SaveClickCommand
-        {
-            get
-            {
-                saveClickCommand = saveClickCommand ?? new MvxCommand(SaveDebt);
-                return saveClickCommand;
-            }
-        }
+		#region Methods
+		private void DeleteDebt()
+		{
+			if (Debt == null || Debt.Id <= 0)
+			{
+				UserDialogs.Instance.Alert(ResourceService.GetString("debtIsNotSave"));
+				return;
+			}
 
-        private IMvxCommand addDebtBackClickCommand;
-        public IMvxCommand AddDebtBackClickCommand
-        {
-            get
-            {
-                addDebtBackClickCommand = addDebtBackClickCommand ?? new MvxCommand(AddDebtBack);
-                return addDebtBackClickCommand;
-            }
-        }
+			UserDialogs.Instance.Confirm(ResourceService.GetString("reallyDelete"),
+				ResourceService.GetString("yes"),
+				ResourceService.GetString("no"),
+				(accepted) =>
+				{
+					if (!accepted || Debt == null)
+						return;
 
-        private IMvxCommand<Currency> itemSelectedCommand;
-        public IMvxCommand<Currency> ItemSelectedCommand
-        {
-            get
-            {
-                itemSelectedCommand = itemSelectedCommand ?? new MvxCommand<Currency>(ItemSelected);
-                return itemSelectedCommand;
-            }
-        }
-        #endregion
+					if (DatabaseService.RemoveDebt(Debt.Id))
+						NavigationService.Close(this, true);
+					else
+						UserDialogs.Instance.ToastFailure(ResourceService.GetString("error"));
+				});
+		}
+		private void SaveDebt()
+		{
+			if (Debt.Value == null || Debt.Value <= decimal.Zero)
+			{
+				UserDialogs.Instance.Alert(ResourceService.GetString("valueIsNotSet"));
+				return;
+			}
+			else if (Debt.Currency == null)
+			{
+				UserDialogs.Instance.Alert(ResourceService.GetString("setCurrency"));
+				return;
+			}
 
-        #region Methods
-        private void DeleteDebt()
-        {
-            if (Debt == null || Debt.Id <= 0)
-            {
-                UserDialogs.Instance.Alert(ResourceService.GetText("debtIsNotSave"));
-                return;
-            }
+			if (DatabaseService.InsertOrUpdateDebt(Debt))
+				UserDialogs.Instance.ToastSucceed(ResourceService.GetString("saved"));
+			else
+				UserDialogs.Instance.ToastFailure(ResourceService.GetString("error"));
+		}
+		private void AddDebtBack()
+		{
+			PromptConfig config = new PromptConfig();
+			config.SetAction((result) =>
+			{
+				if (!result.Ok || Debt == null || string.IsNullOrWhiteSpace(result.Value))
+					return;
 
-            UserDialogs.Instance.Confirm(ResourceService.GetText("reallyDelete"),
-                ResourceService.GetText("yes"),
-                ResourceService.GetText("no"),
-                (accepted) =>
-                {
-                    if (!accepted || Debt == null)
-                        return;
+				if (Debt.ValuesBack == null)
+					Debt.ValuesBack = new List<DebtBack>();
 
-                    if (DatabaseService.RemoveDebt(Debt.Id))
-                        NavigationService.Close(this, true);
-                    else
-                        UserDialogs.Instance.ToastFailure(ResourceService.GetText("error"));
-                });
-        }
+				Debt.ValuesBack.Add(new DebtBack()
+				{
+					DebtId = Debt.Id,
+					Value = Convert.ToDecimal(result.Value)
+				});
+				RaisePropertyChanged(() => Debt);
+			});
+			config.SetInputMode(InputType.Phone);
+			config.SetMessage(ResourceService.GetString("setValue"));
+			config.OkText = ResourceService.GetString("ok");
+			config.CancelText = ResourceService.GetString("cancel");
+			UserDialogs.Instance.Prompt(config);
+		}
+		private void ItemSelected(Currency currency)
+		{
+			if (debt.ValuesBack.IsNullOrEmpty())
+				return;
 
-        private void SaveDebt()
-        {
-            if (Debt.Value == null || Debt.Value <= decimal.Zero)
-            {
-                UserDialogs.Instance.Alert(ResourceService.GetText("valueIsNotSet"));
-                return;
-            }
-            else if (Debt.Currency == null)
-            {
-                UserDialogs.Instance.Alert(ResourceService.GetText("setCurrency"));
-                return;
-            }
-
-            if (DatabaseService.InsertOrUpdateDebt(Debt))
-                UserDialogs.Instance.ToastSucceed(ResourceService.GetText("saved"));
-            else
-                UserDialogs.Instance.ToastFailure(ResourceService.GetText("error"));
-        }
-
-        private void AddDebtBack()
-        {
-            PromptConfig config = new PromptConfig();
-            config.SetAction((result) =>
-            {
-                if (!result.Ok || Debt == null || string.IsNullOrWhiteSpace(result.Value))
-                    return;
-
-                if (Debt.ValuesBack == null)
-                    Debt.ValuesBack = new List<DebtBack>();
-
-                Debt.ValuesBack.Add(new DebtBack()
-                {
-                    DebtId = Debt.Id,
-                    Value = Convert.ToDecimal(result.Value)
-                });
-                RaisePropertyChanged(() => Debt);
-            });
-            config.SetInputMode(InputType.Phone);
-            config.SetMessage(ResourceService.GetText("setValue"));
-            config.OkText = ResourceService.GetText("ok");
-            config.CancelText = ResourceService.GetText("cancel");
-            UserDialogs.Instance.Prompt(config);
-        }
-
-        private void ItemSelected(Currency currency)
-        {
-            if (debt.ValuesBack.IsNullOrEmpty())
-                return;
-
-            UserDialogs.Instance.Alert("Cannot change currency. There are return values");
-            Debt.Currency = Currencies.FirstOrDefault(x => x.Id == Debt.CurrencyId);
-        }
-        #endregion
-    }
+			UserDialogs.Instance.Alert("Cannot change currency. There are return values");
+			Debt.Currency = Currencies.FirstOrDefault(x => x.Id == Debt.CurrencyId);
+		}
+		#endregion
+	}
 }

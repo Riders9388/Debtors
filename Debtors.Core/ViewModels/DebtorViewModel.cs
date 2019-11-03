@@ -18,353 +18,290 @@ using System.Text;
 
 namespace Debtors.Core.ViewModels
 {
-    public class DebtorViewModel : BaseViewModel<Debtor, bool>
-    {
-        public DebtorViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService)
-            : base(logProvider, navigationService) { }
+	public class DebtorViewModel : BaseViewModel<Debtor, bool>
+	{
+		public DebtorViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService)
+			: base(logProvider, navigationService) { }
 
-        #region Overwritten
-        public override void Prepare(Debtor parameter)
-        {
-            if (parameter == null)
-            {
-                Debtor = new Debtor();
-                return;
-            }
+		#region Overwritten
+		public override void Prepare(Debtor parameter)
+		{
+			if (parameter == null)
+			{
+				Debtor = new Debtor();
+				return;
+			}
 
-            Debtor = parameter;
-        }
+			Debtor = parameter;
+		}
+		public override void ViewDestroy(bool viewFinishing = true)
+		{
+			base.ViewDestroy(viewFinishing);
+			NavigationService.Close(this, true);
+		}
+		#endregion
 
-        public override void ViewDestroy(bool viewFinishing = true)
-        {
-            base.ViewDestroy(viewFinishing);
-            NavigationService.Close(this, true);
-        }
-        #endregion
+		#region Properties
+		private Debtor debtor;
+		public Debtor Debtor
+		{
+			get { return debtor; }
+			set
+			{
+				debtor = value;
+				RaisePropertyChanged(() => Debtor);
+			}
+		}
+		#endregion
 
-        #region Properties
-        private Debtor debtor;
-        public Debtor Debtor
-        {
-            get { return debtor; }
-            set
-            {
-                debtor = value;
-                RaisePropertyChanged(() => Debtor);
-            }
-        }
-        #endregion
+		#region Commands
+		private IMvxCommand deleteClickCommand;
+		private IMvxCommand saveClickCommand;
+		private IMvxCommand addPhoneClickCommand;
+		private IMvxCommand addMailClickCommand;
+		private IMvxCommand<Phone> phoneClickCommand;
+		private IMvxCommand<Mail> mailClickCommand;
+		private IMvxCommand setPictureClickCommand;
 
-        #region Commands
-        private IMvxCommand deleteClickCommand;
-        public IMvxCommand DeleteClickCommand
-        {
-            get
-            {
-                deleteClickCommand = deleteClickCommand ?? new MvxCommand(DeleteDebtor);
-                return deleteClickCommand;
-            }
-        }
+		public IMvxCommand DeleteClickCommand => deleteClickCommand = deleteClickCommand ?? new MvxCommand(DeleteDebtor);
+		public IMvxCommand SaveClickCommand => saveClickCommand = saveClickCommand ?? new MvxCommand(SaveDebtor);
+		public IMvxCommand AddPhoneClickCommand => addPhoneClickCommand = addPhoneClickCommand ?? new MvxCommand(AddPhone);
+		public IMvxCommand AddMailClickCommand => addMailClickCommand = addMailClickCommand ?? new MvxCommand(AddMail);
+		public IMvxCommand<Phone> PhoneClickCommand => phoneClickCommand = phoneClickCommand ?? new MvxCommand<Phone>(ClickPhone);
+		public IMvxCommand<Mail> MailClickCommand => mailClickCommand = mailClickCommand ?? new MvxCommand<Mail>(ClickMail);
+		public IMvxCommand SetPictureClickCommand => setPictureClickCommand = setPictureClickCommand ?? new MvxCommand(GetImage);
+		#endregion
 
-        private IMvxCommand saveClickCommand;
-        public IMvxCommand SaveClickCommand
-        {
-            get
-            {
-                saveClickCommand = saveClickCommand ?? new MvxCommand(SaveDebtor);
-                return saveClickCommand;
-            }
-        }
+		#region Methods
+		private void DeleteDebtor()
+		{
+			if (Debtor == null || Debtor.Id <= 0)
+			{
+				UserDialogs.Instance.Alert(ResourceService.GetString("debtorIsNotSave"));
+				return;
+			}
 
-        private IMvxCommand addPhoneClickCommand;
-        public IMvxCommand AddPhoneClickCommand
-        {
-            get
-            {
-                addPhoneClickCommand = addPhoneClickCommand ?? new MvxCommand(AddPhone);
-                return addPhoneClickCommand;
-            }
-        }
+			UserDialogs.Instance.Confirm(ResourceService.GetString("reallyDelete"),
+				ResourceService.GetString("yes"),
+				ResourceService.GetString("no"),
+				(accepted) =>
+				{
+					if (!accepted || Debtor == null)
+						return;
 
-        private IMvxCommand addMailClickCommand;
-        public IMvxCommand AddMailClickCommand
-        {
-            get
-            {
-                addMailClickCommand = addMailClickCommand ?? new MvxCommand(AddMail);
-                return addMailClickCommand;
-            }
-        }
+					if (DatabaseService.RemoveDebtor(Debtor.Id))
+						NavigationService.Close(this, true);
+					else
+						UserDialogs.Instance.ToastFailure(ResourceService.GetString("error"));
+				});
+		}
+		private void SaveDebtor()
+		{
+			if (string.IsNullOrWhiteSpace(Debtor.FirstName))
+			{
+				UserDialogs.Instance.Alert(ResourceService.GetString("noDebtorName"));
+				return;
+			}
 
-        private IMvxCommand<Phone> phoneClickCommand;
-        public IMvxCommand<Phone> PhoneClickCommand
-        {
-            get
-            {
-                phoneClickCommand = phoneClickCommand ?? new MvxCommand<Phone>(ClickPhone);
-                return phoneClickCommand;
-            }
-        }
+			if (DatabaseService.InsertOrUpdateDebtor(Debtor))
+				UserDialogs.Instance.ToastSucceed(ResourceService.GetString("saved"));
+			else
+				UserDialogs.Instance.ToastFailure(ResourceService.GetString("error"));
+		}
+		private void AddPhone()
+		{
+			PromptConfig config = new PromptConfig();
+			config.SetAction((result) =>
+			{
+				if (!result.Ok || Debtor == null || string.IsNullOrWhiteSpace(result.Value))
+					return;
 
-        private IMvxCommand<Mail> mailClickCommand;
-        public IMvxCommand<Mail> MailClickCommand
-        {
-            get
-            {
-                mailClickCommand = mailClickCommand ?? new MvxCommand<Mail>(ClickMail);
-                return mailClickCommand;
-            }
-        }
+				if (Debtor.Phones == null)
+					Debtor.Phones = new MvxObservableCollection<Phone>();
 
-        private IMvxCommand setPictureClickCommand;
-        public IMvxCommand SetPictureClickCommand
-        {
-            get
-            {
-                setPictureClickCommand = setPictureClickCommand ?? new MvxCommand(GetImage);
-                return setPictureClickCommand;
-            }
-        }
-        #endregion
+				Debtor.Phones.Add(new Phone()
+				{
+					Number = result.Value,
+					Type = PhoneNumberType.Mobile
+				});
+				RaisePropertyChanged(() => Debtor);
+			});
+			config.SetInputMode(InputType.Phone);
+			config.SetMessage(ResourceService.GetString("setPhoneNumber"));
+			config.OkText = ResourceService.GetString("ok");
+			config.CancelText = ResourceService.GetString("cancel");
+			UserDialogs.Instance.Prompt(config);
+		}
+		private void EditPhone(Phone phone)
+		{
+			if (phone == null)
+				return;
 
-        #region Methods
-        private void DeleteDebtor()
-        {
-            if (Debtor == null || Debtor.Id <= 0)
-            {
-                UserDialogs.Instance.Alert(ResourceService.GetText("debtorIsNotSave"));
-                return;
-            }
+			PromptConfig config = new PromptConfig();
+			config.SetAction((result) =>
+			{
+				if (!result.Ok || Debtor == null || string.IsNullOrWhiteSpace(result.Value))
+					return;
 
-            UserDialogs.Instance.Confirm(ResourceService.GetText("reallyDelete"),
-                ResourceService.GetText("yes"),
-                ResourceService.GetText("no"),
-                (accepted) =>
-                {
-                    if (!accepted || Debtor == null)
-                        return;
+				phone.Number = result.Value;
+				RaisePropertyChanged(() => Debtor);
+			});
+			config.SetInputMode(InputType.Phone);
+			config.SetMessage(ResourceService.GetString("setPhoneNumber"));
+			config.SetText(phone.Number);
+			config.OkText = ResourceService.GetString("ok");
+			config.CancelText = ResourceService.GetString("cancel");
+			UserDialogs.Instance.Prompt(config);
+		}
+		private void ClickPhone(Phone phone)
+		{
+			if (phone == null)
+				return;
 
-                    if (DatabaseService.RemoveDebtor(Debtor.Id))
-                        NavigationService.Close(this, true);
-                    else
-                        UserDialogs.Instance.ToastFailure(ResourceService.GetText("error"));
-                });
-        }
+			ActionSheetConfig config = new ActionSheetConfig();
+			config.Add(ResourceService.GetString("callAction"), () =>
+			{
+				IPhoneCallTask phoneDialer = CrossMessaging.Current.PhoneDialer;
+				if (!phoneDialer.CanMakePhoneCall)
+				{
+					UserDialogs.Instance.Alert(ResourceService.GetString("cannotCall"));
+					return;
+				}
+				phoneDialer.MakePhoneCall(phone.Number);
+			});
+			config.Add(ResourceService.GetString("messageAction"), () =>
+			{
+				ISmsTask smsMessenger = CrossMessaging.Current.SmsMessenger;
+				if (!smsMessenger.CanSendSms)
+				{
+					UserDialogs.Instance.Alert(ResourceService.GetString("cannotSms"));
+					return;
+				}
+				smsMessenger.SendSms(phone.Number);
+			});
+			config.Add(ResourceService.GetString("editAction"), () =>
+			{
+				EditPhone(phone);
+			});
+			config.Add(ResourceService.GetString("deleteAction"), () =>
+			{
+				if (Debtor == null || Debtor.Phones.IsNullOrEmpty())
+					return;
 
-        private void SaveDebtor()
-        {
-            if (string.IsNullOrWhiteSpace(Debtor.FirstName))
-            {
-                UserDialogs.Instance.Alert(ResourceService.GetText("noDebtorName"));
-                return;
-            }
+				UserDialogs.Instance.Confirm(ResourceService.GetString("reallyDelete"),
+					ResourceService.GetString("yes"),
+					ResourceService.GetString("no"),
+					(accepted) =>
+					{
+						if (accepted)
+							Debtor.Phones.Remove(phone);
+					});
+			});
+			config.Add(ResourceService.GetString("cancelAction"));
+			UserDialogs.Instance.ActionSheet(config);
+		}
+		private void AddMail()
+		{
+			PromptConfig config = new PromptConfig();
+			config.SetAction((result) =>
+			{
+				if (!result.Ok || Debtor == null || string.IsNullOrWhiteSpace(result.Value))
+					return;
 
-            if (DatabaseService.InsertOrUpdateDebtor(Debtor))
-                UserDialogs.Instance.ToastSucceed(ResourceService.GetText("saved"));
-            else
-                UserDialogs.Instance.ToastFailure(ResourceService.GetText("error"));
-        }
+				if (Debtor.Mails == null)
+					Debtor.Mails = new MvxObservableCollection<Mail>();
 
-        private void AddPhone()
-        {
-            PromptConfig config = new PromptConfig();
-            config.SetAction((result) =>
-            {
-                if (!result.Ok || Debtor == null || string.IsNullOrWhiteSpace(result.Value))
-                    return;
+				Debtor.Mails.Add(new Mail()
+				{
+					Address = result.Value
+				});
+				RaisePropertyChanged(() => Debtor);
+			});
+			config.SetInputMode(InputType.Email);
+			config.SetMessage(ResourceService.GetString("setMailAddress"));
+			UserDialogs.Instance.Prompt(config);
+		}
+		private void ClickMail(Mail mail)
+		{
+			if (mail == null)
+				return;
 
-                if (Debtor.Phones == null)
-                    Debtor.Phones = new MvxObservableCollection<Phone>();
+			ActionSheetConfig config = new ActionSheetConfig();
+			config.Add(ResourceService.GetString("messageAction"), () =>
+			{
+				IEmailTask emailMessenger = CrossMessaging.Current.EmailMessenger;
+				if (!emailMessenger.CanSendEmail)
+				{
+					UserDialogs.Instance.Alert(ResourceService.GetString("cannotMail"));
+					return;
+				}
+				emailMessenger.SendEmail(mail.Address);
+			});
+			config.Add(ResourceService.GetString("editAction"), () =>
+			{
+				EditMail(mail);
+			});
+			config.Add(ResourceService.GetString("deleteAction"), () =>
+			{
+				if (Debtor == null || Debtor.Mails.IsNullOrEmpty())
+					return;
 
-                Debtor.Phones.Add(new Phone()
-                {
-                    Number = result.Value,
-                    Type = PhoneNumberType.Mobile
-                });
-                RaisePropertyChanged(() => Debtor);
-            });
-            config.SetInputMode(InputType.Phone);
-            config.SetMessage(ResourceService.GetText("setPhoneNumber"));
-            config.OkText = ResourceService.GetText("ok");
-            config.CancelText = ResourceService.GetText("cancel");
-            UserDialogs.Instance.Prompt(config);
-        }
+				UserDialogs.Instance.Confirm(ResourceService.GetString("reallyDelete"),
+					ResourceService.GetString("yes"),
+					ResourceService.GetString("no"),
+					(accepted) =>
+					{
+						if (accepted)
+							Debtor.Mails.Remove(mail);
+					});
+			});
+			config.Add(ResourceService.GetString("cancelAction"));
+			UserDialogs.Instance.ActionSheet(config);
+		}
+		private void EditMail(Mail mail)
+		{
+			if (mail == null)
+				return;
 
-        private void EditPhone(Phone phone)
-        {
-            if (phone == null)
-                return;
+			PromptConfig config = new PromptConfig();
+			config.SetAction((result) =>
+			{
+				if (!result.Ok || Debtor == null || string.IsNullOrWhiteSpace(result.Value))
+					return;
 
-            PromptConfig config = new PromptConfig();
-            config.SetAction((result) =>
-            {
-                if (!result.Ok || Debtor == null || string.IsNullOrWhiteSpace(result.Value))
-                    return;
+				mail.Address = result.Value;
+				RaisePropertyChanged(() => Debtor);
+			});
+			config.SetInputMode(InputType.Email);
+			config.SetMessage(ResourceService.GetString("setMailAddress"));
+			config.SetText(mail.Address);
+			config.OkText = ResourceService.GetString("ok");
+			config.CancelText = ResourceService.GetString("cancel");
+			UserDialogs.Instance.Prompt(config);
+		}
+		private async void GetImage()
+		{
+			try
+			{
+				if (!CrossMedia.IsSupported || !CrossMedia.Current.IsPickPhotoSupported)
+					return;
 
-                phone.Number = result.Value;
-                RaisePropertyChanged(() => Debtor);
-            });
-            config.SetInputMode(InputType.Phone);
-            config.SetMessage(ResourceService.GetText("setPhoneNumber"));
-            config.SetText(phone.Number);
-            config.OkText = ResourceService.GetText("ok");
-            config.CancelText = ResourceService.GetText("cancel");
-            UserDialogs.Instance.Prompt(config);
-        }
+				MediaFile photo = await CrossMedia.Current.PickPhotoAsync();
+				if (photo == null)
+					return;
 
-        private void ClickPhone(Phone phone)
-        {
-            if (phone == null)
-                return;
+				Stream stream = photo.GetStreamWithImageRotatedForExternalStorage();
+				using (MemoryStream ms = new MemoryStream())
+				{
+					stream.CopyTo(ms);
+					Debtor.Image = ms.ToArray();
+				}
+			}
+			catch(Exception ex)
+			{
 
-            ActionSheetConfig config = new ActionSheetConfig();
-            config.Add(ResourceService.GetText("callAction"), () =>
-            {
-                IPhoneCallTask phoneDialer = CrossMessaging.Current.PhoneDialer;
-                if (!phoneDialer.CanMakePhoneCall)
-                {
-                    UserDialogs.Instance.Alert(ResourceService.GetText("cannotCall"));
-                    return;
-                }
-                phoneDialer.MakePhoneCall(phone.Number);
-            });
-            config.Add(ResourceService.GetText("messageAction"), () =>
-            {
-                ISmsTask smsMessenger = CrossMessaging.Current.SmsMessenger;
-                if (!smsMessenger.CanSendSms)
-                {
-                    UserDialogs.Instance.Alert(ResourceService.GetText("cannotSms"));
-                    return;
-                }
-                smsMessenger.SendSms(phone.Number);
-            });
-            config.Add(ResourceService.GetText("editAction"), () =>
-            {
-                EditPhone(phone);
-            });
-            config.Add(ResourceService.GetText("deleteAction"), () =>
-            {
-                if (Debtor == null || Debtor.Phones.IsNullOrEmpty())
-                    return;
-
-                UserDialogs.Instance.Confirm(ResourceService.GetText("reallyDelete"),
-                    ResourceService.GetText("yes"),
-                    ResourceService.GetText("no"),
-                    (accepted) =>
-                    {
-                        if (accepted)
-                            Debtor.Phones.Remove(phone);
-                    });
-            });
-            config.Add(ResourceService.GetText("cancelAction"));
-            UserDialogs.Instance.ActionSheet(config);
-        }
-
-        private void AddMail()
-        {
-            PromptConfig config = new PromptConfig();
-            config.SetAction((result) =>
-            {
-                if (!result.Ok || Debtor == null || string.IsNullOrWhiteSpace(result.Value))
-                    return;
-
-                if (Debtor.Mails == null)
-                    Debtor.Mails = new MvxObservableCollection<Mail>();
-
-                Debtor.Mails.Add(new Mail()
-                {
-                    Address = result.Value
-                });
-                RaisePropertyChanged(() => Debtor);
-            });
-            config.SetInputMode(InputType.Email);
-            config.SetMessage(ResourceService.GetText("setMailAddress"));
-            UserDialogs.Instance.Prompt(config);
-        }
-
-        private void ClickMail(Mail mail)
-        {
-            if (mail == null)
-                return;
-
-            ActionSheetConfig config = new ActionSheetConfig();
-            config.Add(ResourceService.GetText("messageAction"), () =>
-            {
-                IEmailTask emailMessenger = CrossMessaging.Current.EmailMessenger;
-                if (!emailMessenger.CanSendEmail)
-                {
-                    UserDialogs.Instance.Alert(ResourceService.GetText("cannotMail"));
-                    return;
-                }
-                emailMessenger.SendEmail(mail.Address);
-            });
-            config.Add(ResourceService.GetText("editAction"), () =>
-            {
-                EditMail(mail);
-            });
-            config.Add(ResourceService.GetText("deleteAction"), () =>
-            {
-                if (Debtor == null || Debtor.Mails.IsNullOrEmpty())
-                    return;
-
-                UserDialogs.Instance.Confirm(ResourceService.GetText("reallyDelete"),
-                    ResourceService.GetText("yes"),
-                    ResourceService.GetText("no"),
-                    (accepted) =>
-                    {
-                        if (accepted)
-                            Debtor.Mails.Remove(mail);
-                    });
-            });
-            config.Add(ResourceService.GetText("cancelAction"));
-            UserDialogs.Instance.ActionSheet(config);
-        }
-
-        private void EditMail(Mail mail)
-        {
-            if (mail == null)
-                return;
-
-            PromptConfig config = new PromptConfig();
-            config.SetAction((result) =>
-            {
-                if (!result.Ok || Debtor == null || string.IsNullOrWhiteSpace(result.Value))
-                    return;
-
-                mail.Address = result.Value;
-                RaisePropertyChanged(() => Debtor);
-            });
-            config.SetInputMode(InputType.Email);
-            config.SetMessage(ResourceService.GetText("setMailAddress"));
-            config.SetText(mail.Address);
-            config.OkText = ResourceService.GetText("ok");
-            config.CancelText = ResourceService.GetText("cancel");
-            UserDialogs.Instance.Prompt(config);
-        }
-
-        private async void GetImage()
-        {
-            try
-            {
-                if (!CrossMedia.IsSupported || !CrossMedia.Current.IsPickPhotoSupported)
-                    return;
-
-                MediaFile photo = await CrossMedia.Current.PickPhotoAsync();
-                if (photo == null)
-                    return;
-
-                Stream stream = photo.GetStreamWithImageRotatedForExternalStorage();
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    stream.CopyTo(ms);
-                    Debtor.Image = ms.ToArray();
-                }
-            }
-            catch(Exception ex)
-            {
-
-            }
-        }
-        #endregion
-    }
+			}
+		}
+		#endregion
+	}
 }

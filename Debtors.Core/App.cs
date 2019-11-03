@@ -11,19 +11,18 @@ using System.Text;
 
 namespace Debtors.Core
 {
-    public class App : MvxApplication
-    {
-        public override void Initialize()
-        {
-            CreatableTypes()
-                .EndingWith("Service")
-                .AsInterfaces()
-                .RegisterAsSingleton();
+	public class App : MvxApplication
+	{
+		public override void Initialize()
+		{
+			//CreatableTypes()
+			//	.EndingWith("Service")
+			//	.AsInterfaces()
+			//	.RegisterAsSingleton();
 
-            Mvx.IoCProvider.RegisterSingleton<IUserDialogs>(() => UserDialogs.Instance);
-            Mvx.IoCProvider.RegisterSingleton<ISettingsService>(() => new SettingsService());
-
-            RegisterAppStart<DebtorsViewModel>();
-        }
-    }
+			Mvx.IoCProvider.RegisterSingleton<IUserDialogs>(() => UserDialogs.Instance);
+			
+			RegisterCustomAppStart<AppStart>();
+		}
+	}
 }
