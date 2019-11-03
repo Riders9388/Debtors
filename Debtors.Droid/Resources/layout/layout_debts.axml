@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:local="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 	<include layout="@layout/toolbar" />
-	<include layout="@layout/progressbar" />
-	<mvvmcross.droid.support.v7.recyclerview.MvxRecyclerView
+	<MvxSwipeRefreshLayout
+		android:id="@+id/refresher"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
+		android:layout_height="wrap_content"
 		android:layout_below="@+id/appbar"
 		local:layout_behavior="@string/appbar_scrolling_view_behavior"
-		local:MvxItemTemplate="@layout/template_debt"
-		local:MvxBind="ItemsSource Debts; ItemClick ItemListClickCommand; ItemLongClick ItemListLongClickCommand;"/>
+		local:MvxBind="Refreshing IsRefreshing; RefreshCommand PullRefreshCommand"
+		android:smoothScrollbar="true"
+		android:scrollingCache="false"
+		android:animationCache="false"
+		android:isScrollContainer="true">
+		<MvxListView
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_below="@+id/appbar"
+			local:layout_behavior="@string/appbar_scrolling_view_behavior"
+			local:MvxItemTemplate="@layout/template_debt"
+			local:MvxBind="ItemsSource Debts; ItemClick ItemListClickCommand; ItemLongClick ItemListLongClickCommand;"/>
+	</MvxSwipeRefreshLayout>
 </RelativeLayout>

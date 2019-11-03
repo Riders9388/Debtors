@@ -21,9 +21,9 @@ namespace Debtors.Core.ViewModels
 			: base(logProvider, navigationService) { }
 
 		#region Overwritten
-		public override async Task Initialize()
+		public override async void ViewAppeared()
 		{
-			await base.Initialize();
+			base.ViewAppeared();
 			await LoadDataAsync();
 		}
 		#endregion
@@ -83,7 +83,6 @@ namespace Debtors.Core.ViewModels
 		private async Task NavigateToDebtorAsync()
 		{
 			await NavigationService.Navigate<DebtorViewModel, Debtor, bool>(null);
-			await LoadDataAsync();
 		}
 		private async Task OnItemListClickAsync(Debtor debtor)
 		{
@@ -91,7 +90,6 @@ namespace Debtors.Core.ViewModels
 				return;
 
 			await NavigationService.Navigate<DebtorDetailsViewModel, Debtor, bool>(debtor);
-			await LoadDataAsync();
 		}
 		private void OnItemLongListClickAsync(Debtor debtor)
 		{
@@ -102,17 +100,14 @@ namespace Debtors.Core.ViewModels
 			config.Add(ResourceService.GetString("debtsAction"), async () =>
 			{
 				await NavigationService.Navigate<DebtsViewModel, Debtor, bool>(debtor);
-				await LoadDataAsync();
 			});
 			config.Add(ResourceService.GetString("detailsAction"), async () =>
 			{
 				await NavigationService.Navigate<DebtorDetailsViewModel, Debtor, bool>(debtor);
-				await LoadDataAsync();
 			});
 			config.Add(ResourceService.GetString("editAction"), async () =>
 			{
 				await NavigationService.Navigate<DebtorViewModel, Debtor, bool>(debtor);
-				await LoadDataAsync();
 			});
 			config.Add(ResourceService.GetString("deleteAction"), () =>
 			{
@@ -124,10 +119,10 @@ namespace Debtors.Core.ViewModels
 						if (!accepted || debtor == null)
 							return;
 
-						if (DatabaseService.RemoveDebtor(debtor.Id))
-							await LoadDataAsync();
-						else
+						if (!DatabaseService.RemoveDebtor(debtor.Id))
 							UserDialogs.Instance.ToastFailure(ResourceService.GetString("error"));
+
+						await LoadDataAsync();
 					});
 			});
 			config.Add(ResourceService.GetString("cancelAction"));
