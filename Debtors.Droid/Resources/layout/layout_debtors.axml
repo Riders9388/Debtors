@@ -11,25 +11,24 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 		<include layout="@layout/toolbar" />
-		<include layout="@layout/progressbar" />
-		<!--<MvxSwipeRefreshLayout
+		<MvxSwipeRefreshLayout
 			android:id="@+id/refresher"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_below="@id/appbar"
-			app:layout_behavior="@string/appbar_scrolling_view_behavior"
-			app:MvxBind="Refreshing IsRefreshing; RefreshCommand PullRefreshCommand"
+			android:layout_below="@+id/appbar"
+			local:layout_behavior="@string/appbar_scrolling_view_behavior"
+			local:MvxBind="Refreshing IsRefreshing; RefreshCommand PullRefreshCommand"
 			android:smoothScrollbar="true"
 			android:scrollingCache="false"
 			android:animationCache="false"
-			android:isScrollContainer="true">-->
-			<mvvmcross.droid.support.v7.recyclerview.MvxRecyclerView
+			android:isScrollContainer="true">
+			<MvxListView
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				local:layout_behavior="@string/appbar_scrolling_view_behavior"
 				local:MvxItemTemplate="@layout/template_debtor"
 				local:MvxBind="ItemsSource Debtors; ItemClick ItemListClickCommand; ItemLongClick ItemListLongClickCommand;"/>
-		<!--</MvxSwipeRefreshLayout>-->
+		</MvxSwipeRefreshLayout>
 	</RelativeLayout>
 	<android.support.design.widget.NavigationView
 		android:id="@+id/nav_view"
