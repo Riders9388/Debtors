@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Debtors.Core.ViewModels
 {
-	public class DebtsViewModel : BaseViewModel<Debtor, bool>, IProgressBar
+	public class DebtsViewModel : BaseViewModel<Debtor, bool>
 	{
 		public DebtsViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService)
 			: base(logProvider, navigationService) { }
@@ -29,9 +29,9 @@ namespace Debtors.Core.ViewModels
 
 			Debtor = parameter;
 		}
-		public override async Task Initialize()
+		public override async void ViewAppeared()
 		{
-			await base.Initialize();
+			base.ViewAppeared();
 			await LoadDataAsync();
 		}
 		public override void ViewDestroy(bool viewFinishing = true)
@@ -42,18 +42,19 @@ namespace Debtors.Core.ViewModels
 		#endregion
 
 		#region Properties
-		private bool isVisible;
-		public bool IsVisible
+		private bool isRefreshing;
+		private Debtor debtor;
+		private MvxObservableCollection<Debt> debts;
+
+		public bool IsRefreshing
 		{
-			get { return isVisible; }
+			get { return isRefreshing; }
 			set
 			{
-				isVisible = value;
-				RaisePropertyChanged(() => IsVisible);
+				isRefreshing = value;
+				RaisePropertyChanged(() => IsRefreshing);
 			}
 		}
-
-		private Debtor debtor;
 		public Debtor Debtor
 		{
 			get { return debtor; }
@@ -63,8 +64,6 @@ namespace Debtors.Core.ViewModels
 				RaisePropertyChanged(() => Debtor);
 			}
 		}
-
-		private MvxObservableCollection<Debt> debts;
 		public MvxObservableCollection<Debt> Debts
 		{
 			get { return debts; }
@@ -92,28 +91,26 @@ namespace Debtors.Core.ViewModels
 			if (Debtor == null || Debtor.Id <= 0)
 				return;
 
-			IsVisible = true;
+			IsRefreshing = true;
 			await Task.Run(() =>
 			{
 				Debts = new MvxObservableCollection<Debt>(DatabaseService.GetDebts(Debtor.Id));
 			});
-			IsVisible = false;
+			IsRefreshing = false;
 		}
 		private async Task NavigateToDebtAsync()
 		{
 			await NavigationService.Navigate<DebtViewModel, Debt, bool>(new Debt() { DebtorId = Debtor.Id });
-			await LoadDataAsync();
 		}
 		private void OnItemListClick(Debt debt)
 		{
-			if (IsVisible)
+			if (IsRefreshing)
 				return;
 
 			ActionSheetConfig config = new ActionSheetConfig();
 			config.Add(ResourceService.GetString("editAction"), async () =>
 			{
 				await NavigationService.Navigate<DebtViewModel, Debt, bool>(debt);
-				await LoadDataAsync();
 			});
 			config.Add(ResourceService.GetString("deleteAction"), () =>
 			{
@@ -125,10 +122,10 @@ namespace Debtors.Core.ViewModels
 						if (!accepted || debt == null)
 							return;
 							
-						if (DatabaseService.RemoveDebt(debt.Id))
-							await LoadDataAsync();
-						else
+						if (!DatabaseService.RemoveDebt(debt.Id))
 							UserDialogs.Instance.ToastFailure(ResourceService.GetString("error"));
+
+						await LoadDataAsync();
 					});
 			});
 			config.Add(ResourceService.GetString("cancelAction"));
