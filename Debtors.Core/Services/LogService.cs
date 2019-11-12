@@ -24,17 +24,17 @@ namespace Debtors.Core.Services
 		#region Error
 		public void Error(string message) => logger.Error(message);
 		public void Error(Exception ex) => logger.Error(ex, ex.Message);
-		public void Error(Exception e, string message) => logger.Error(e, message);
+		public void Error(Exception ex, string message) => logger.Error(ex, message);
 		public void Error(string format, params object[] args) => logger.Error(format, args);
-		public void Error(Exception e, string format, params object[] args) => logger.Error(e, format, args);
+		public void Error(Exception ex, string format, params object[] args) => logger.Error(ex, format, args);
 		#endregion
 
 		#region Fatal
 		public void Fatal(string message) => logger.Fatal(message);
 		public void Fatal(string format, params object[] args) => logger.Fatal(format, args);
 
-		public void Fatal(Exception e, string message) => logger.Fatal(e, message);
-		public void Fatal(Exception e, string format, params object[] args) => logger.Fatal(e, format, args);
+		public void Fatal(Exception ex, string message) => logger.Fatal(ex, message);
+		public void Fatal(Exception ex, string format, params object[] args) => logger.Fatal(ex, format, args);
 		#endregion
 
 		#region Debug

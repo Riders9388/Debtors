@@ -14,8 +14,8 @@ namespace Debtors.Core.Interfaces
 
 		void Fatal(string message);
 		void Fatal(string format, params object[] args);
-		void Fatal(Exception e, string message);
-		void Fatal(Exception e, string format, params object[] args);
+		void Fatal(Exception ex, string message);
+		void Fatal(Exception ex, string format, params object[] args);
 
 		void Debug(string message);
 		void Debug(string format, params object[] args);
