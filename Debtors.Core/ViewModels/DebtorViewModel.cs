@@ -299,7 +299,7 @@ namespace Debtors.Core.ViewModels
 			}
 			catch(Exception ex)
 			{
-
+				LogService.Error(ex);
 			}
 		}
 		#endregion

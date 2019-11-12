@@ -22,8 +22,9 @@ namespace Debtors.Core.Services
 		}
 
 		public void Error(string message) => logger.Error(message);
-		public void Error(Exception e, string message) => logger.Error(e, message);
+		public void Error(Exception ex) => logger.Error(ex, ex.Message);
+		public void Error(Exception ex, string message) => logger.Error(ex, message);
 		public void Error(string format, params object[] args) => logger.Error(format, args);
-		public void Error(Exception e, string format, params object[] args) => logger.Error(e, format, args);
+		public void Error(Exception ex, string format, params object[] args) => logger.Error(ex, format, args);
 	}
 }

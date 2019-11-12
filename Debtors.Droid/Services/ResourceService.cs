@@ -21,6 +21,13 @@ namespace Debtors.Droid.Services
 {
 	public class ResourceService : IResourceService
 	{
+		private readonly ILogService logService;
+
+		public ResourceService(ILogService logService)
+		{
+			this.logService = logService;
+		}
+
 		public string GetString(string key)
 		{
 				int resourceId = (int)(typeof(Resource.String).GetField(key)?.GetValue(null) ?? 0);
@@ -52,7 +59,7 @@ namespace Debtors.Droid.Services
 			}
 			catch (Exception ex)
 			{
-
+				logService.Error(ex);
 			}
 			return null;
 		}

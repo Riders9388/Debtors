@@ -9,15 +9,17 @@ using System.Text;
 
 namespace Debtors.Core.ViewModels
 {
-    public abstract class BaseViewModel : MvxNavigationViewModel
-    {
-        protected readonly IDatabaseService DatabaseService;
-        protected readonly IResourceService ResourceService;
-        public BaseViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService)
-            : base(logProvider, navigationService)
-        {
-            DatabaseService = Mvx.IoCProvider.Resolve<IDatabaseService>();
-            ResourceService = Mvx.IoCProvider.Resolve<IResourceService>();
-        }
-    }
+	public abstract class BaseViewModel : MvxNavigationViewModel
+	{
+		private IDatabaseService databaseService;
+		private IResourceService resourceService;
+		private ILogService logService;
+
+		protected IDatabaseService DatabaseService => databaseService = databaseService ?? Mvx.IoCProvider.Resolve<IDatabaseService>();
+		protected IResourceService ResourceService => resourceService = resourceService ?? Mvx.IoCProvider.Resolve<IResourceService>();
+		protected ILogService LogService => logService = logService ?? Mvx.IoCProvider.Resolve<ILogService>();
+
+		public BaseViewModel(IMvxLogProvider logProvider, IMvxNavigationService navigationService)
+			: base(logProvider, navigationService) { }
+	}
 }
