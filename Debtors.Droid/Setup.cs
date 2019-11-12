@@ -32,6 +32,8 @@ namespace Debtors.Droid
 			Mvx.IoCProvider.LazyConstructAndRegisterSingleton<ISettingsService, SettingsService>();
 			Mvx.IoCProvider.LazyConstructAndRegisterSingleton<ICustomDialogService, CustomDialogService>();
 			Mvx.IoCProvider.LazyConstructAndRegisterSingleton<IDialogService, DialogService>();
+			Mvx.IoCProvider.LazyConstructAndRegisterSingleton<ILogConfiguration, LogConfiguration>();
+			Mvx.IoCProvider.LazyConstructAndRegisterSingleton<ILogService, LogService>();
 		}
 	}
 }
