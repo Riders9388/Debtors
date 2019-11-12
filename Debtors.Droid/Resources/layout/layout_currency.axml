@@ -16,18 +16,15 @@
 			<EditText
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:hint="@string/symbol"
-				local:MvxBind="Text Currency.Symbol"/>
+				local:MvxBind='Hint Text("symbol"); Text Currency.Symbol'/>
 			<EditText
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:hint="@string/name"
-				local:MvxBind="Text Currency.Name"/>
+				local:MvxBind='Hint Text("name"); Text Currency.Name'/>
 			<EditText
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:hint="@string/description"
-				local:MvxBind="Text Currency.Description"/>
+				local:MvxBind='Hint Text("description"); Text Currency.Description'/>
 		</LinearLayout>
 	</android.support.v4.widget.NestedScrollView>
 </LinearLayout>

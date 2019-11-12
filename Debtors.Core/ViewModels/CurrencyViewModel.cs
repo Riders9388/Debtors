@@ -2,6 +2,7 @@
 using Debtors.Core.Extensions;
 using Debtors.Core.Interfaces;
 using Debtors.Core.Models;
+using Debtors.Core.Resources.Strings;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
@@ -62,19 +63,17 @@ namespace Debtors.Core.ViewModels
 		{
 			if (Currency == null || Currency.Id <= 0)
 			{
-				UserDialogs.Instance.Alert(ResourceService.GetString("debtorIsNotSave"));
+				UserDialogs.Instance.Alert(AppStrings.debtorIsNotSave);
 				return;
 			}
 
 			if (DatabaseService.IsCurrencyInUse(Currency.Id))
 			{
-				UserDialogs.Instance.Alert(ResourceService.GetString("currencyInUse"));
+				UserDialogs.Instance.Alert(AppStrings.currencyInUse);
 				return;
 			}
 
-			UserDialogs.Instance.Confirm(ResourceService.GetString("reallyDelete"),
-				ResourceService.GetString("yes"),
-				ResourceService.GetString("no"),
+			UserDialogs.Instance.Confirm(AppStrings.reallyDelete, AppStrings.yes, AppStrings.no,
 				(accepted) =>
 				{
 					if (!accepted || Currency == null)
@@ -83,21 +82,21 @@ namespace Debtors.Core.ViewModels
 					if (DatabaseService.RemoveCurrency(Currency.Id))
 						NavigationService.Close(this, true);
 					else
-						UserDialogs.Instance.ToastFailure(ResourceService.GetString("error"));
+						UserDialogs.Instance.ToastFailure(AppStrings.error);
 				});
 		}
 		private void SaveDebtor()
 		{
 			if (string.IsNullOrWhiteSpace(Currency.Symbol))
 			{
-				UserDialogs.Instance.Alert(ResourceService.GetString("setSymbol"));
+				UserDialogs.Instance.Alert(AppStrings.setSymbol);
 				return;
 			}
 
 			if (DatabaseService.InsertOrUpdateCurrency(Currency))
-				UserDialogs.Instance.ToastSucceed(ResourceService.GetString("saved"));
+				UserDialogs.Instance.ToastSucceed(AppStrings.saved);
 			else
-				UserDialogs.Instance.ToastFailure(ResourceService.GetString("error"));
+				UserDialogs.Instance.ToastFailure(AppStrings.error);
 		}
 		#endregion
 	}

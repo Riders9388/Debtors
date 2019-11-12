@@ -24,18 +24,15 @@
 			<EditText
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:hint="@string/firstname"
-				local:MvxBind="Text Debtor.FirstName"/>
+				local:MvxBind='Hint Text("firstname"); Text Debtor.FirstName'/>
 			<EditText
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:hint="@string/lastname"
-				local:MvxBind="Text Debtor.LastName"/>
+				local:MvxBind='Hint Text("lastname"); Text Debtor.LastName'/>
 			<EditText
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:hint="@string/description"
-				local:MvxBind="Text Debtor.Description"/>
+				local:MvxBind='Hint Text("description"); Text Debtor.Description'/>
 			<mvvmcross.droid.support.v7.recyclerview.MvxRecyclerView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"

@@ -2,6 +2,7 @@
 using Debtors.Core.Extensions;
 using Debtors.Core.Interfaces;
 using Debtors.Core.Models;
+using Debtors.Core.Resources.Strings;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
@@ -97,35 +98,33 @@ namespace Debtors.Core.ViewModels
 				return;
 
 			ActionSheetConfig config = new ActionSheetConfig();
-			config.Add(ResourceService.GetString("debtsAction"), async () =>
+			config.Add(AppStrings.debtsAction, async () =>
 			{
 				await NavigationService.Navigate<DebtsViewModel, Debtor, bool>(debtor);
 			});
-			config.Add(ResourceService.GetString("detailsAction"), async () =>
+			config.Add(AppStrings.detailsAction, async () =>
 			{
 				await NavigationService.Navigate<DebtorDetailsViewModel, Debtor, bool>(debtor);
 			});
-			config.Add(ResourceService.GetString("editAction"), async () =>
+			config.Add(AppStrings.editAction, async () =>
 			{
 				await NavigationService.Navigate<DebtorViewModel, Debtor, bool>(debtor);
 			});
-			config.Add(ResourceService.GetString("deleteAction"), () =>
+			config.Add(AppStrings.deleteAction, () =>
 			{
-				UserDialogs.Instance.Confirm(ResourceService.GetString("reallyDelete"),
-					ResourceService.GetString("yes"),
-					ResourceService.GetString("no"),
+				UserDialogs.Instance.Confirm(AppStrings.reallyDelete, AppStrings.yes, AppStrings.no,
 					async (accepted) =>
 					{
 						if (!accepted || debtor == null)
 							return;
 
 						if (!DatabaseService.RemoveDebtor(debtor.Id))
-							UserDialogs.Instance.ToastFailure(ResourceService.GetString("error"));
+							UserDialogs.Instance.ToastFailure(AppStrings.error);
 
 						await LoadDataAsync();
 					});
 			});
-			config.Add(ResourceService.GetString("cancelAction"));
+			config.Add(AppStrings.cancelAction);
 			UserDialogs.Instance.ActionSheet(config);
 		} 
 		#endregion

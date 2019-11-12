@@ -1,5 +1,6 @@
 ﻿using Acr.UserDialogs;
 using Debtors.Core.Models;
+using Debtors.Core.Resources.Strings;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
@@ -64,27 +65,27 @@ namespace Debtors.Core.ViewModels
 				return;
 
 			ActionSheetConfig config = new ActionSheetConfig();
-			config.Add(ResourceService.GetString("callAction"), () =>
+			config.Add(AppStrings.callAction, () =>
 			{
 				IPhoneCallTask phoneDialer = CrossMessaging.Current.PhoneDialer;
 				if (!phoneDialer.CanMakePhoneCall)
 				{
-					UserDialogs.Instance.Alert(ResourceService.GetString("cannotCall"));
+					UserDialogs.Instance.Alert(AppStrings.cannotCall);
 					return;
 				}
 				phoneDialer.MakePhoneCall(phone.Number);
 			});
-			config.Add(ResourceService.GetString("messageAction"), () =>
+			config.Add(AppStrings.messageAction, () =>
 			{
 				ISmsTask smsMessenger = CrossMessaging.Current.SmsMessenger;
 				if (!smsMessenger.CanSendSms)
 				{
-					UserDialogs.Instance.Alert(ResourceService.GetString("cannotSms"));
+					UserDialogs.Instance.Alert(AppStrings.cannotSms);
 					return;
 				}
 				smsMessenger.SendSms(phone.Number);
 			});
-			config.Add(ResourceService.GetString("cancelAction"));
+			config.Add(AppStrings.cancelAction);
 			UserDialogs.Instance.ActionSheet(config);
 		}
 		private void ClickMail(Mail mail)
@@ -93,24 +94,24 @@ namespace Debtors.Core.ViewModels
 				return;
 
 			ActionSheetConfig config = new ActionSheetConfig();
-			config.Add(ResourceService.GetString("messageAction"), () =>
+			config.Add(AppStrings.messageAction, () =>
 			{
 				IEmailTask emailMessenger = CrossMessaging.Current.EmailMessenger;
 				if (!emailMessenger.CanSendEmail)
 				{
-					UserDialogs.Instance.Alert(ResourceService.GetString("cannotMail"));
+					UserDialogs.Instance.Alert(AppStrings.cannotMail);
 					return;
 				}
 				emailMessenger.SendEmail(mail.Address);
 			});
-			config.Add(ResourceService.GetString("cancelAction"));
+			config.Add(AppStrings.cancelAction);
 			UserDialogs.Instance.ActionSheet(config);
 		}
 		private void ShowDebts()
 		{
 			if (Debtor.Id <= 0)
 			{
-				UserDialogs.Instance.Alert(ResourceService.GetString("debtorIsNotSave"));
+				UserDialogs.Instance.Alert(AppStrings.debtorIsNotSave);
 				return;
 			}
 			NavigationService.Navigate<DebtsViewModel, Debtor, bool>(Debtor);

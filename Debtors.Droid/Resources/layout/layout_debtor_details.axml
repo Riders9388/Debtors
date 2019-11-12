@@ -35,7 +35,7 @@
 				android:layout_marginTop="@dimen/smallestDimen"
 				android:layout_marginBottom="@dimen/thesmallestDimen"
 				android:gravity="center"
-				android:text="@string/description"/>
+				local:MvxBind='Text Text("description")'/>
 			<TextView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
 				android:layout_marginTop="@dimen/thesmallestDimen"
 				android:layout_marginBottom="@dimen/thesmallestDimen"
 				android:gravity="center"
-				android:text="@string/phone_numbers"/>
+				local:MvxBind='Text Text("phone_numbers")'/>
 			<mvvmcross.droid.support.v7.recyclerview.MvxRecyclerView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
 				android:layout_marginTop="@dimen/thesmallestDimen"
 				android:layout_marginBottom="@dimen/thesmallestDimen"
 				android:gravity="center"
-				android:text="@string/mails"/>
+				local:MvxBind='Text Text("mails")'/>
 			<mvvmcross.droid.support.v7.recyclerview.MvxRecyclerView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"

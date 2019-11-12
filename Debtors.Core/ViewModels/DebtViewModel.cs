@@ -1,6 +1,7 @@
 ﻿using Acr.UserDialogs;
 using Debtors.Core.Extensions;
 using Debtors.Core.Models;
+using Debtors.Core.Resources.Strings;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
 using MvvmCross.Navigation;
@@ -82,13 +83,11 @@ namespace Debtors.Core.ViewModels
 		{
 			if (Debt == null || Debt.Id <= 0)
 			{
-				UserDialogs.Instance.Alert(ResourceService.GetString("debtIsNotSave"));
+				UserDialogs.Instance.Alert(AppStrings.debtIsNotSave);
 				return;
 			}
 
-			UserDialogs.Instance.Confirm(ResourceService.GetString("reallyDelete"),
-				ResourceService.GetString("yes"),
-				ResourceService.GetString("no"),
+			UserDialogs.Instance.Confirm(AppStrings.reallyDelete, AppStrings.yes, AppStrings.no,
 				(accepted) =>
 				{
 					if (!accepted || Debt == null)
@@ -97,26 +96,26 @@ namespace Debtors.Core.ViewModels
 					if (DatabaseService.RemoveDebt(Debt.Id))
 						NavigationService.Close(this, true);
 					else
-						UserDialogs.Instance.ToastFailure(ResourceService.GetString("error"));
+						UserDialogs.Instance.ToastFailure(AppStrings.error);
 				});
 		}
 		private void SaveDebt()
 		{
 			if (Debt.Value == null || Debt.Value <= decimal.Zero)
 			{
-				UserDialogs.Instance.Alert(ResourceService.GetString("valueIsNotSet"));
+				UserDialogs.Instance.Alert(AppStrings.valueIsNotSet);
 				return;
 			}
 			else if (Debt.Currency == null)
 			{
-				UserDialogs.Instance.Alert(ResourceService.GetString("setCurrency"));
+				UserDialogs.Instance.Alert(AppStrings.setCurrency);
 				return;
 			}
 
 			if (DatabaseService.InsertOrUpdateDebt(Debt))
-				UserDialogs.Instance.ToastSucceed(ResourceService.GetString("saved"));
+				UserDialogs.Instance.ToastSucceed(AppStrings.saved);
 			else
-				UserDialogs.Instance.ToastFailure(ResourceService.GetString("error"));
+				UserDialogs.Instance.ToastFailure(AppStrings.error);
 		}
 		private void AddDebtBack()
 		{
@@ -137,9 +136,9 @@ namespace Debtors.Core.ViewModels
 				RaisePropertyChanged(() => Debt);
 			});
 			config.SetInputMode(InputType.Phone);
-			config.SetMessage(ResourceService.GetString("setValue"));
-			config.OkText = ResourceService.GetString("ok");
-			config.CancelText = ResourceService.GetString("cancel");
+			config.SetMessage(AppStrings.setValue);
+			config.OkText = AppStrings.ok;
+			config.CancelText = AppStrings.cancel;
 			UserDialogs.Instance.Prompt(config);
 		}
 		private void ItemSelected(Currency currency)

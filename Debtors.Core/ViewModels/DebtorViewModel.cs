@@ -3,6 +3,7 @@ using Debtors.Core.Enums;
 using Debtors.Core.Extensions;
 using Debtors.Core.Interfaces;
 using Debtors.Core.Models;
+using Debtors.Core.Resources.Strings;
 using MvvmCross;
 using MvvmCross.Commands;
 using MvvmCross.Logging;
@@ -77,13 +78,11 @@ namespace Debtors.Core.ViewModels
 		{
 			if (Debtor == null || Debtor.Id <= 0)
 			{
-				UserDialogs.Instance.Alert(ResourceService.GetString("debtorIsNotSave"));
+				UserDialogs.Instance.Alert(AppStrings.debtorIsNotSave);
 				return;
 			}
 
-			UserDialogs.Instance.Confirm(ResourceService.GetString("reallyDelete"),
-				ResourceService.GetString("yes"),
-				ResourceService.GetString("no"),
+			UserDialogs.Instance.Confirm(AppStrings.reallyDelete, AppStrings.yes, AppStrings.no,
 				(accepted) =>
 				{
 					if (!accepted || Debtor == null)
@@ -92,21 +91,21 @@ namespace Debtors.Core.ViewModels
 					if (DatabaseService.RemoveDebtor(Debtor.Id))
 						NavigationService.Close(this, true);
 					else
-						UserDialogs.Instance.ToastFailure(ResourceService.GetString("error"));
+						UserDialogs.Instance.ToastFailure(AppStrings.error);
 				});
 		}
 		private void SaveDebtor()
 		{
 			if (string.IsNullOrWhiteSpace(Debtor.FirstName))
 			{
-				UserDialogs.Instance.Alert(ResourceService.GetString("noDebtorName"));
+				UserDialogs.Instance.Alert(AppStrings.noDebtorName);
 				return;
 			}
 
 			if (DatabaseService.InsertOrUpdateDebtor(Debtor))
-				UserDialogs.Instance.ToastSucceed(ResourceService.GetString("saved"));
+				UserDialogs.Instance.ToastSucceed(AppStrings.saved);
 			else
-				UserDialogs.Instance.ToastFailure(ResourceService.GetString("error"));
+				UserDialogs.Instance.ToastFailure(AppStrings.error);
 		}
 		private void AddPhone()
 		{
@@ -127,9 +126,9 @@ namespace Debtors.Core.ViewModels
 				RaisePropertyChanged(() => Debtor);
 			});
 			config.SetInputMode(InputType.Phone);
-			config.SetMessage(ResourceService.GetString("setPhoneNumber"));
-			config.OkText = ResourceService.GetString("ok");
-			config.CancelText = ResourceService.GetString("cancel");
+			config.SetMessage(AppStrings.setPhoneNumber);
+			config.OkText = AppStrings.ok;
+			config.CancelText = AppStrings.cancel;
 			UserDialogs.Instance.Prompt(config);
 		}
 		private void EditPhone(Phone phone)
@@ -147,10 +146,10 @@ namespace Debtors.Core.ViewModels
 				RaisePropertyChanged(() => Debtor);
 			});
 			config.SetInputMode(InputType.Phone);
-			config.SetMessage(ResourceService.GetString("setPhoneNumber"));
+			config.SetMessage(AppStrings.setPhoneNumber);
 			config.SetText(phone.Number);
-			config.OkText = ResourceService.GetString("ok");
-			config.CancelText = ResourceService.GetString("cancel");
+			config.OkText = AppStrings.ok;
+			config.CancelText = AppStrings.cancel;
 			UserDialogs.Instance.Prompt(config);
 		}
 		private void ClickPhone(Phone phone)
@@ -159,45 +158,43 @@ namespace Debtors.Core.ViewModels
 				return;
 
 			ActionSheetConfig config = new ActionSheetConfig();
-			config.Add(ResourceService.GetString("callAction"), () =>
+			config.Add(AppStrings.callAction, () =>
 			{
 				IPhoneCallTask phoneDialer = CrossMessaging.Current.PhoneDialer;
 				if (!phoneDialer.CanMakePhoneCall)
 				{
-					UserDialogs.Instance.Alert(ResourceService.GetString("cannotCall"));
+					UserDialogs.Instance.Alert(AppStrings.cannotCall);
 					return;
 				}
 				phoneDialer.MakePhoneCall(phone.Number);
 			});
-			config.Add(ResourceService.GetString("messageAction"), () =>
+			config.Add(AppStrings.messageAction, () =>
 			{
 				ISmsTask smsMessenger = CrossMessaging.Current.SmsMessenger;
 				if (!smsMessenger.CanSendSms)
 				{
-					UserDialogs.Instance.Alert(ResourceService.GetString("cannotSms"));
+					UserDialogs.Instance.Alert(AppStrings.cannotSms);
 					return;
 				}
 				smsMessenger.SendSms(phone.Number);
 			});
-			config.Add(ResourceService.GetString("editAction"), () =>
+			config.Add(AppStrings.editAction, () =>
 			{
 				EditPhone(phone);
 			});
-			config.Add(ResourceService.GetString("deleteAction"), () =>
+			config.Add(AppStrings.deleteAction, () =>
 			{
 				if (Debtor == null || Debtor.Phones.IsNullOrEmpty())
 					return;
 
-				UserDialogs.Instance.Confirm(ResourceService.GetString("reallyDelete"),
-					ResourceService.GetString("yes"),
-					ResourceService.GetString("no"),
+				UserDialogs.Instance.Confirm(AppStrings.reallyDelete, AppStrings.yes, AppStrings.no,
 					(accepted) =>
 					{
 						if (accepted)
 							Debtor.Phones.Remove(phone);
 					});
 			});
-			config.Add(ResourceService.GetString("cancelAction"));
+			config.Add(AppStrings.cancelAction);
 			UserDialogs.Instance.ActionSheet(config);
 		}
 		private void AddMail()
@@ -218,7 +215,7 @@ namespace Debtors.Core.ViewModels
 				RaisePropertyChanged(() => Debtor);
 			});
 			config.SetInputMode(InputType.Email);
-			config.SetMessage(ResourceService.GetString("setMailAddress"));
+			config.SetMessage(AppStrings.setMailAddress);
 			UserDialogs.Instance.Prompt(config);
 		}
 		private void ClickMail(Mail mail)
@@ -227,35 +224,33 @@ namespace Debtors.Core.ViewModels
 				return;
 
 			ActionSheetConfig config = new ActionSheetConfig();
-			config.Add(ResourceService.GetString("messageAction"), () =>
+			config.Add(AppStrings.messageAction, () =>
 			{
 				IEmailTask emailMessenger = CrossMessaging.Current.EmailMessenger;
 				if (!emailMessenger.CanSendEmail)
 				{
-					UserDialogs.Instance.Alert(ResourceService.GetString("cannotMail"));
+					UserDialogs.Instance.Alert(AppStrings.cannotMail);
 					return;
 				}
 				emailMessenger.SendEmail(mail.Address);
 			});
-			config.Add(ResourceService.GetString("editAction"), () =>
+			config.Add(AppStrings.editAction, () =>
 			{
 				EditMail(mail);
 			});
-			config.Add(ResourceService.GetString("deleteAction"), () =>
+			config.Add(AppStrings.deleteAction, () =>
 			{
 				if (Debtor == null || Debtor.Mails.IsNullOrEmpty())
 					return;
 
-				UserDialogs.Instance.Confirm(ResourceService.GetString("reallyDelete"),
-					ResourceService.GetString("yes"),
-					ResourceService.GetString("no"),
+				UserDialogs.Instance.Confirm(AppStrings.reallyDelete, AppStrings.yes, AppStrings.no,
 					(accepted) =>
 					{
 						if (accepted)
 							Debtor.Mails.Remove(mail);
 					});
 			});
-			config.Add(ResourceService.GetString("cancelAction"));
+			config.Add(AppStrings.cancelAction);
 			UserDialogs.Instance.ActionSheet(config);
 		}
 		private void EditMail(Mail mail)
@@ -273,10 +268,10 @@ namespace Debtors.Core.ViewModels
 				RaisePropertyChanged(() => Debtor);
 			});
 			config.SetInputMode(InputType.Email);
-			config.SetMessage(ResourceService.GetString("setMailAddress"));
+			config.SetMessage(AppStrings.setMailAddress);
 			config.SetText(mail.Address);
-			config.OkText = ResourceService.GetString("ok");
-			config.CancelText = ResourceService.GetString("cancel");
+			config.OkText = AppStrings.ok;
+			config.CancelText = AppStrings.cancel;
 			UserDialogs.Instance.Prompt(config);
 		}
 		private async void GetImage()

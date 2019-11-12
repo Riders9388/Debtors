@@ -25,7 +25,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textSize="@dimen/textDebtorView"
-				android:text="@string/debt"/>
+				local:MvxBind='Text Text(debt)'/>
 			<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textSize="@dimen/textDebtorView"
-				android:text="@string/leftToReturn"/>
+				local:MvxBind='Text Text(leftToReturn)'/>
 			<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"

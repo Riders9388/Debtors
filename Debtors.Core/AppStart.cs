@@ -1,5 +1,6 @@
 ﻿using Acr.UserDialogs;
 using Debtors.Core.Interfaces;
+using Debtors.Core.Resources.Strings;
 using Debtors.Core.ViewModels;
 using MvvmCross;
 using MvvmCross.Navigation;
@@ -18,15 +19,13 @@ namespace Debtors.Core
 
 		protected override Task NavigateToFirstViewModel(object hint = null)
 		{
-			IResourceService resourceService = Mvx.IoCProvider.Resolve<IResourceService>();
-
-			string okText = resourceService.GetString("ok");
-			string cancelText = resourceService.GetString("cancel");
+			string okText = AppStrings.ok;
+			string cancelText = AppStrings.cancel;
 
 			ConfirmConfig.DefaultOkText = okText;
 			ConfirmConfig.DefaultCancelText = cancelText;
-			ConfirmConfig.DefaultNo = resourceService.GetString("no");
-			ConfirmConfig.DefaultYes = resourceService.GetString("yes");
+			ConfirmConfig.DefaultNo = AppStrings.no;
+			ConfirmConfig.DefaultYes = AppStrings.yes;
 
 			AlertConfig.DefaultOkText = okText;
 

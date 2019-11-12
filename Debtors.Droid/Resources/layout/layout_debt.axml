@@ -16,8 +16,7 @@
 			<EditText
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:hint="@string/amount"
-				local:MvxBind="Text Debt.Value"/>
+				local:MvxBind='Hint Text("amount"); Text Debt.Value' />
 			<mvvmcross.platforms.android.binding.views.MvxSpinner
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -28,9 +27,8 @@
 			<EditText
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:hint="@string/description"
 				android:maxLines="3"
-				local:MvxBind="Text Debt.Description"/>
+				local:MvxBind='Hint Text("description"); Text Debt.Description'/>
 			<mvvmcross.droid.support.v7.recyclerview.MvxRecyclerView
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
