@@ -2,6 +2,7 @@
 using SQLite;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -33,16 +34,16 @@ namespace Debtors.Core.Models
         }
 
         [Ignore]
-        public MvxColor Color
+        public Color Color
         {
             get
             {
                 if (MissingBackValue <= decimal.Zero)
-                    return new MvxColor(50, 205, 50);
+                    return Color.FromArgb(50, 205, 50);
                 else if (MissingBackValue < Value)
-                    return new MvxColor(255, 140, 0);
+                    return Color.FromArgb(255, 140, 0);
 
-                return new MvxColor(220, 20, 60);
+                return Color.FromArgb(220, 20, 60);
             }
         }
     }
