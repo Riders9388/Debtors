@@ -1,14 +1,19 @@
-﻿extern alias MonoAndroidAlias;
-
-using MonoAndroidAlias::Android.Graphics;
-using MvvmCross.Converters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
+using System.Linq;
 using System.Text;
 
-namespace Debtors.Core.Converters
+using Android.App;
+using Android.Content;
+using Android.Graphics;
+using Android.OS;
+using Android.Runtime;
+using Android.Views;
+using Android.Widget;
+using MvvmCross.Converters;
+
+namespace Debtors.Droid.Converters
 {
     public class BytesToBitmapConverter : MvxValueConverter<byte[], Bitmap>
     {

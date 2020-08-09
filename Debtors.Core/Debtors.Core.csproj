@@ -5,21 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Acr.UserDialogs" Version="7.0.3" />
-    <PackageReference Include="MvvmCross" Version="6.2.3" />
-    <PackageReference Include="MvvmCross.Plugin.Color" Version="6.2.3" />
-    <PackageReference Include="MvvmCross.Plugin.Visibility" Version="6.2.3" />
-    <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
-    <PackageReference Include="Xam.Plugin.Media" Version="4.0.1.5" />
+    <PackageReference Include="Acr.UserDialogs" Version="7.1.0.446" />
+    <PackageReference Include="MvvmCross" Version="6.4.2" />
+    <PackageReference Include="MvvmCross.Plugin.Color" Version="6.4.2" />
+    <PackageReference Include="MvvmCross.Plugin.Visibility" Version="6.4.2" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
+    <PackageReference Include="Xam.Plugin.Media" Version="5.0.1" />
     <PackageReference Include="Xam.Plugins.Messaging" Version="5.2.0" />
     <PackageReference Include="Xam.Plugins.Settings" Version="3.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Mono.Android">
-      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\ReferenceAssemblies\Microsoft\Framework\MonoAndroid\v8.1\Mono.Android.dll</HintPath>
-      <Aliases>MonoAndroidAlias</Aliases>
-    </Reference>
   </ItemGroup>
 
 </Project>
